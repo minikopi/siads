@@ -12,7 +12,7 @@
                     <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Form</h4>
+                                <h4 class="card-title">Form Pembuatan Akun Dosen</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -22,45 +22,74 @@
                                             @csrf
 
                                             <div class="row mb-4">
-                                                <label class="col-md-3 form-label" for="email">Nama</label>
+                                                <label class="col-md-3 form-label" for="nama">Nama</label>
                                                 <div class="col-md-9">
-                                                    <input class="form-control" type="input" name="email"
-                                                        id="email">
+                                                    <input class="form-control @error('nama') is-invalid @enderror"
+                                                        type="input" name="nama" id="nama" autocomplete="off"
+                                                        value="{{ old('nama') }}">
+                                                    @error('nama')
+                                                        <div class="invalid-feedback" style="color: red;">{{ $message }}
+                                                        </div>
+                                                    @enderror
                                                 </div>
                                             </div>
 
                                             <div class="row mb-4">
                                                 <label class="col-md-3 form-label" for="email">Email</label>
                                                 <div class="col-md-9">
-                                                    <input class="form-control" type="email" name="email"
-                                                        id="email">
+                                                    <input class="form-control @error('email') is-invalid @enderror"
+                                                        type="email" name="email" id="email" autocomplete="off"
+                                                        value="{{ old('email') }}">
+                                                    @error('email')
+                                                        <div class="invalid-feedback" style="color: red;">{{ $message }}
+                                                        </div>
+                                                    @enderror
                                                 </div>
                                             </div>
 
                                             <div class="row mb-4">
                                                 <label class="col-md-3 form-label" for="nomor_induk">Nomor Induk</label>
                                                 <div class="col-md-9">
-                                                    <input class="form-control" type="input" name="nomor_induk"
-                                                        id="nomor_induk">
+                                                    <input class="form-control @error('nomor_induk') is-invalid @enderror"
+                                                        type="input" name="nomor_induk" id="nomor_induk"
+                                                        value="{{ old('nomor_induk') }}">
+                                                    @error('nomor_induk')
+                                                        <div class="invalid-feedback" style="color: red;">{{ $message }}
+                                                        </div>
+                                                    @enderror
                                                 </div>
                                             </div>
 
                                             <div class="row mb-4">
                                                 <label class="col-md-3 form-label" for="jabatan">Jabatan</label>
                                                 <div class="col-md-9">
-                                                    <input class="form-control" type="input" name="jabatan"
-                                                        id="jabatan">
+                                                    <input class="form-control @error('jabatan') is-invalid @enderror"
+                                                        type="input" name="jabatan" id="jabatan"
+                                                        value="{{ old('jabatan') }}">
+                                                    @error('jabatan')
+                                                        <div class="invalid-feedback" style="color: red;">{{ $message }}
+                                                        </div>
+                                                    @enderror
                                                 </div>
                                             </div>
 
                                             <div class="row mb-4">
                                                 <label class="col-md-3 form-label" for="tipe">Tipe</label>
                                                 <div class="col-md-9">
-                                                    <select class="form-control" name="tipe">
+                                                    <select class="form-control @error('tipe') is-invalid @enderror"
+                                                        name="tipe">
                                                         <option selected disabled>---Pilih Salah Satu---</option>
-                                                        <option value="Dosen">Ustadz</option>
-                                                        <option value="Ustadz">Musyrif</option>
+                                                        <option value="Dosen"
+                                                            @if (old('tipe') == 'Dosen') selected @endif>Dosen
+                                                        </option>
+                                                        <option value="Musyrif"
+                                                            @if (old('tipe') == 'Musyrif') selected @endif>Musyrif
+                                                        </option>
                                                     </select>
+                                                    @error('tipe')
+                                                        <div class="invalid-feedback" style="color: red;">{{ $message }}
+                                                        </div>
+                                                    @enderror
                                                 </div>
                                             </div>
 

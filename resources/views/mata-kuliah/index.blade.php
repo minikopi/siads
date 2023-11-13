@@ -18,7 +18,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered text-nowrap border-bottom" id="data-table">
+                                    <table class="table table-bordered text-nowrap border-bottom" id="datatables">
                                         <thead>
                                             <tr>
                                                 <th class="wd-15p border-bottom-0">No</th>
@@ -53,30 +53,89 @@
     <!-- CONTAINER CLOSED -->
     </div>
     @push('custom')
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+        <!-- SweetAlert2 JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         <script>
             $(document).ready(function() {
-                $('#data-table').DataTable({
+                $('#datatables').DataTable({
                     "processing": true,
                     "serverSide": true,
                     "ajax": "{{ route('mata-kuliah.dataGet') }}", // Sesuaikan dengan route yang Anda buat
                     "columns": [{
-                            data: 'id',
-                            name: 'id'
+                            data: null,
+                            render: function(data, type, row, meta) {
+                                return meta.row + 1; // Adding 1 to start the iteration from 1
+                            },
+                            name: 'iteration'
                         },
                         {
                             data: 'nama',
                             name: 'nama'
                         },
                         {
-                            data: 'nomor_induk',
-                            name: 'nomor_induk'
-                        } {
-                            data: 'jabatan',
-                            name: 'jabatan'
+                            data: 'kode',
+                            name: 'kode'
+                        }, {
+                            data: 'sks',
+                            name: 'sks'
+                        },
+                        {
+                            data: null,
+                            render: function(data, type, row) {
+                                return '<button class="btn btn-warning" onclick="deleteRow(' + row.id +
+                                    ')">Edit</button> <button class="btn btn-danger" onclick="deleteRow(' +
+                                    row.id +
+                                    ')">Delete</button>';
+                            },
+                            name: 'action'
                         }
+                    ],
+                    "columnDefs": [{
+                            "width": "3%",
+                            "targets": 0
+                        }, // No
+                        {
+                            "width": "25%",
+                            "targets": 1
+                        }, // Nama Dosen
+                        {
+                            "width": "20%",
+                            "targets": 2
+                        }, // Nomor Induk
+                        {
+                            "width": "15%",
+                            "targets": 3
+                        }, // Jabatan
+                        {
+                            "width": "10%",
+                            "targets": 4
+                        } // Action
                     ]
                 });
             });
         </script>
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses',
+                    text: '{{ session('success') }}',
+                });
+            </script>
+        @endif
+
+        @if (session('error'))
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '{{ session('error') }}',
+                });
+            </script>
+        @endif
     @endpush
 @endsection

@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Dosen extends Model
 {
     use HasFactory;
-
-    public $fillable = ['user_id', 'nomor_induk', 'jabatan'];
+    public $fillable = ['user_id', 'nomor_induk', 'jabatan', 'tipe'];
 
     public function user()
     {

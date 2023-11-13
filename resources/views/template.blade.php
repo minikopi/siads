@@ -28,6 +28,10 @@
     <!--- FONT-ICONS CSS -->
     <link href="../assets/css/icons.css" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+
+    <!-- JQUERY JS -->
+    <script src="../assets/js/jquery.min.js"></script>
 </head>
 
 <body class="app sidebar-mini ltr light-mode">
@@ -141,7 +145,8 @@
                             </li>
 
                             <li class="slide">
-                                <a class="side-menu__item" data-bs-toggle="slide" href="index.html"><i
+                                <a class="side-menu__item" data-bs-toggle="slide"
+                                    href="{{ route('dashboard.index') }}"><i
                                         class="side-menu__icon fe fe-home"></i><span
                                         class="side-menu__label">Dashboard</span></a>
                             </li>
@@ -163,13 +168,10 @@
                                 </ul>
                             </li>
                             <li class="slide">
-                                <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0);"><i
+                                <a class="side-menu__item" data-bs-toggle="slide"
+                                    href="{{ route('akademik.index') }}"><i
                                         class="side-menu__icon fe fe-grid"></i><span
-                                        class="side-menu__label">Akademik</span><i
-                                        class="angle fa fa-angle-right"></i></a>
-                                <ul class="slide-menu">
-                                    <li class="side-menu-label1"><a href="javascript:void(0)">Components</a></li>
-                                </ul>
+                                        class="side-menu__label">Akademik</span></a>
                             </li>
                             <li>
                                 <a class="side-menu__item" href="widgets.html"><i
@@ -232,9 +234,6 @@
         <!-- BACK-TO-TOP -->
         <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
 
-        <!-- JQUERY JS -->
-        <script src="../assets/js/jquery.min.js"></script>
-
         <!-- BOOTSTRAP JS -->
         <script src="../assets/plugins/bootstrap/js/popper.min.js"></script>
         <script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
@@ -287,7 +286,7 @@
 
         <!-- CUSTOM JS -->
         <script src="../assets/js/custom.js"></script>
-
+        @stack('custom')
 </body>
 
 </html>

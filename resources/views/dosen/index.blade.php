@@ -30,7 +30,7 @@
                                         <div class="row">
                                             <div class="col">
                                                 <h6 class="">Total Dosen</h6>
-                                                <h3 class="mb-2 number-font">34,516</h3>
+                                                <h3 class="mb-2 number-font">{{ $dosenCount }}</h3>
                                                 <p class="text-muted mb-0">
                                                     <span class="text-primary">Akun Terdaftar</span>
                                                 </p>
@@ -50,8 +50,8 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col">
-                                                <h6 class="">Total Ustadz</h6>
-                                                <h3 class="mb-2 number-font">56,992</h3>
+                                                <h6 class="">Total Musyrif</h6>
+                                                <h3 class="mb-2 number-font">{{ $musyrifCount }}</h3>
                                                 <p class="text-muted mb-0">
                                                     <span class="text-secondary">Akun Terdaftar</span>
                                                 </p>
@@ -74,11 +74,11 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Data Dosen</h3>
+                                <h3 class="card-title">Data Dosen Ma'had Darus-Sunnah</h3>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered text-nowrap border-bottom" id="data-table">
+                                    <table class="table table-bordered text-nowrap border-bottom" id="datatables">
                                         <thead>
                                             <tr>
                                                 <th class="wd-15p border-bottom-0">No</th>
@@ -96,11 +96,11 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Data Ustadz</h3>
+                                <h3 class="card-title">Data Musyrif Darus-Sunnah</h3>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered text-nowrap border-bottom" id="data-table2">
+                                    <table class="table table-bordered text-nowrap border-bottom" id="datatables2">
                                         <thead>
                                             <tr>
                                                 <th class="wd-15p border-bottom-0">No</th>
@@ -123,40 +123,83 @@
     <!-- CONTAINER CLOSED -->
     </div>
     @push('custom')
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+        <!-- SweetAlert2 JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         <script>
             $(document).ready(function() {
-                $('#data-table').DataTable({
+                $('#datatables').DataTable({
                     "processing": true,
                     "serverSide": true,
                     "ajax": "{{ route('dosen.dataGet') }}", // Sesuaikan dengan route yang Anda buat
                     "columns": [{
-                            data: 'id',
-                            name: 'id'
+                            data: null,
+                            render: function(data, type, row, meta) {
+                                return meta.row + 1; // Adding 1 to start the iteration from 1
+                            },
+                            name: 'iteration'
                         },
                         {
                             data: 'nama',
                             name: 'nama'
                         },
                         {
-                            data: 'nomor_induk',
+                            data: 'sks',
                             name: 'nomor_induk'
-                        } {
+                        }, {
                             data: 'jabatan',
                             name: 'jabatan'
+                        },
+                        {
+                            data: null,
+                            render: function(data, type, row) {
+                                return '<button class="btn btn-warning" onclick="deleteRow(' + row.id +
+                                    ')">Edit</button> <button class="btn btn-danger" onclick="deleteRow(' +
+                                    row.id +
+                                    ')">Delete</button>';
+                            },
+                            name: 'action'
                         }
+                    ],
+                    "columnDefs": [{
+                            "width": "3%",
+                            "targets": 0
+                        }, // No
+                        {
+                            "width": "25%",
+                            "targets": 1
+                        }, // Nama Dosen
+                        {
+                            "width": "20%",
+                            "targets": 2
+                        }, // Nomor Induk
+                        {
+                            "width": "15%",
+                            "targets": 3
+                        }, // Jabatan
+                        {
+                            "width": "10%",
+                            "targets": 4
+                        } // Action
                     ]
                 });
             });
         </script>
         <script>
             $(document).ready(function() {
-                $('#data-table').DataTable({
+                $('#datatables2').DataTable({
                     "processing": true,
                     "serverSide": true,
                     "ajax": "{{ route('dosen.dataGet2') }}", // Sesuaikan dengan route yang Anda buat
                     "columns": [{
-                            data: 'id',
-                            name: 'id'
+                            data: null,
+                            render: function(data, type, row, meta) {
+                                return meta.row + 1; // Adding 1 to start the iteration from 1
+                            },
+                            name: 'iteration'
                         },
                         {
                             data: 'nama',
@@ -165,13 +208,63 @@
                         {
                             data: 'nomor_induk',
                             name: 'nomor_induk'
-                        } {
+                        }, {
                             data: 'jabatan',
                             name: 'jabatan'
+                        },
+                        {
+                            data: null,
+                            render: function(data, type, row) {
+                                return '<button class="btn btn-warning" onclick="deleteRow(' + row.id +
+                                    ')">Edit</button> <button class="btn btn-danger" onclick="deleteRow(' +
+                                    row.id +
+                                    ')">Delete</button>';
+                            },
+                            name: 'action'
                         }
+                    ],
+                    "columnDefs": [{
+                            "width": "3%",
+                            "targets": 0
+                        }, // No
+                        {
+                            "width": "25%",
+                            "targets": 1
+                        }, // Nama Dosen
+                        {
+                            "width": "20%",
+                            "targets": 2
+                        }, // Nomor Induk
+                        {
+                            "width": "15%",
+                            "targets": 3
+                        }, // Jabatan
+                        {
+                            "width": "10%",
+                            "targets": 4
+                        } // Action
                     ]
                 });
             });
         </script>
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses',
+                    text: '{{ session('success') }}',
+                });
+            </script>
+        @endif
+
+        @if (session('error'))
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '{{ session('error') }}',
+                });
+            </script>
+        @endif
     @endpush
 @endsection

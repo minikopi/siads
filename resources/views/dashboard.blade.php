@@ -119,7 +119,7 @@
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-9">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Total Transactions</h3>
+                                <h3 class="card-title">Riwayat Indeks Prestasi</h3>
                             </div>
                             <div class="card-body pb-0">
                                 <div id="chartArea" class="chart-donut"></div>
