@@ -13,32 +13,32 @@
         content="admin, dashboard, dashboard ui, admin dashboard template, admin panel dashboard, admin panel html, admin panel html template, admin panel template, admin ui templates, administrative templates, best admin dashboard, best admin templates, bootstrap 4 admin template, bootstrap admin dashboard, bootstrap admin panel, html css admin templates, html5 admin template, premium bootstrap templates, responsive admin template, template admin bootstrap 4, themeforest html">
 
     <!-- FAVICON -->
-    <link rel="shortcut icon" type="image/x-icon" href="../assets/images/brand/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/brand/favicon.ico') }}" />
 
     <!-- TITLE -->
     <title>Sistem Informasi Akademik Darus Sunnah - SIADS</title>
 
     <!-- BOOTSTRAP CSS -->
-    <link id="style" href="../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link id="style" href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
 
     <!-- STYLE CSS -->
-    <link href="../assets/css/style.css" rel="stylesheet" />
-    <link href="../assets/css/plugins.css" rel="stylesheet" />
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/plugins.css') }}" rel="stylesheet" />
 
     <!--- FONT-ICONS CSS -->
-    <link href="../assets/css/icons.css" rel="stylesheet" />
+    <link href="{{ asset('css/icons.css') }}" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
 
     <!-- JQUERY JS -->
-    <script src="../assets/js/jquery.min.js"></script>
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
 </head>
 
 <body class="app sidebar-mini ltr light-mode">
 
     <!-- GLOBAL-LOADER -->
     <div id="global-loader">
-        <img src="../assets/images/loader.svg" class="loader-img" alt="Loader">
+        <img src="{{ asset('images/loader.svg') }}" class="loader-img" alt="Loader">
     </div>
     <!-- /GLOBAL-LOADER -->
 
@@ -54,14 +54,17 @@
                             href="javascript:void(0);"></a>
                         <div class="responsive-logo">
                             <a href="index.html" class="header-logo">
-                                <img src="../assets/images/logo.png" class="mobile-logo logo-1" alt="logo">
-                                <img src="../assets/images/logo.png" class="mobile-logo dark-logo-1" alt="logo">
+                                <img src="{{ asset('images/logo.png') }}" class="mobile-logo logo-1" alt="logo">
+                                <img src="{{ asset('images/logo.png') }}" class="mobile-logo dark-logo-1"
+                                    alt="logo">
                             </a>
                         </div>
                         <!-- sidebar-toggle-->
                         <a class="logo-horizontal " href="index.html">
-                            <img src="../assets/images/logo.png" class="header-brand-img desktop-logo" alt="logo">
-                            <img src="../assets/images/logo.png" class="header-brand-img light-logo1" alt="logo">
+                            <img src="{{ asset('images/logo.png') }}" class="header-brand-img desktop-logo"
+                                alt="logo">
+                            <img src="{{ asset('images/logo.png') }}" class="header-brand-img light-logo1"
+                                alt="logo">
                         </a>
                         <!-- LOGO -->
                         <div class="d-flex order-lg-2 ms-auto header-right-icons">
@@ -79,14 +82,14 @@
                                             <a href="javascript:void(0);" data-bs-toggle="dropdown"
                                                 class="nav-link leading-none d-flex px-1">
                                                 <span>
-                                                    <img src="../assets/images/users/8.jpg" alt="profile-user"
+                                                    <img src="{{ asset('images/users/8.jpg') }}" alt="profile-user"
                                                         class="avatar  profile-user brround cover-image">
                                                 </span>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                                 <div class="drop-heading">
                                                     <div class="text-center">
-                                                        <h5 class="text-dark mb-0">Elizabeth Dyer</h5>
+                                                        <h5 class="text-dark mb-0">Nama Admin</h5>
                                                         <small class="text-muted">Administrator</small>
                                                     </div>
                                                 </div>
@@ -95,14 +98,11 @@
                                                     <i class="dropdown-icon fe fe-user"></i> Profile
                                                 </a>
                                                 <a class="dropdown-item" href="email.html">
-                                                    <i class="dropdown-icon fe fe-mail"></i> Inbox
+                                                    <i class="dropdown-icon fe fe-mail"></i> Notification
                                                     <span class="badge bg-secondary float-end">3</span>
                                                 </a>
                                                 <a class="dropdown-item" href="emailservices.html">
                                                     <i class="dropdown-icon fe fe-settings"></i> Settings
-                                                </a>
-                                                <a class="dropdown-item" href="faq.html">
-                                                    <i class="dropdown-icon fe fe-alert-triangle"></i> Need help?
                                                 </a>
                                                 <a class="dropdown-item" href="login.html">
                                                     <i class="dropdown-icon fe fe-alert-circle"></i> Sign out
@@ -124,13 +124,14 @@
                 <aside class="app-sidebar">
                     <div class="side-header">
                         <a class="header-brand1" href="index.html">
-                            <img src="../assets/images/logo.png" class="header-brand-img desktop-logo"
+                            <img src="{{ asset('images/logo.png') }}" class="header-brand-img desktop-logo"
                                 alt="logo">
-                            <img src="../assets/images/logo-1.png" class="header-brand-img toggle-logo"
+                            <img src="{{ asset('images/logo-1.png') }}" class="header-brand-img toggle-logo"
                                 alt="logo">
-                            <img src="../assets/images/logo-2.png" class="header-brand-img light-logo"
+                            <img src="{{ asset('images/logo-2.png') }}" class="header-brand-img light-logo"
                                 alt="logo">
-                            <img src="../assets/images/logo.png" class="header-brand-img light-logo1" alt="logo">
+                            <img src="{{ asset('images/logo.png') }}" class="header-brand-img light-logo1"
+                                alt="logo">
                         </a>
                         <!-- LOGO -->
                     </div>
@@ -158,7 +159,8 @@
                                 <ul class="slide-menu">
                                     <li class="side-menu-label1"><a href="javascript:void(0)">Perkuliahan</a></li>
                                     <li><a href="{{ route('dosen.index') }}" class="slide-item"> Dosen</a></li>
-                                    <li><a href="{{ route('mata-kuliah.index') }}" class="slide-item"> Mata Kuliah</a>
+                                    <li><a href="{{ route('mata-kuliah.index') }}" class="slide-item"> Mata
+                                            Kuliah</a>
                                     </li>
                                     <li><a href="cards.html" class="slide-item"> Penilaian</a></li>
                                     <li><a href="cards.html" class="slide-item"> Transkrip Akademik</a></li>
@@ -235,57 +237,57 @@
         <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
 
         <!-- BOOTSTRAP JS -->
-        <script src="../assets/plugins/bootstrap/js/popper.min.js"></script>
-        <script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+        <script src="{{ asset('plugins/bootstrap/js/popper.min.js') }}"></script>
+        <script src="{{ asset('plugins/bootstrap/js/bootstrap.min.js') }}"></script>
 
         <!-- SPARKLINE JS-->
-        <script src="../assets/js/jquery.sparkline.min.js"></script>
+        <script src="{{ asset('js/jquery.sparkline.min.js') }}"></script>
 
         <!-- CHART-CIRCLE JS-->
-        <script src="../assets/js/circle-progress.min.js"></script>
+        <script src="{{ asset('js/circle-progress.min.js') }}"></script>
 
         <!-- CHARTJS CHART JS-->
-        <script src="../assets/plugins/chart/Chart.bundle.js"></script>
-        <script src="../assets/plugins/chart/utils.js"></script>
+        <script src="{{ asset('plugins/chart/Chart.bundle.js') }}"></script>
+        <script src="{{ asset('plugins/chart/utils.js') }}"></script>
 
         <!-- PIETY CHART JS-->
-        <script src="../assets/plugins/peitychart/jquery.peity.min.js"></script>
-        <script src="../assets/plugins/peitychart/peitychart.init.js"></script>
+        <script src="{{ asset('plugins/peitychart/jquery.peity.min.js') }}"></script>
+        <script src="{{ asset('plugins/peitychart/peitychart.init.js') }}"></script>
 
         <!-- INTERNAL SELECT2 JS -->
-        <script src="../assets/plugins/select2/select2.full.min.js"></script>
+        <script src="{{ asset('plugins/select2/select2.full.min.js') }}"></script>
 
         <!-- ECHART JS-->
-        <script src="../assets/plugins/echarts/echarts.js"></script>
+        <script src="{{ asset('plugins/echarts/echarts.js') }}"></script>
 
         <!-- SIDE-MENU JS-->
-        <script src="../assets/plugins/sidemenu/sidemenu.js"></script>
+        <script src="{{ asset('plugins/sidemenu/sidemenu.js') }}"></script>
 
         <!-- Sticky js -->
-        <script src="../assets/js/sticky.js"></script>
+        <script src="{{ asset('js/sticky.js') }}"></script>
 
         <!-- SIDEBAR JS -->
-        <script src="../assets/plugins/sidebar/sidebar.js"></script>
+        <script src="{{ asset('plugins/sidebar/sidebar.js') }}"></script>
 
         <!-- Perfect SCROLLBAR JS-->
-        <script src="../assets/plugins/p-scroll/perfect-scrollbar.js"></script>
-        <script src="../assets/plugins/p-scroll/pscroll.js"></script>
-        <script src="../assets/plugins/p-scroll/pscroll-1.js"></script>
+        <script src="{{ asset('plugins/p-scroll/perfect-scrollbar.js') }}"></script>
+        <script src="{{ asset('plugins/p-scroll/pscroll.js') }}"></script>
+        <script src="{{ asset('plugins/p-scroll/pscroll-1.js') }}"></script>
 
         <!-- APEXCHART JS -->
-        <script src="../assets/js/apexcharts.js"></script>
+        <script src="{{ asset('js/apexcharts.js') }}"></script>
 
         <!-- INDEX JS -->
-        <script src="../assets/js/index1.js"></script>
+        <script src="{{ asset('js/index1.js') }}"></script>
 
         <!-- Color Theme js -->
-        <script src="../assets/js/themeColors.js"></script>
+        <script src="{{ asset('js/themeColors.js') }}"></script>
 
         <!-- swither styles js -->
-        <script src="../assets/js/swither-styles.js"></script>
+        <script src="{{ asset('js/swither-styles.js') }}"></script>
 
         <!-- CUSTOM JS -->
-        <script src="../assets/js/custom.js"></script>
+        <script src="{{ asset('js/custom.js') }}"></script>
         @stack('custom')
 </body>
 

@@ -43,5 +43,7 @@ Route::post('/mata-kuliah', [MataKuliahController::class, 'store'])->name('mata-
 Route::get('/akademik', [AkademikController::class, 'index'])->name('akademik.index');
 Route::get('/akademik/dataGet', [AkademikController::class, 'dataGet'])->name('akademik.dataGet');
 Route::get('/akademik/dataGet2', [AkademikController::class, 'dataGet2'])->name('akademik.dataGet2');
-Route::get('/akademik/create', [AkademikController::class, 'create'])->name('akademik.create');
-Route::post('/akademik', [AkademikController::class, 'store'])->name('akademik.store');
+Route::get('/akademik/kalendar/create', [AkademikController::class, 'createKalender'])->name('akademik.createKalender');
+Route::post('/akademik/kalendar', [AkademikController::class, 'storeKalender'])->name('akademik.storeKalender');
+Route::get('/akademik/edaran/create', [AkademikController::class, 'createEdaran'])->name('akademik.createEdaran');
+Route::post('/akademik/edaran', [AkademikController::class, 'storeEdaran'])->name('akademik.storeEdaran');

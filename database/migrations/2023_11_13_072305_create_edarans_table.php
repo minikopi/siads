@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('no');
             $table->date('tanggal');
             $table->string('status')->nullable();
+            $table->text('file');
             $table->timestamps();
         });
     }

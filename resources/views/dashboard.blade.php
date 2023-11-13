@@ -25,12 +25,12 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col">
-                                                <h6 class="">Total Sales</h6>
-                                                <h3 class="mb-2 number-font">34,516</h3>
+                                                <h6 class="">Total Satu</h6>
+                                                <h3 class="mb-2 number-font">34.516</h3>
                                                 <p class="text-muted mb-0">
                                                     <span class="text-primary"><i
                                                             class="fa fa-chevron-circle-up text-primary me-1"></i>
-                                                        3%</span> last month
+                                                        3%</span> dari nilai sebelumnya.
                                                 </p>
                                             </div>
                                             <div class="col col-auto">
@@ -48,12 +48,12 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col">
-                                                <h6 class="">Total Leads</h6>
-                                                <h3 class="mb-2 number-font">56,992</h3>
+                                                <h6 class="">Total Kedua</h6>
+                                                <h3 class="mb-2 number-font">56.992</h3>
                                                 <p class="text-muted mb-0">
                                                     <span class="text-secondary"><i
                                                             class="fa fa-chevron-circle-up text-secondary me-1"></i>
-                                                        3%</span> last month
+                                                        3%</span> dari nilai sebelumnya
                                                 </p>
                                             </div>
                                             <div class="col col-auto">
@@ -71,12 +71,12 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col">
-                                                <h6 class="">Total Profit</h6>
-                                                <h3 class="mb-2 number-font">$42,567</h3>
+                                                <h6 class="">Total Ketiga</h6>
+                                                <h3 class="mb-2 number-font">42.567</h3>
                                                 <p class="text-muted mb-0">
                                                     <span class="text-success"><i
                                                             class="fa fa-chevron-circle-down text-success me-1"></i>
-                                                        0.5%</span> last month
+                                                        5%</span> dari nilai sebelumnya
                                                 </p>
                                             </div>
                                             <div class="col col-auto">
@@ -94,12 +94,12 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col">
-                                                <h6 class="">Total Cost</h6>
-                                                <h3 class="mb-2 number-font">$34,789</h3>
+                                                <h6 class="">Total Keempat</h6>
+                                                <h3 class="mb-2 number-font">34.789</h3>
                                                 <p class="text-muted mb-0">
                                                     <span class="text-danger"><i
                                                             class="fa fa-chevron-circle-down text-danger me-1"></i>
-                                                        0.2%</span> last month
+                                                        2%</span> dari nilai sebelumnya
                                                 </p>
                                             </div>
                                             <div class="col col-auto">

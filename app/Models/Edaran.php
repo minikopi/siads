@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Edaran extends Model
 {
     use HasFactory;
+
+    public $fillable = ['nama', 'no', 'tanggal', 'status', 'file'];
 }

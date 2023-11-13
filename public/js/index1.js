@@ -84,6 +84,8 @@ function chartArea() {
 			},
 		},
 		yaxis: {
+			max : 4,
+			min : 0,
 			labels: {
 				style: {
 					color: '#8492a6',

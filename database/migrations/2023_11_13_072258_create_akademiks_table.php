@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('akademiks', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nama');
             $table->date('tanggal_mulai');
             $table->date('tanggal_akhir');
             $table->string('semester');
             $table->string('tahun_ajaran');
-            $table->text('keterangan');
+            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }
