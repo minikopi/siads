@@ -3,6 +3,7 @@
 use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\MahasantriController;
 use App\Http\Controllers\MataKuliahController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,15 @@ Route::post('/dosen', [DosenController::class, 'store'])->name('dosen.store');
 Route::get('/dosen/edit/{id}', [DosenController::class, 'edit'])->name('dosen.edit');
 Route::put('/dosen{id}', [DosenController::class, 'update'])->name('dosen.update');
 Route::delete('/dosen/delete/{user_id}', [DosenController::class, 'delete'])->name('dosen.delete');
+
+//Mahasantri
+Route::get('/mahasantri', [MahasantriController::class, 'index'])->name('mahasantri.index');
+Route::get('/data_mahasantri', [MahasantriController::class, 'dataGet'])->name('mahasantri.dataGet');
+Route::get('/mahasantri/create', [MahasantriController::class, 'create'])->name('mahasantri.create');
+Route::post('/mahasantri', [MahasantriController::class, 'store'])->name('mahasantri.store');
+Route::get('/mahasantri/edit/{id}', [MahasantriController::class, 'edit'])->name('mahasantri.edit');
+Route::put('/mahasantri{id}', [MahasantriController::class, 'update'])->name('mahasantri.update');
+Route::delete('/mahasantri/delete/{user_id}', [MahasantriController::class, 'delete'])->name('mahasantri.delete');
 
 //Mata Kuliah
 Route::get('/mata-kuliah', [MataKuliahController::class, 'index'])->name('mata-kuliah.index');
