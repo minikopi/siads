@@ -112,7 +112,7 @@
                 $('#datatables').DataTable({
                     "processing": true,
                     "serverSide": true,
-                    "ajax": "{{ route('dosen.dataGet') }}", // Sesuaikan dengan route yang Anda buat
+                    "ajax": "{{ route('mahasantri.dataGet') }}", // Sesuaikan dengan route yang Anda buat
                     "columns": [{
                             data: null,
                             render: function(data, type, row, meta) {
@@ -125,11 +125,11 @@
                             name: 'nama'
                         },
                         {
-                            data: 'sks',
-                            name: 'nomor_induk'
+                            data: 'email',
+                            name: 'email'
                         }, {
-                            data: 'jabatan',
-                            name: 'jabatan'
+                            data: 'nim',
+                            name: 'nim'
                         },
                         {
                             data: null,

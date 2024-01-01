@@ -24,7 +24,7 @@ class MahasantriController extends Controller
                 //
             })
             ->editColumn('nama', function ($data) {
-                return $data->user->name;
+                return $data->nama_depan . ' ' . $data->nama_belakang;
             })
             ->rawColumns(['action'])
             ->make(true);
