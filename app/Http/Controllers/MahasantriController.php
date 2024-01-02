@@ -37,6 +37,16 @@ class MahasantriController extends Controller
 
     public function store(Request $request)
     {
-        dd($request);
+        $req = $request->all();
+        $req['user_id'] = '1';
+        $req['nim'] = '139172931';
+        $req['nik'] = '139172931';
+        $req['whatsapp'] = '139172931';
+        $req['whatsapp_wali'] = '139172931';
+        $req['status'] = 'aktif';
+
+
+        Mahasantri::create($req);
+        return redirect()->back();
     }
 }

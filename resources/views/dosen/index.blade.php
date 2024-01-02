@@ -147,7 +147,7 @@
                             name: 'nama'
                         },
                         {
-                            data: 'sks',
+                            data: 'nomor_induk',
                             name: 'nomor_induk'
                         }, {
                             data: 'jabatan',

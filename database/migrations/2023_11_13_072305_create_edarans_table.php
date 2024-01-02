@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('edarans', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('no');
-            $table->date('tanggal');
+            $table->string('nama')->nullable();
+            $table->string('no')->nullable();
+            $table->date('tanggal')->nullable();
             $table->string('status')->nullable();
-            $table->text('file');
+            $table->text('file')->nullable();
             $table->timestamps();
         });
     }
