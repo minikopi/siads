@@ -12,8 +12,8 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Mata Kuliah</h3>
-                                <p class="ms-auto"><a href="{{ route('mata-kuliah.create') }}"
+                                <h3 class="card-title">Kelas</h3>
+                                <p class="ms-auto"><a href="{{ route('kelas.create') }}"
                                         class="btn btn-primary btn-sm">Tambah</a></p>
                             </div>
                             <div class="card-body">
@@ -22,10 +22,10 @@
                                         <thead>
                                             <tr>
                                                 <th class="wd-15p border-bottom-0">No</th>
-                                                <th class="wd-15p border-bottom-0">Mata Kuliah</th>
-                                                <th class="wd-20p border-bottom-0">Kode</th>
-                                                <th class="wd-15p border-bottom-0">SKS</th>
+                                                <th class="wd-15p border-bottom-0">Nama Kelas</th>
+                                                <th class="wd-15p border-bottom-0">Tahun Ajaran</th>
                                                 <th class="wd-15p border-bottom-0">Smester</th>
+                                                <th class="wd-15p border-bottom-0">Jenis Kelamin</th>
                                                 <th class="wd-10p border-bottom-0">Action</th>
                                             </tr>
                                         </thead>
@@ -33,8 +33,7 @@
                                             <tr>
                                                 <td>1</td>
                                                 <td>Sahih al-Bukhary</td>
-                                                <td>HDS-SB</td>
-                                                <td>2</td>
+
                                                 <td>
                                                     <a href="" class="btn btn-warning"><i class="fa fa-edit"></i></a>
                                                     <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
@@ -65,7 +64,7 @@
                 $('#datatables').DataTable({
                     "processing": true,
                     "serverSide": true,
-                    "ajax": "{{ route('mata-kuliah.dataGet') }}", // Sesuaikan dengan route yang Anda buat
+                    "ajax": "{{ route('kelas.dataGet') }}", // Sesuaikan dengan route yang Anda buat
                     "columns": [{
                             data: null,
                             render: function(data, type, row, meta) {
@@ -78,22 +77,24 @@
                             name: 'nama'
                         },
                         {
-                            data: 'kode',
-                            name: 'kode'
-                        },
-                        {
-                            data: 'sks',
-                            name: 'sks'
+                            data: 'tahun_ajaran',
+                            name: 'tahun_ajaran'
                         },
                         {
                             data: 'smester',
                             name: 'smester'
                         },
                         {
+                            data: 'gender',
+                            name: 'gender'
+                        },
+                        {
                             data: null,
                             render: function(data, type, row) {
-                                return '<button class="btn btn-warning" onclick="deleteRow(' + row.id +
-                                    ')">Edit</button> <button class="btn btn-danger" onclick="deleteRow(' +
+                                var route = '{{ route("kelas.detail", ["id" =>":id" ])}}'
+                                route = route.replace(':id', data.id);
+                                return '<a href="'+route+'" class="btn btn-warning">Detail</a> ' +
+                                    '<button class="btn btn-danger" onclick="deleteRow(' +
                                     row.id +
                                     ')">Delete</button>';
                             },
@@ -109,20 +110,8 @@
                             "targets": 1
                         }, // Nama Dosen
                         {
-                            "width": "20%",
-                            "targets": 2
-                        }, // Nomor Induk
-                        {
-                            "width": "15%",
-                            "targets": 3
-                        }, // Jabatan
-                        {
-                            "width": "15%",
-                            "targets": 4
-                        }, // Jabatan
-                        {
                             "width": "10%",
-                            "targets": 5
+                            "targets": 2
                         } // Action
                     ]
                 });

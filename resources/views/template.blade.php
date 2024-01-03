@@ -29,6 +29,7 @@
     <link href="{{ asset('css/icons.css') }}" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- JQUERY JS -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
@@ -162,6 +163,8 @@
                                     <li><a href="{{ route('dosen.index') }}" class="slide-item"> Dosen</a></li>
                                     <li><a href="{{ route('mata-kuliah.index') }}" class="slide-item"> Mata
                                             Kuliah</a>
+                                    </li>
+                                    <li><a href="{{ route('kelas.index') }}" class="slide-item"> Kelas</a>
                                     </li>
                                     <li><a href="cards.html" class="slide-item"> Transkrip Akademik</a></li>
                                     <li><a href="cards.html" class="slide-item"> Riwayat IP</a></li>
@@ -350,8 +353,15 @@
         <!-- INTERNAL SELECT2 JS -->
         <script src="{{ asset('plugins/select2/select2.full.min.js') }}"></script>
 
+        <!-- TIMEPICKER JS -->
+		<script src="{{ asset('plugins/time-picker/jquery.timepicker.js') }}"></script>
+		<script src="{{ asset('plugins/time-picker/toggles.min.js') }}"></script>
+
         <!-- ECHART JS-->
         <script src="{{ asset('plugins/echarts/echarts.js') }}"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <!-- SIDE-MENU JS-->
         <script src="{{ asset('plugins/sidemenu/sidemenu.js') }}"></script>
@@ -379,6 +389,10 @@
 
         <!-- CUSTOM JS -->
         <script src="{{ asset('js/custom.js') }}"></script>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+        <!-- SweetAlert2 JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         @stack('custom')
 </body>
 

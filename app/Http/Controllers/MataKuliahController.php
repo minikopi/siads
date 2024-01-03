@@ -36,18 +36,21 @@ class MataKuliahController extends Controller
             'nama'          => 'required',
             'sks'           => 'required|integer',
             'kode'          => 'required|unique:mata_kuliahs',
+            'smester'          => 'required',
         ], [
             'nama.required'     => 'Nama Mata Kuliah diperlukan',
             'sks.required'    => 'Total SKS diperlukan',
             'sks.integer' => 'Total SKS harus berupa angka',
             'kode.unqique'    => 'Kode Mata Kuliah sudah diterdaftar',
             'kode.required' => 'Kode Mata Kuliah diperlukan',
+            'smester.required' => 'smester Mata Kuliah diperlukan',
         ]);
 
         MataKuliah::create([
             'nama'  => $request->nama,
             'kode'  => $request->kode,
             'sks'   => $request->sks,
+            'smester'   => $request->smester,
         ]);
 
         return redirect()->route('mata-kuliah.index')->with('success', 'Data Mata Kuliah Berhasil Dibuat!');

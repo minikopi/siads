@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('dosens', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id');
-            $table->string('nomor_induk');
-            $table->string('jabatan');
-            $table->string('tipe');
+            $table->string('user_id')->nullable();
+            $table->string('nomor_induk')->nullable();
+            $table->string('jabatan')->nullable();
+            $table->string('tipe')->nullable();
             $table->timestamps();
         });
     }

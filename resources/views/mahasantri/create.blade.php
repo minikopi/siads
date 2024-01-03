@@ -9,6 +9,9 @@
             <div class="main-container container-fluid">
 
                 <div class="row mt-5">
+                    <form method="POST" action="{{ route('mahasantri.store') }}"
+                                            class="form-horizontal" enctype="multipart/form-data" id="form">
+                                            @csrf
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header border-bottom-0">
@@ -17,7 +20,8 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div id="wizard3">
+                                <div id="wizard7">
+
                                     <h3>Data Diri Mahasantri</h3>
                                     <div>
                                         <div class="row">
@@ -38,10 +42,16 @@
                                         </div>
                                         <div class="control-group form-group">
                                             <label class="form-label">Jenis Kelamin</label>
-                                            <select class="form-control required" name="jenis_kelamin" id="jenis_kelaming">
+                                            <select class="form-control required" name="jenis_kelamin" id="jenis_kelamin">
                                                 <option value="">Pilih Salah Satu</option>
                                                 <option value="Laki-laki">Laki-laki</option>
                                                 <option value="Perempuan">Perempuan</option>
+                                            </select>
+                                        </div>
+                                        <div class="control-group form-group">
+                                            <label class="form-label">Kelas</label>
+                                            <select class="form-control required" name="class_id" id="kelas">
+                                                <option value="">Pilih Salah Satu</option>
                                             </select>
                                         </div>
                                         <div class="control-group form-group">
@@ -274,11 +284,14 @@
                                             <textarea class="form-control required" name="alamat_pesantren" id="alamat_pesantren"></textarea>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
+                        </form>
                     </div>
                 </div>
+
                 <!-- /Row -->
             </div>
         </div>
@@ -286,13 +299,44 @@
     <!-- CONTAINER CLOSED -->
     </div>
     @push('custom')
-        @php
-            $mahasantriStoreRoute = route('mahasantri.store');
-        @endphp
-
         <script>
-            var mahasantriStoreRoute = '{{ $mahasantriStoreRoute }}';
+            $(document).ready(function() {
+                $("#wizard7").steps({
+                headerTag: "h3",
+                bodyTag: "div",
+                autoFocus: true,
+                titleTemplate:
+                    '<span class="number">#index#</span> <span class="title">#title#</span>',
+                stepsOrientation: 1,
+                    onFinished: function(event, currentIndex) {
+                        $("#form").submit();
+                    }
+                });
+
+                $("#jenis_kelamin").change(function(){
+                    var gender = $(this).val();
+                    $('#kelas').empty();
+                    $.ajax({
+                        url: '{{route("kelas.jsonClass")}}?gender='+gender,  // Ganti dengan URL endpoint Anda
+                        type: 'GET',  // Atur sesuai dengan metode yang dibutuhkan (GET, POST, dll.)
+                        success: function(response, xhr) {
+                            $("#kelas").append('<option value="">Pilih Salah Satu</option>');
+                            $.each(response, function(index, element) {
+                                console.log(element)
+                                $("#kelas").append('<option value="' + element.id + '">' + element.nama + '</option>');
+                            });
+                        }
+                    });
+                })
+            });
+
+
+
         </script>
+        <script>
+
+        </script>
+
         <!-- INTERNAL Jquery.steps js -->
         <script src="{{ asset('plugins/jquery-steps/jquery.steps.min.js') }}"></script>
         <script src="{{ asset('plugins/parsleyjs/parsley.min.js') }}"></script>
@@ -300,5 +344,9 @@
         <!-- INTERNAL Accordion-Wizard-Form js-->
         <script src="{{ asset('plugins/accordion-Wizard-Form/jquery.accordion-wizard.min.js') }}"></script>
         <script src="{{ asset('js/form-wizard.js') }}"></script>
+
+        <!-- FORM WIZARD JS-->
+		<script src="{{ asset('plugins/formwizard/jquery.smartWizard.js')}}"></script>
+		<script src="{{ asset('plugins/formwizard/fromwizard.js')}}"></script>
     @endpush
 @endsection
