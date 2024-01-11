@@ -51,6 +51,7 @@ class Mahasantri extends Model
         'tinggi_badan',
         'penyakit',
         'jenis_kelamin',
-        'status'
+        'status',
+        'kelas_id'
     ];
 }

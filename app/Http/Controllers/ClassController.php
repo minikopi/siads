@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Classes;
 use App\Models\Dosen;
+use App\Models\Mahasantri;
 use App\Models\MataKuliah;
 use App\Models\Schedule;
 use Carbon\Carbon;
@@ -113,6 +114,12 @@ class ClassController extends Controller
                 $start = Carbon::parse($data->start_date)->format('H:i');
                 $end = Carbon::parse($data->end_date)->format('H:i');
                 return $data->day . " " . $start . "-" . $end . " " . $data->place;
+            })
+            ->addColumn('peserta', function ($data) {
+                // dd($data->class->id);
+                $peserta = Mahasantri::where('kelas_id', $data->class->id)->count();
+                // dd($peserta);
+                return $peserta;
             })
             ->addColumn('action', function ($data) {
                 //

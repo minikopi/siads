@@ -166,10 +166,10 @@
                                     </li>
                                     <li><a href="{{ route('kelas.index') }}" class="slide-item"> Kelas</a>
                                     </li>
-                                    <li><a href="cards.html" class="slide-item"> Transkrip Akademik</a></li>
+                                    <li><a href="#" class="slide-item"> Transkrip Akademik</a></li>
                                     <li><a href="cards.html" class="slide-item"> Riwayat IP</a></li>
-                                    <li><a href="cards.html" class="slide-item"> Jadwal Kuliah</a></li>
-                                    <li><a href="cards.html" class="slide-item"> Presensi Kuliah</a></li>
+                                    <li><a href="{{route('schedule.index')}}" class="slide-item"> Jadwal Kuliah</a></li>
+                                    <li><a href="{{route('absent.index')}}" class="slide-item"> Presensi Kuliah</a></li>
                                 </ul>
                             </li>
                             <li class="slide">

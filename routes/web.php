@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\AbsentController;
 use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\MahasantriController;
 use App\Http\Controllers\MataKuliahController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +51,23 @@ Route::get('/mata-kuliah', [MataKuliahController::class, 'index'])->name('mata-k
 Route::get('/mata-kuliah/dataGet', [MataKuliahController::class, 'dataGet'])->name('mata-kuliah.dataGet');
 Route::get('/mata-kuliah/create', [MataKuliahController::class, 'create'])->name('mata-kuliah.create');
 Route::post('/mata-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
+
+//Schedule
+Route::get('/jadwal-kuliah', [ScheduleController::class, 'index'])->name('schedule.index');
+Route::get('/jadwal-kuliah/{id}', [ScheduleController::class, 'detail'])->name('schedule.detail');
+// Route::get('/jadwal-kuliah/dataGet', [MataKuliahController::class, 'dataGet'])->name('mata-kuliah.dataGet');
+// Route::get('/jadwal-kuliah/create', [MataKuliahController::class, 'create'])->name('mata-kuliah.create');
+// Route::post('/jadwal-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
+
+//Persensi
+Route::get('/persensi', [AbsentController::class, 'index'])->name('absent.index');
+Route::get('/persensi/{id}', [AbsentController::class, 'detail'])->name('absent.detail');
+Route::get('/persensi/admin/{id}', [AbsentController::class, 'AbsentAdmin'])->name('absent.AbsentAdmin');
+Route::get('/persensi/admin/form/{id}', [AbsentController::class, 'AbsentForm'])->name('absent.AbsentForm');
+Route::get('/persensi/admin/store/{schedule_id}', [AbsentController::class, 'store'])->name('absent.store');
+// Route::get('/jadwal-kuliah/dataGet', [MataKuliahController::class, 'dataGet'])->name('mata-kuliah.dataGet');
+// Route::get('/jadwal-kuliah/create', [MataKuliahController::class, 'create'])->name('mata-kuliah.create');
+// Route::post('/jadwal-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
 
 //Mata Kuliah
 Route::get('/kelas', [ClassController::class, 'index'])->name('kelas.index');
