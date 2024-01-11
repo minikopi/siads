@@ -50,7 +50,7 @@
                                         </div>
                                         <div class="control-group form-group">
                                             <label class="form-label">Kelas</label>
-                                            <select class="form-control required" name="class_id" id="kelas">
+                                            <select class="form-control required" name="kelas_id" id="kelas">
                                                 <option value="">Pilih Salah Satu</option>
                                             </select>
                                         </div>
