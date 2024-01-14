@@ -21,7 +21,7 @@ class Absent extends Model
             ->selectRaw('COUNT(CASE WHEN status = "IZIN" THEN 1 END) AS jumlah_izin')
             ->selectRaw('COUNT(CASE WHEN status = "GHOIB" THEN 1 END) AS jumlah_ghoib')
             ->selectRaw('COUNT(CASE WHEN status = "TERLAMBAT" THEN 1 END) AS jumlah_terlambat')
-            ->selectRaw('((COUNT(CASE WHEN status = "HADIR" THEN 1 END) - COUNT(CASE WHEN status != "HADIR" THEN 1 END)) / COUNT(*)) * 100 as persen')
+            ->selectRaw('((COUNT(CASE WHEN status = "HADIR" THEN 1 END)) / COUNT(*)) * 100 as persen')
             ->groupBy('tanggal')
             ->orderBy('tanggal', "DESC")
             ->get();

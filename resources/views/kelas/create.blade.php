@@ -12,7 +12,7 @@
                     <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Form Pembuatan Data Mata Kuliah</h4>
+                                <h4 class="card-title">Form Pembuatan Data Kelas</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
