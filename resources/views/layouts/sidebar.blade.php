@@ -26,29 +26,30 @@
                     </li>
 
                     <li class="slide">
-                        <a class="side-menu__item" data-bs-toggle="slide"
+                        <a class="side-menu__item " data-bs-toggle="slide"
                             href="{{ route('dashboard.index') }}"><i
                                 class="side-menu__icon fe fe-home"></i><span
-                                class="side-menu__label">Dashboard</span></a>
+                                class="side-menu__label">Dashboard</span>
+                            </a>
                     </li>
-                    <li class="slide">
-                        <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0);"><i
+                    <li class="slide {{request()->is('master*') ? 'is-expanded':''}}">
+                        <a class="side-menu__item {{request()->is('master*') ? 'active is-expanded':''}}" data-bs-toggle="slide" href="javascript:void(0);"><i
                                 class="side-menu__icon fe fe-grid"></i><span class="side-menu__label">Data
                                 Master</span><i class="angle fa fa-angle-right"></i></a>
                         <ul class="slide-menu">
                             <li class="side-menu-label1"><a href="javascript:void(0)">Data Master</a></li>
-                            <li><a href="{{ route('mahasantri.index') }}" class="slide-item"> Mahasantri</a>
+                            <li><a href="{{ route('mahasantri.index') }}" class="slide-item {{request()->is('master/mahasantri') ? 'active' : ''}}"> Mahasantri</a>
                             </li>
-                            <li><a href="{{ route('dosen.index') }}" class="slide-item"> Dosen</a></li>
-                            <li><a href="{{ route('mata-kuliah.index') }}" class="slide-item"> Mata
+                            <li><a href="{{ route('dosen.index') }}" class="slide-item {{request()->is('master/dosen') ? 'active' : ''}}"> Dosen</a></li>
+                            <li><a href="{{ route('mata-kuliah.index') }}" class="slide-item {{request()->is('master/mata-kuliah') ? 'active' : ''}}"> Mata
                                     Kuliah</a>
                             </li>
-                            <li><a href="{{ route('kelas.index') }}" class="slide-item"> Kelas</a>
+                            <li><a href="{{ route('kelas.index') }}" class="slide-item {{request()->is('master/kelas') ? 'active' : ''}}"> Kelas</a>
                             </li>
                             <li><a href="#" class="slide-item"> Transkrip Akademik</a></li>
                             <li><a href="cards.html" class="slide-item"> Riwayat IP</a></li>
-                            <li><a href="{{route('schedule.index')}}" class="slide-item"> Jadwal Kuliah</a></li>
-                            <li><a href="{{route('absent.index')}}" class="slide-item"> Presensi Kuliah</a></li>
+                            <li><a href="{{route('schedule.index')}}" class="slide-item {{request()->is('master/jadwal-kuliah') ? 'active' : ''}}"> Jadwal Kuliah</a></li>
+                            <li><a href="{{route('absent.index')}}" class="slide-item {{request()->is('master/persensi*') ? 'active' : ''}}"> Presensi Kuliah</a></li>
                         </ul>
                     </li>
                     <li class="slide">

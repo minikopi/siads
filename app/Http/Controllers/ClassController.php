@@ -50,12 +50,10 @@ class ClassController extends Controller
         $request->validate([
             'nama'          => 'required',
             'tahun_ajaran'          => 'required',
-            'smester'          => 'required',
             'gender'          => 'required',
         ], [
             'nama.required'     => 'Nama Kelas Kuliah diperlukan',
             'tahun_ajaran.required'     => 'Nama Kelas Kuliah diperlukan',
-            'smester.required'     => 'Nama Kelas Kuliah diperlukan',
             'gender.required'     => 'Nama Kelas Kuliah diperlukan',
         ]);
 
@@ -75,8 +73,9 @@ class ClassController extends Controller
 
         $data['class'] = Classes::findOrFail($id);
         $data['dosen'] = Dosen::with("user")->get();
-        $data['matkul'] = MataKuliah::where("smester", $data['class']->smester)->get();
+        $data['matkul'] = MataKuliah::get();
         $data['days'] = array('Senin', 'Selasa', 'Rabu', 'Kamis', "Jum'at", 'Sabtu', 'Minggu');
+        $data['smester'] = MataKuliah::distinct('smester')->pluck('smester');
         // dd($data["matkul"]);
         return view("kelas.matkulPerKelas.create", compact('data'));
     }
@@ -105,9 +104,15 @@ class ClassController extends Controller
         return redirect()->route('kelas.detail', ['id' => $id])->with('success', 'Jadwal Matkul Berhasil Dibuat!');
     }
 
-    public function dataGetSchedule($id)
+    public function dataGetSchedule(Request $request, $id)
     {
-        $data = Schedule::with("mata_kuliah", "dosen.user", 'class')->where("class_id", $id)->orderBy('created_at', 'desc')->get();
+        $data = Schedule::with("mata_kuliah", "dosen.user", 'class')->where("class_id", $id)
+            ->when($request->smester, function ($q) use ($request) {
+                return $q->whereHas("mata_kuliah", function ($b) use ($request) {
+                    $b->where("smester", $request->smester);
+                });
+            })
+            ->orderBy('created_at', 'desc')->get();
 
         return DataTables::of($data)
             ->addColumn('jadwal', function ($data) {

@@ -17,6 +17,19 @@
                                         class="btn btn-primary btn-sm">Tambah Mata Kuliah</a></p> --}}
                             </div>
                             <div class="card-body">
+                                <div class="row justify-content-md-center">
+                                    <div class="col-6">
+                                        <div class="control-group form-group">
+                                            <label class="form-label">Semester</label>
+                                            <select class="form-control smester" name="smester" id="smester">
+                                                @foreach ($data['smester'] as $item)
+                                                    <option value="{{$item}}">Semester {{$item}}</option>
+                                                @endforeach
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-bordered text-nowrap border-bottom" id="datatables">
                                         <thead>
@@ -63,9 +76,11 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         <script>
             $(document).ready(function() {
-                var route = '{{ route("kelas.matkulPerKelas.dataGet", ["id" =>$data["class"]->id ])}}'
+                var smester = $('.smester').val();
+                var route;
+                route = '{{ route("kelas.matkulPerKelas.dataGet", ["id" =>$data["class"]->id ])}}?smester='+smester
                     // route = route.replace(':id', $data["class"]->id);
-                $('#datatables').DataTable({
+                var table = $('#datatables').DataTable({
                     "processing": true,
                     "serverSide": true,
                     "ajax": route, // Sesuaikan dengan route yang Anda buat
@@ -128,6 +143,13 @@
                         } // Action
                     ]
                 });
+
+                $('.smester').change(function(){
+                    smester = $(this).val();
+                    console.log(smester);
+                    route = '{{ route("kelas.matkulPerKelas.dataGet", ["id" =>$data["class"]->id ])}}?smester='+smester
+                    table.ajax.url( route ).load();
+                })
             });
         </script>
         @if (session('success'))

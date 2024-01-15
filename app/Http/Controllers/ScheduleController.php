@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classes;
+use App\Models\MataKuliah;
 use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
@@ -17,6 +18,7 @@ class ScheduleController extends Controller
     public function detail($id)
     {
         $data['class'] = Classes::findOrFail($id);
+        $data['smester'] = MataKuliah::distinct('smester')->pluck('smester');
         return view('schedule.detail', compact('data'));
     }
 }

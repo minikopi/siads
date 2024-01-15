@@ -25,6 +25,16 @@ class MataKuliahController extends Controller
             ->make(true);
     }
 
+    public function jsonMatkul(Request $request)
+    {
+        if ($request->smester == '') {
+            $data = "Pilih smester terlebih dahulu";
+            return response()->json(array(), 200);
+        }
+        $data = MataKuliah::where("smester", $request->smester)->get();
+        return response()->json($data, 200);
+    }
+
     public function create()
     {
         return view('mata-kuliah.create');

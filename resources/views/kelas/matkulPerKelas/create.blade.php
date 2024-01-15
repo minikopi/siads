@@ -22,13 +22,24 @@
                                             @csrf
 
                                            <div class="row mb-4">
+                                            <label class="col-md-3 form-label">Semester</label>
+                                                <div class="col-md-9">
+                                                <select class="form-control smester" name="smester" id="smester">
+                                                    @foreach ($data['smester'] as $item)
+                                                        <option value="{{$item}}">Semester {{$item}}</option>
+                                                    @endforeach
+
+                                                </select>
+                                                </div>
+                                            </div>
+                                           <div class="row mb-4">
                                                 <label class="col-md-3 form-label">Mata Kuliah</label>
                                                 <div class="col-md-9">
-                                                <select class="form-control select2-show-search required" name="mata_kuliah_id" id="mata_kuliah_id">
+                                                <select class="form-control select2-show-search required matkul" name="mata_kuliah_id" id="mata_kuliah_id">
                                                     <option value="">Pilih Salah Satu</option>
-                                                    @foreach ($data["matkul"] as $item)
+                                                    {{-- @foreach ($data["matkul"] as $item)
                                                         <option value="{{$item->id}}">{{$item->nama}}</option>
-                                                    @endforeach
+                                                    @endforeach --}}
                                                 </select>
                                                 </div>
                                             </div>
@@ -138,6 +149,20 @@
             dateFormat: "H:i",
             time_24hr: true,
         });
+        $("#smester").change(function(){
+            var smester = $(this).val();
+            $('.matkul').empty();
+            $.ajax({
+                url: '{{route("mata-kuliah.json")}}?smester='+smester,  // Ganti dengan URL endpoint Anda
+                type: 'GET',  // Atur sesuai dengan metode yang dibutuhkan (GET, POST, dll.)
+                success: function(response, xhr) {
+                    $(".matkul").append('<option value="">Pilih Salah Satu</option>');
+                    $.each(response, function(index, element) {
+                        $(".matkul").append('<option value="' + element.id + '">' + element.nama + '</option>');
+                    });
+                }
+            });
+        })
 
 
         </script>

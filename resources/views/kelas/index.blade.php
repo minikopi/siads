@@ -24,7 +24,7 @@
                                                 <th class="wd-15p border-bottom-0">No</th>
                                                 <th class="wd-15p border-bottom-0">Nama Kelas</th>
                                                 <th class="wd-15p border-bottom-0">Tahun Ajaran</th>
-                                                <th class="wd-15p border-bottom-0">Smester</th>
+                                                {{-- <th class="wd-15p border-bottom-0">Smester</th> --}}
                                                 <th class="wd-15p border-bottom-0">Jenis Kelamin</th>
                                                 <th class="wd-10p border-bottom-0">Action</th>
                                             </tr>
@@ -80,10 +80,10 @@
                             data: 'tahun_ajaran',
                             name: 'tahun_ajaran'
                         },
-                        {
-                            data: 'smester',
-                            name: 'smester'
-                        },
+                        // {
+                        //     data: 'smester',
+                        //     name: 'smester'
+                        // },
                         {
                             data: 'gender',
                             name: 'gender'
