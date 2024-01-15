@@ -42,7 +42,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row mb-4">
+                                            {{-- <div class="row mb-4">
                                                 <label class="col-md-3 form-label" for="smester">Smester</label>
                                                 <div class="col-md-9">
                                                     <input class="form-control @error('smester') is-invalid @enderror"
@@ -53,7 +53,7 @@
                                                         </div>
                                                     @enderror
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
                                             <div class="row mb-4">
                                                 <label class="col-md-3 form-label">Jenis Kelamin</label>

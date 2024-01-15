@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Absent;
 use App\Models\Classes;
 use App\Models\Mahasantri;
+use App\Models\MataKuliah;
 use App\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ class AbsentController extends Controller
     public function detail($id)
     {
         $data['class'] = Classes::findOrFail($id);
+        $data['smester'] = MataKuliah::distinct('smester')->pluck('smester');
         return view('absent.detail', compact('data'));
     }
 

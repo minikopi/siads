@@ -36,66 +36,70 @@ Route::middleware(['auth'])->group(
     function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
+        Route::prefix('master')->group(
+            function () {
+                Route::get('/dosen', [DosenController::class, 'index'])->name('dosen.index');
+                Route::get('/data_dosen', [DosenController::class, 'dataGet'])->name('dosen.dataGet');
+                Route::get('/data_dosen2', [DosenController::class, 'dataGet2'])->name('dosen.dataGet2');
+                Route::get('/dosen/create', [DosenController::class, 'create'])->name('dosen.create');
+                Route::post('/dosen', [DosenController::class, 'store'])->name('dosen.store');
+                Route::get('/dosen/edit/{id}', [DosenController::class, 'edit'])->name('dosen.edit');
+                Route::put('/dosen{id}', [DosenController::class, 'update'])->name('dosen.update');
+                Route::delete('/dosen/delete/{user_id}', [DosenController::class, 'delete'])->name('dosen.delete');
 
-        Route::get('/dosen', [DosenController::class, 'index'])->name('dosen.index');
-        Route::get('/data_dosen', [DosenController::class, 'dataGet'])->name('dosen.dataGet');
-        Route::get('/data_dosen2', [DosenController::class, 'dataGet2'])->name('dosen.dataGet2');
-        Route::get('/dosen/create', [DosenController::class, 'create'])->name('dosen.create');
-        Route::post('/dosen', [DosenController::class, 'store'])->name('dosen.store');
-        Route::get('/dosen/edit/{id}', [DosenController::class, 'edit'])->name('dosen.edit');
-        Route::put('/dosen{id}', [DosenController::class, 'update'])->name('dosen.update');
-        Route::delete('/dosen/delete/{user_id}', [DosenController::class, 'delete'])->name('dosen.delete');
+                //Mahasantri
+                Route::get('/mahasantri', [MahasantriController::class, 'index'])->name('mahasantri.index');
+                Route::get('/data_mahasantri', [MahasantriController::class, 'dataGet'])->name('mahasantri.dataGet');
+                Route::get('/mahasantri/create', [MahasantriController::class, 'create'])->name('mahasantri.create');
+                Route::post('/mahasantri', [MahasantriController::class, 'store'])->name('mahasantri.store');
+                Route::get('/mahasantri/edit/{id}', [MahasantriController::class, 'edit'])->name('mahasantri.edit');
+                Route::put('/mahasantri{id}', [MahasantriController::class, 'update'])->name('mahasantri.update');
+                Route::delete('/mahasantri/delete/{user_id}', [MahasantriController::class, 'delete'])->name('mahasantri.delete');
 
-        //Mahasantri
-        Route::get('/mahasantri', [MahasantriController::class, 'index'])->name('mahasantri.index');
-        Route::get('/data_mahasantri', [MahasantriController::class, 'dataGet'])->name('mahasantri.dataGet');
-        Route::get('/mahasantri/create', [MahasantriController::class, 'create'])->name('mahasantri.create');
-        Route::post('/mahasantri', [MahasantriController::class, 'store'])->name('mahasantri.store');
-        Route::get('/mahasantri/edit/{id}', [MahasantriController::class, 'edit'])->name('mahasantri.edit');
-        Route::put('/mahasantri{id}', [MahasantriController::class, 'update'])->name('mahasantri.update');
-        Route::delete('/mahasantri/delete/{user_id}', [MahasantriController::class, 'delete'])->name('mahasantri.delete');
+                //Mata Kuliah
+                Route::get('/mata-kuliah', [MataKuliahController::class, 'index'])->name('mata-kuliah.index');
+                Route::get('/mata-kuliah/query', [MataKuliahController::class, 'jsonMatkul'])->name('mata-kuliah.json');
+                Route::get('/mata-kuliah/dataGet', [MataKuliahController::class, 'dataGet'])->name('mata-kuliah.dataGet');
+                Route::get('/mata-kuliah/create', [MataKuliahController::class, 'create'])->name('mata-kuliah.create');
+                Route::post('/mata-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
 
-        //Mata Kuliah
-        Route::get('/mata-kuliah', [MataKuliahController::class, 'index'])->name('mata-kuliah.index');
-        Route::get('/mata-kuliah/dataGet', [MataKuliahController::class, 'dataGet'])->name('mata-kuliah.dataGet');
-        Route::get('/mata-kuliah/create', [MataKuliahController::class, 'create'])->name('mata-kuliah.create');
-        Route::post('/mata-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
+                //Schedule
+                Route::get('/jadwal-kuliah', [ScheduleController::class, 'index'])->name('schedule.index');
+                Route::get('/jadwal-kuliah/{id}', [ScheduleController::class, 'detail'])->name('schedule.detail');
+                // Route::get('/jadwal-kuliah/dataGet', [MataKuliahController::class, 'dataGet'])->name('mata-kuliah.dataGet');
+                // Route::get('/jadwal-kuliah/create', [MataKuliahController::class, 'create'])->name('mata-kuliah.create');
+                // Route::post('/jadwal-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
 
-        //Schedule
-        Route::get('/jadwal-kuliah', [ScheduleController::class, 'index'])->name('schedule.index');
-        Route::get('/jadwal-kuliah/{id}', [ScheduleController::class, 'detail'])->name('schedule.detail');
-        // Route::get('/jadwal-kuliah/dataGet', [MataKuliahController::class, 'dataGet'])->name('mata-kuliah.dataGet');
-        // Route::get('/jadwal-kuliah/create', [MataKuliahController::class, 'create'])->name('mata-kuliah.create');
-        // Route::post('/jadwal-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
+                //Persensi
+                Route::get('/persensi', [AbsentController::class, 'index'])->name('absent.index');
+                Route::get('/persensi/{id}', [AbsentController::class, 'detail'])->name('absent.detail');
+                Route::get('/persensi/admin/{id}', [AbsentController::class, 'AbsentAdmin'])->name('absent.AbsentAdmin');
+                Route::get('/persensi/admin/form/{id}', [AbsentController::class, 'AbsentForm'])->name('absent.AbsentForm');
+                Route::get('/persensi/admin/store/{schedule_id}', [AbsentController::class, 'store'])->name('absent.store');
+                // Route::get('/jadwal-kuliah/dataGet', [MataKuliahController::class, 'dataGet'])->name('mata-kuliah.dataGet');
+                // Route::get('/jadwal-kuliah/create', [MataKuliahController::class, 'create'])->name('mata-kuliah.create');
+                // Route::post('/jadwal-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
 
-        //Persensi
-        Route::get('/persensi', [AbsentController::class, 'index'])->name('absent.index');
-        Route::get('/persensi/{id}', [AbsentController::class, 'detail'])->name('absent.detail');
-        Route::get('/persensi/admin/{id}', [AbsentController::class, 'AbsentAdmin'])->name('absent.AbsentAdmin');
-        Route::get('/persensi/admin/form/{id}', [AbsentController::class, 'AbsentForm'])->name('absent.AbsentForm');
-        Route::get('/persensi/admin/store/{schedule_id}', [AbsentController::class, 'store'])->name('absent.store');
-        // Route::get('/jadwal-kuliah/dataGet', [MataKuliahController::class, 'dataGet'])->name('mata-kuliah.dataGet');
-        // Route::get('/jadwal-kuliah/create', [MataKuliahController::class, 'create'])->name('mata-kuliah.create');
-        // Route::post('/jadwal-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
+                //Mata Kuliah
+                Route::get('/kelas', [ClassController::class, 'index'])->name('kelas.index');
+                Route::get('/query/kelas', [ClassController::class, 'jsonClass'])->name('kelas.jsonClass');
+                Route::get('/kelas/dataGet', [ClassController::class, 'dataGet'])->name('kelas.dataGet');
+                Route::get('/kelas/create', [ClassController::class, 'create'])->name('kelas.create');
+                Route::post('/kelas', [ClassController::class, 'store'])->name('kelas.store');
+                Route::get('/kelas/{id}', [ClassController::class, 'detail'])->name('kelas.detail');
+                Route::get('/kelas/create/matkul/{id}', [ClassController::class, 'createSchedule'])->name('kelas.matkulPerKelas.detail');
+                Route::post('/kelas/store/matkul/{id}', [ClassController::class, 'storeSchedule'])->name('kelas.matkulPerKelas.store');
+                Route::get('/kelas/data-get/{id}', [ClassController::class, 'dataGetSchedule'])->name('kelas.matkulPerKelas.dataGet');
 
-        //Mata Kuliah
-        Route::get('/kelas', [ClassController::class, 'index'])->name('kelas.index');
-        Route::get('/query/kelas', [ClassController::class, 'jsonClass'])->name('kelas.jsonClass');
-        Route::get('/kelas/dataGet', [ClassController::class, 'dataGet'])->name('kelas.dataGet');
-        Route::get('/kelas/create', [ClassController::class, 'create'])->name('kelas.create');
-        Route::post('/kelas', [ClassController::class, 'store'])->name('kelas.store');
-        Route::get('/kelas/{id}', [ClassController::class, 'detail'])->name('kelas.detail');
-        Route::get('/kelas/create/matkul/{id}', [ClassController::class, 'createSchedule'])->name('kelas.matkulPerKelas.detail');
-        Route::post('/kelas/store/matkul/{id}', [ClassController::class, 'storeSchedule'])->name('kelas.matkulPerKelas.store');
-        Route::get('/kelas/data-get/{id}', [ClassController::class, 'dataGetSchedule'])->name('kelas.matkulPerKelas.dataGet');
-
-        //Akademik
-        Route::get('/akademik', [AkademikController::class, 'index'])->name('akademik.index');
-        Route::get('/akademik/dataGet', [AkademikController::class, 'dataGet'])->name('akademik.dataGet');
-        Route::get('/akademik/dataGet2', [AkademikController::class, 'dataGet2'])->name('akademik.dataGet2');
-        Route::get('/akademik/kalendar/create', [AkademikController::class, 'createKalender'])->name('akademik.createKalender');
-        Route::post('/akademik/kalendar', [AkademikController::class, 'storeKalender'])->name('akademik.storeKalender');
-        Route::get('/akademik/edaran/create', [AkademikController::class, 'createEdaran'])->name('akademik.createEdaran');
-        Route::post('/akademik/edaran', [AkademikController::class, 'storeEdaran'])->name('akademik.storeEdaran');
+                //Akademik
+                Route::get('/akademik', [AkademikController::class, 'index'])->name('akademik.index');
+                Route::get('/akademik/dataGet', [AkademikController::class, 'dataGet'])->name('akademik.dataGet');
+                Route::get('/akademik/dataGet2', [AkademikController::class, 'dataGet2'])->name('akademik.dataGet2');
+                Route::get('/akademik/kalendar/create', [AkademikController::class, 'createKalender'])->name('akademik.createKalender');
+                Route::post('/akademik/kalendar', [AkademikController::class, 'storeKalender'])->name('akademik.storeKalender');
+                Route::get('/akademik/edaran/create', [AkademikController::class, 'createEdaran'])->name('akademik.createEdaran');
+                Route::post('/akademik/edaran', [AkademikController::class, 'storeEdaran'])->name('akademik.storeEdaran');
+            }
+        );
     }
 ); //Dosen
