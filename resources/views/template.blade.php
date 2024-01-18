@@ -29,7 +29,10 @@
     <link href="{{ asset('css/icons.css') }}" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css"
+        integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- JQUERY JS -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
@@ -90,14 +93,16 @@
         <script src="{{ asset('plugins/select2/select2.full.min.js') }}"></script>
 
         <!-- TIMEPICKER JS -->
-		<script src="{{ asset('plugins/time-picker/jquery.timepicker.js') }}"></script>
-		<script src="{{ asset('plugins/time-picker/toggles.min.js') }}"></script>
+        <script src="{{ asset('plugins/time-picker/jquery.timepicker.js') }}"></script>
+        <script src="{{ asset('plugins/time-picker/toggles.min.js') }}"></script>
 
         <!-- ECHART JS-->
         <script src="{{ asset('plugins/echarts/echarts.js') }}"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"
+            integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <!-- SIDE-MENU JS-->
         <script src="{{ asset('plugins/sidemenu/sidemenu.js') }}"></script>
@@ -117,6 +122,7 @@
         <script src="{{ asset('js/apexcharts.js') }}"></script>
 
 
+        <script src="{{ asset('js/index1.js') }}"></script>
         <!-- Color Theme js -->
         <script src="{{ asset('js/themeColors.js') }}"></script>
 

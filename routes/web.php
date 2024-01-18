@@ -6,8 +6,10 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IpkController;
 use App\Http\Controllers\MahasantriController;
 use App\Http\Controllers\MataKuliahController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
@@ -99,6 +101,12 @@ Route::middleware(['auth'])->group(
                 Route::post('/akademik/kalendar', [AkademikController::class, 'storeKalender'])->name('akademik.storeKalender');
                 Route::get('/akademik/edaran/create', [AkademikController::class, 'createEdaran'])->name('akademik.createEdaran');
                 Route::post('/akademik/edaran', [AkademikController::class, 'storeEdaran'])->name('akademik.storeEdaran');
+
+                //IPK
+                Route::get('/ipk', [IpkController::class, 'index'])->name('ipk.index');
+
+                //Pembayaran
+                Route::get('/pembayaran', [PaymentController::class, 'index'])->name('pembayaran.index');
             }
         );
     }
