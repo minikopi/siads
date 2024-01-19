@@ -12,7 +12,8 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Persensi Kuliah / {{$data['class']->nama}} ({{$data['class']->tahun_ajaran}} - {{$data['class']->smester}})</h3>
+                                <h3 class="card-title">Persensi Kuliah / {{ $data['class']->nama }}
+                                    ({{ $data['class']->tahun_ajaran }})</h3>
                                 {{-- <p class="ms-auto"><a href="{{ route('kelas.matkulPerKelas.detail',["id"=>$data["class"]->id]) }}"
                                         class="btn btn-primary btn-sm">Tambah Mata Kuliah</a></p> --}}
                             </div>
@@ -23,7 +24,8 @@
                                             <label class="form-label">Semester</label>
                                             <select class="form-control smester" name="smester" id="smester">
                                                 @foreach ($data['smester'] as $item)
-                                                    <option value="{{$item}}">Semester {{$item}}</option>
+                                                    <option value="{{ $item }}">Semester {{ $item }}
+                                                    </option>
                                                 @endforeach
 
                                             </select>
@@ -78,9 +80,9 @@
             $(document).ready(function() {
                 var smester = $('.smester').val();
                 var route;
-                route = '{{ route("kelas.matkulPerKelas.dataGet", ["id" =>$data["class"]->id ])}}?smester='+smester
+                route = '{{ route('kelas.matkulPerKelas.dataGet', ['id' => $data['class']->id]) }}?smester=' + smester
 
-                    // route = route.replace(':id', $data["class"]->id);
+                // route = route.replace(':id', $data["class"]->id);
                 var table = $('#datatables').DataTable({
                     "processing": true,
                     "serverSide": true,
@@ -116,9 +118,9 @@
                         {
                             data: null,
                             render: function(data, type, row) {
-                                var route = '{{ route("absent.AbsentAdmin", ["id" =>":id" ])}}'
+                                var route = '{{ route('absent.AbsentAdmin', ['id' => ':id']) }}'
                                 route = route.replace(':id', data.id);
-                                return '<a href="'+route+'" class="btn btn-warning">Absent</a> ' +
+                                return '<a href="' + route + '" class="btn btn-warning">Absent</a> ' +
                                     '<button class="btn btn-danger" onclick="deleteRow(' +
                                     row.id +
                                     ')">Delete</button>';
@@ -141,15 +143,15 @@
                     ]
                 });
 
-                $('.smester').change(function(){
+                $('.smester').change(function() {
                     smester = $(this).val();
                     console.log(smester);
-                    route = '{{ route("kelas.matkulPerKelas.dataGet", ["id" =>$data["class"]->id ])}}?smester='+smester
-                    table.ajax.url( route ).load();
+                    route =
+                        '{{ route('kelas.matkulPerKelas.dataGet', ['id' => $data['class']->id]) }}?smester=' +
+                        smester
+                    table.ajax.url(route).load();
                 })
             });
-
-
         </script>
         @if (session('success'))
             <script>

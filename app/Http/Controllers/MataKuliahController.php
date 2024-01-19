@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classes;
 use App\Models\MataKuliah;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -10,7 +11,8 @@ class MataKuliahController extends Controller
 {
     public function index()
     {
-        return view('mata-kuliah.index');
+        $data['smester'] = MataKuliah::distinct('smester')->pluck('smester');
+        return view('mata-kuliah.index', compact('data'));
     }
 
     public function dataGet()

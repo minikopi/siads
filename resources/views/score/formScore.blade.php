@@ -12,53 +12,58 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Persensi Kuliah / {{$data['schedule']->class->nama}} ({{$data['schedule']->class->tahun_ajaran}} - {{$data['schedule']->class->smester}}) / {{$data['schedule']->mata_kuliah->nama}} / Form Absen</h3>
+                                <h3 class="card-title">Penilaian / {{ $data['schedule']->class->nama }}
+                                    ({{ $data['schedule']->class->tahun_ajaran }} - {{ $data['schedule']->class->smester }})
+                                    / {{ $data['schedule']->mata_kuliah->nama }} / Form Penilaian</h3>
                                 {{-- <p class="ms-auto"><a href="{{ route('kelas.matkulPerKelas.detail',["id"=>$data["class"]->id]) }}"
                                         class="btn btn-primary btn-sm">Tambah Absen</a></p> --}}
                             </div>
 
-                            <form action="{{route('score.store', ["schedule_id"=> $data['schedule']->id])}}">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-3">
-                                        <button class="btn btn-success">Submit Absen</button>
+                            <form action="{{ route('score.store', ['schedule_id' => $data['schedule']->id]) }}">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table  text-nowrap" id="datatables">
+                                            <tbody>
+
+                                                @foreach ($data['siswa'] as $key => $siswa)
+                                                    <tr class="border-bottom">
+
+                                                        <td>{{ $siswa->nama_depan }} {{ $siswa->nama_belakang }}</td>
+                                                        <td>
+                                                            {{ $siswa->total }} Kelas
+                                                        </td>
+                                                        <td>
+                                                            {{ $siswa->hadir }} Kehadiran
+                                                        </td>
+                                                        <td>
+                                                            {{ round($siswa->persent) }} % Kehadiran
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control required"
+                                                                name="akademik[{{ $siswa->id }}]" id="asal_sekolah"
+                                                                style="height: 30px" placeholder="Penilaian Akademik">
+
+                                                        </td>
+                                                        <td>
+
+                                                            <input type="text" class="form-control required"
+                                                                name="non_akademik[{{ $siswa->id }}]" id="asal_sekolah"
+                                                                style="height: 30px" placeholder="Penilaian Non Akademik">
+
+                                                        </td>
+
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <button class="btn btn-success">Submit</button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="table-responsive">
-                                    <table class="table  text-nowrap" id="datatables">
-                                        <tbody>
-
-                                            @foreach ($data['siswa'] as $key => $siswa)
-                                            <tr class="border-bottom">
-
-                                                <td>{{$siswa->nama_depan}} {{$siswa->nama_belakang}}</td>
-                                                <td>
-                                                    {{$siswa->total}} pelajaran
-                                                </td>
-                                                <td>
-                                                    {{$siswa->hadir}} Kehadiran
-                                                </td>
-                                                <td>
-                                                    {{round($siswa->persent)}} % Kehadiran
-                                                </td>
-                                                <td>
-                                                        <input type="text" class="form-control required" name="akademik[{{ $siswa->id }}]"
-                                                            id="asal_sekolah" style="height: 30px" placeholder="Penilaian Akademik">
-
-                                                </td>
-                                                <td>
-
-                                                        <input type="text" class="form-control required" name="non_akademik[{{ $siswa->id }}]"
-                                                            id="asal_sekolah" style="height: 30px" placeholder="Penilaian Non Akademik">
-
-                                                </td>
-
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
                             </form>
                         </div>
                     </div>

@@ -12,8 +12,10 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Penilaian Mata Kuliah / {{$data['schedule']->class->nama}} ({{$data['schedule']->class->tahun_ajaran}} - {{$data['schedule']->class->smester}}) / {{$data['schedule']->mata_kuliah->nama}}</h3>
-                                <p class="ms-auto"><a href="{{ route('score.scoreForm',["id"=>$data["schedule"]->id]) }}"
+                                <h3 class="card-title">Penilaian Mata Kuliah / {{ $data['schedule']->class->nama }}
+                                    ({{ $data['schedule']->class->tahun_ajaran }}) /
+                                    {{ $data['schedule']->mata_kuliah->nama }}</h3>
+                                <p class="ms-auto"><a href="{{ route('score.scoreForm', ['id' => $data['schedule']->id]) }}"
                                         class="btn btn-primary btn-sm">Beri Penilaiaan</a></p>
                             </div>
                             <div class="card-body">
@@ -34,13 +36,15 @@
                                         <tbody>
                                             @foreach ($data['siswa'] as $key => $item)
                                                 <tr>
-                                                    <td>{{$key + 1}}</td>
-                                                    <td>{{$item->nama_depan}} {{$item->nama_belakang}}</td>
-                                                    <td>{{$item->total}}</td>
-                                                    <td>{{$item->hadir}}</td>
-                                                    <td>{{round($item->persent)}}</td>
-                                                    <td>{{isset($item->nilai) ? $item->nilai->akademik : "belum Terisi"}}</td>
-                                                    <td>{{isset($item->nilai) ? $item->nilai->non_akademik : "belum Terisi"}}</td>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $item->nama_depan }} {{ $item->nama_belakang }}</td>
+                                                    <td>{{ $item->total }}</td>
+                                                    <td>{{ $item->hadir }}</td>
+                                                    <td>{{ round($item->persent) }}%</td>
+                                                    <td>{{ isset($item->nilai) ? $item->nilai->akademik : 'Belum Terisi' }}
+                                                    </td>
+                                                    <td>{{ isset($item->nilai) ? $item->nilai->non_akademik : 'Belum Terisi' }}
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                             {{-- <tr>

@@ -16,6 +16,31 @@
                 </div>
                 <!-- PAGE-HEADER END -->
 
+                <div class="row row-sm">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-9">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Tabel Riwayat Indeks Prestasi</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-nowrap border-bottom" id="datatables">
+                                        <thead>
+                                            <tr>
+                                                <th class="wd-15p border-bottom-0">No</th>
+                                                <th class="wd-15p border-bottom-0">Tahun Akademik</th>
+                                                <th class="wd-20p border-bottom-0">Semester</th>
+                                                <th class="wd-15p border-bottom-0">Jumlah SKS</th>
+                                                <th class="wd-10p border-bottom-0">IP</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row mt-5">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
                         {{-- <div class="row">
@@ -46,31 +71,6 @@
                                     <div class="card-body pb-0">
                                         <div id="chartArea" class="chart-donut"></div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row row-sm">
-                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-9">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Tabel Riwayat Indeks Prestasi</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered text-nowrap border-bottom" id="datatables">
-                                        <thead>
-                                            <tr>
-                                                <th class="wd-15p border-bottom-0">No</th>
-                                                <th class="wd-15p border-bottom-0">Tahun Akademik</th>
-                                                <th class="wd-20p border-bottom-0">Semester</th>
-                                                <th class="wd-15p border-bottom-0">Jumlah SKS</th>
-                                                <th class="wd-10p border-bottom-0">IP</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
                                 </div>
                             </div>
                         </div>

@@ -1,3 +1,7 @@
+@php
+    use Carbon\Carbon;
+@endphp
+
 @extends('template')
 
 @section('content')
@@ -12,8 +16,10 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Persensi Kuliah / {{$data['schedule']->class->nama}} ({{$data['schedule']->class->tahun_ajaran}} - {{$data['schedule']->class->smester}}) / {{$data['schedule']->mata_kuliah->nama}}</h3>
-                                <p class="ms-auto"><a href="{{ route('absent.AbsentForm',["id"=>$data["schedule"]->id]) }}"
+                                <h3 class="card-title">Persensi Kuliah / {{ $data['schedule']->class->nama }}
+                                    ({{ $data['schedule']->class->tahun_ajaran }}) /
+                                    {{ $data['schedule']->mata_kuliah->nama }}</h3>
+                                <p class="ms-auto"><a href="{{ route('absent.AbsentForm', ['id' => $data['schedule']->id]) }}"
                                         class="btn btn-primary btn-sm">Tambah Absen</a></p>
                             </div>
                             <div class="card-body">
@@ -35,14 +41,15 @@
                                         <tbody>
                                             @foreach ($data['absen'] as $key => $item)
                                                 <tr>
-                                                    <td>{{$key + 1}}</td>
-                                                    <td>{{$item->tanggal}}</td>
-                                                    <td>{{$item->jumlah_hadir}}</td>
-                                                    <td>{{$item->jumlah_sakit}}</td>
-                                                    <td>{{$item->jumlah_izin}}</td>
-                                                    <td>{{$item->jumlah_ghoib}}</td>
-                                                    <td>{{$item->jumlah_terlambat}}</td>
-                                                    <td>{{$item->persen}}</td>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('l, d - F - Y') }}
+                                                    </td>
+                                                    <td>{{ $item->jumlah_hadir }}</td>
+                                                    <td>{{ $item->jumlah_sakit }}</td>
+                                                    <td>{{ $item->jumlah_izin }}</td>
+                                                    <td>{{ $item->jumlah_ghoib }}</td>
+                                                    <td>{{ $item->jumlah_terlambat }}</td>
+                                                    <td>{{ $item->persen }}</td>
                                                 </tr>
                                             @endforeach
                                             {{-- <tr>
