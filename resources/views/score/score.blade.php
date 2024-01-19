@@ -12,9 +12,9 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Persensi Kuliah / {{$data['schedule']->class->nama}} ({{$data['schedule']->class->tahun_ajaran}} - {{$data['schedule']->class->smester}}) / {{$data['schedule']->mata_kuliah->nama}}</h3>
-                                <p class="ms-auto"><a href="{{ route('absent.AbsentForm',["id"=>$data["schedule"]->id]) }}"
-                                        class="btn btn-primary btn-sm">Tambah Absen</a></p>
+                                <h3 class="card-title">Penilaian Mata Kuliah / {{$data['schedule']->class->nama}} ({{$data['schedule']->class->tahun_ajaran}} - {{$data['schedule']->class->smester}}) / {{$data['schedule']->mata_kuliah->nama}}</h3>
+                                <p class="ms-auto"><a href="{{ route('score.scoreForm',["id"=>$data["schedule"]->id]) }}"
+                                        class="btn btn-primary btn-sm">Beri Penilaiaan</a></p>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -22,27 +22,25 @@
                                         <thead>
                                             <tr>
                                                 <th class="wd-15p border-bottom-0">No</th>
-                                                <th class="wd-15p border-bottom-0">Tanggal</th>
-                                                <th class="wd-15p border-bottom-0">Hadir</th>
-                                                <th class="wd-15p border-bottom-0">Sakit</th>
-                                                <th class="wd-15p border-bottom-0">Izin</th>
-                                                <th class="wd-15p border-bottom-0">Ghoib</th>
-                                                <th class="wd-15p border-bottom-0">Terlambar</th>
-                                                <th class="wd-15p border-bottom-0">% Hadir</th>
+                                                <th class="wd-15p border-bottom-0">Nama</th>
+                                                <th class="wd-15p border-bottom-0">Total Kelas</th>
+                                                <th class="wd-15p border-bottom-0">Total Kehadiran</th>
+                                                <th class="wd-15p border-bottom-0">Persentasi Kehadiran</th>
+                                                <th class="wd-15p border-bottom-0">Peneliaan Akademik</th>
+                                                <th class="wd-15p border-bottom-0">Penilaian Non Akademik</th>
                                                 {{-- <th class="wd-10p border-bottom-0">Action</th> --}}
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($data['absen'] as $key => $item)
+                                            @foreach ($data['siswa'] as $key => $item)
                                                 <tr>
                                                     <td>{{$key + 1}}</td>
-                                                    <td>{{$item->tanggal}}</td>
-                                                    <td>{{$item->jumlah_hadir}}</td>
-                                                    <td>{{$item->jumlah_sakit}}</td>
-                                                    <td>{{$item->jumlah_izin}}</td>
-                                                    <td>{{$item->jumlah_ghoib}}</td>
-                                                    <td>{{$item->jumlah_terlambat}}</td>
-                                                    <td>{{$item->persen}}</td>
+                                                    <td>{{$item->nama_depan}} {{$item->nama_belakang}}</td>
+                                                    <td>{{$item->total}}</td>
+                                                    <td>{{$item->hadir}}</td>
+                                                    <td>{{round($item->persent)}}</td>
+                                                    <td>{{isset($item->nilai) ? $item->nilai->akademik : "belum Terisi"}}</td>
+                                                    <td>{{isset($item->nilai) ? $item->nilai->non_akademik : "belum Terisi"}}</td>
                                                 </tr>
                                             @endforeach
                                             {{-- <tr>

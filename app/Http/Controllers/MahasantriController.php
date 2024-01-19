@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mahasantri;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class MahasantriController extends Controller
@@ -37,16 +39,30 @@ class MahasantriController extends Controller
 
     public function store(Request $request)
     {
-        $req = $request->all();
-        $req['user_id'] = '1';
-        $req['nim'] = '139172931';
-        $req['nik'] = '139172931';
-        $req['whatsapp'] = '139172931';
-        $req['whatsapp_wali'] = '139172931';
-        $req['status'] = 'aktif';
 
 
-        Mahasantri::create($req);
-        return redirect()->back();
+        DB::beginTransaction();
+        try {
+            $user = User::create([
+                'name'      => $request->nama_depan . " " . $request->nama_belakang,
+                'email'     => $request->email,
+                'password'  => password_hash('password', PASSWORD_DEFAULT),
+                'role'      => 'Mahasantri',
+            ]);
+            $req = $request->all();
+            $req['user_id'] = $user->id;
+            $req['nim'] = '139172931';
+            $req['nik'] = '139172931';
+            $req['whatsapp'] = '139172931';
+            $req['whatsapp_wali'] = '139172931';
+            $req['status'] = 'aktif';
+            Mahasantri::create($req);
+        } catch (Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Data Mata Kuliah Gagal Dibuat!');
+        }
+        DB::commit();
+
+        return redirect()->route('mahasantri.index')->with('success', 'Data Mata Kuliah Berhasil Dibuat!');
     }
 }
