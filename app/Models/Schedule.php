@@ -23,4 +23,8 @@ class Schedule extends Model
     {
         return $this->belongsTo(Dosen::class, 'dosen_id');
     }
+    public function absent()
+    {
+        return $this->hasMany(Absent::class, 'id');
+    }
 }

@@ -7,39 +7,43 @@ use App\Models\Classes;
 use App\Models\Mahasantri;
 use App\Models\MataKuliah;
 use App\Models\Schedule;
-use Carbon\Carbon;
+use App\Models\Score;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\DataTables;
 
-class AbsentController extends Controller
+class ScoreController extends Controller
 {
     public function index()
     {
-        return view('absent.index');
+        return view('score.index');
     }
 
     public function detail($id)
     {
         $data['class'] = Classes::findOrFail($id);
         $data['smester'] = MataKuliah::distinct('smester')->pluck('smester');
-        return view('absent.detail', compact('data'));
+        return view('score.detail', compact('data'));
     }
 
     public function AbsentAdmin($id)
     {
         $data['schedule'] = Schedule::with("mata_kuliah", "dosen.user", 'class')->findOrFail($id);
-        $data['absen'] = Absent::getSummeryByData($id);
+        $data['siswa'] = Mahasantri::where('kelas_id', $data['schedule']->class->id)->orderBy('nama_depan', "ASC")->get();
+        foreach ($data['siswa'] as $val) {
+            $val['total'] = Absent::Where('mahasiswa_id', $val->id)->where('schedule_id', $id)->count();
+            $val['hadir'] = Absent::Where('mahasiswa_id', $val->id)->where('status', 'HADIR')->where('schedule_id', $id)->count();
+            $val['nilai'] = Score::Where('mahasiswa_id', $val->id)->where('schedule_id', $id)->first();
+            $val['persent'] = ($val['total'] !== 0) ? ($val['hadir'] / $val['total']) * 100 : 0;
+        }
         // dd($data['schedule']->class->nama);
-        return view('absent.absent', compact('data'));
+        return view('score.score', compact('data'));
     }
 
     public function AbsentMahasiswa(Request $request)
     {
         $data['smester'] = MataKuliah::distinct('smester')->pluck('smester');
 
-        return view('absent.mahasiswaView.absent', compact('data'));
+        return view('score.mahasiswaView.absent', compact('data'));
     }
 
     public function dataGetScheduleMahasiswa(Request $request)
@@ -79,28 +83,38 @@ class AbsentController extends Controller
             ->make(true);
     }
 
-    public function AbsentForm($id)
+    public function scoreForm($id)
     {
         $data['schedule'] = Schedule::with("mata_kuliah", "dosen.user", 'class')->findOrFail($id);
         $data['siswa'] = Mahasantri::where('kelas_id', $data['schedule']->class->id)->orderBy('nama_depan', "ASC")->get();
-        // dd($data['schedule']->class->nama);
-        return view('absent.formAbsent', compact('data'));
+        foreach ($data['siswa'] as $val) {
+            $val['total'] = Absent::Where('mahasiswa_id', $val->id)->where('schedule_id', $id)->count();
+            $val['hadir'] = Absent::Where('mahasiswa_id', $val->id)->where('status', 'HADIR')->where('schedule_id', $id)->count();
+            $val['persent'] = ($val['total'] !== 0) ? ($val['hadir'] / $val['total']) * 100 : 0;
+        }
+        return view('score.formScore', compact('data'));
     }
 
     public function store($schedule_id, Request $request)
     {
         $schedule = Schedule::with("mata_kuliah", "dosen.user", 'class')->findOrFail($schedule_id);
         DB::beginTransaction();
+        $data['siswa'] = Mahasantri::where('kelas_id', $schedule_id)->orderBy('nama_depan', "ASC")->get();
+        foreach ($data['siswa'] as $val) {
+            $val['total'] = Absent::Where('mahasiswa_id', $val->id)->where('schedule_id', $schedule_id)->count();
+            $val['hadir'] = Absent::Where('mahasiswa_id', $val->id)->where('status', 'HADIR')->where('schedule_id', $schedule_id)->count();
+            $val['persent'] = ($val['total'] !== 0) ? ($val['hadir'] / $val['total']) * 100 : 0;
+        }
         // dd($request->all());
-        foreach ($request->siswa as $key => $s) {
+        foreach ($data['siswa'] as $key => $s) {
             try {
-                Absent::create([
+                Score::create([
                     'schedule_id' => $schedule_id,
-                    'mahasiswa_id' => $key,
-                    'tanggal' => Carbon::parse(
-                        $request->tanggal_pelajaran
-                    ),
-                    'status' => $s
+                    'mahasiswa_id' => $s->id,
+                    'total_pelajaran' => $s->total,
+                    'persentasi_kehadiran' => round($s->persent),
+                    'akademik' => $request->akademik[$s->id],
+                    'non_akademik' => $request->non_akademik[$s->id],
                 ]);
             } catch (\Exception $e) {
                 DB::rollback();
@@ -108,6 +122,6 @@ class AbsentController extends Controller
             }
         }
         DB::commit();
-        return redirect()->route('absent.AbsentAdmin', ['id' => $schedule_id])->with('success', 'Absen Berhasil Dibuat!');
+        return redirect()->route('score.AbsentAdmin', ['id' => $schedule_id])->with('success', 'Absen Berhasil Dibuat!');
     }
 }

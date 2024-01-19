@@ -34,28 +34,33 @@
                             Master</span><i class="angle fa fa-angle-right"></i></a>
                     <ul class="slide-menu">
                         <li class="side-menu-label1"><a href="javascript:void(0)">Data Master</a></li>
-                        <li><a href="{{ route('mahasantri.index') }}"
-                                class="slide-item {{ request()->is('master/mahasantri') ? 'active' : '' }}">
-                                Mahasantri</a>
-                        </li>
-                        <li><a href="{{ route('dosen.index') }}"
-                                class="slide-item {{ request()->is('master/dosen') ? 'active' : '' }}"> Dosen</a></li>
-                        <li><a href="{{ route('mata-kuliah.index') }}"
-                                class="slide-item {{ request()->is('master/mata-kuliah') ? 'active' : '' }}"> Mata
-                                Kuliah</a>
-                        </li>
-                        <li><a href="{{ route('kelas.index') }}"
-                                class="slide-item {{ request()->is('master/kelas') ? 'active' : '' }}"> Kelas</a>
-                        </li>
-                        <li><a href="#" class="slide-item"> Transkrip Akademik</a></li>
-                        <li><a href="{{ route('ipk.index') }}"
-                                class="slide-item {{ request()->is('ipk') ? 'active' : '' }}"> Riwayat IP</a></li>
-                        <li><a href="{{ route('schedule.index') }}"
+                        @if (Auth::user()->role == "Dosen")
+                            <li><a href="{{ route('mahasantri.index') }}"
+                                    class="slide-item {{ request()->is('master/mahasantri') ? 'active' : '' }}">
+                                    Mahasantri</a>
+                            </li>
+                            <li><a href="{{ route('dosen.index') }}"
+                                    class="slide-item {{ request()->is('master/dosen') ? 'active' : '' }}"> Dosen</a></li>
+                            <li><a href="{{ route('mata-kuliah.index') }}"
+                                    class="slide-item {{ request()->is('master/mata-kuliah') ? 'active' : '' }}"> Mata
+                                    Kuliah</a>
+                            </li>
+                            <li><a href="{{ route('kelas.index') }}"
+                                    class="slide-item {{ request()->is('master/kelas') ? 'active' : '' }}"> Kelas</a>
+                            </li>
+                            <li><a href="#" class="slide-item"> Transkrip Akademik</a></li>
+                            <li><a href="{{ route('ipk.index') }}"
+                                    class="slide-item {{ request()->is('ipk') ? 'active' : '' }}"> Riwayat IP</a>
+                            </li>
+                        @endif
+                        <li><a href="{{ Auth::user()->role == "Mahasantri"  ? route('schedule.detail', ["id" => Auth::user()->mahasantri->kelas_id]) : route('schedule.index') }}"
                                 class="slide-item {{ request()->is('master/jadwal-kuliah') ? 'active' : '' }}"> Jadwal
                                 Kuliah</a></li>
-                        <li><a href="{{ route('absent.index') }}"
+                        <li><a href="{{ Auth::user()->role == "Mahasantri"  ? route('absent.mahasantri.index') : route('absent.index') }}"
                                 class="slide-item {{ request()->is('master/persensi*') ? 'active' : '' }}"> Presensi
                                 Kuliah</a></li>
+                        <li><a href="{{ Auth::user()->role == "Mahasantri"  ? route('score.mahasantri.index') : route('score.index') }}"
+                                class="slide-item {{ request()->is('master/score*') ? 'active' : '' }}"> Penilaian</a></li>
                     </ul>
                 </li>
                 <li class="slide">

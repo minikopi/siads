@@ -11,6 +11,7 @@ use App\Http\Controllers\MahasantriController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\ScoreController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -78,9 +79,23 @@ Route::middleware(['auth'])->group(
                 Route::get('/persensi/admin/{id}', [AbsentController::class, 'AbsentAdmin'])->name('absent.AbsentAdmin');
                 Route::get('/persensi/admin/form/{id}', [AbsentController::class, 'AbsentForm'])->name('absent.AbsentForm');
                 Route::get('/persensi/admin/store/{schedule_id}', [AbsentController::class, 'store'])->name('absent.store');
-                // Route::get('/jadwal-kuliah/dataGet', [MataKuliahController::class, 'dataGet'])->name('mata-kuliah.dataGet');
-                // Route::get('/jadwal-kuliah/create', [MataKuliahController::class, 'create'])->name('mata-kuliah.create');
-                // Route::post('/jadwal-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
+
+
+                Route::get('/persensi/mahasantri/abs', [AbsentController::class, 'AbsentMahasiswa'])->name('absent.mahasantri.index');
+                Route::get('/persensi/mahasantri/json', [AbsentController::class, 'dataGetScheduleMahasiswa'])->name('absent.mahasantri.getData');
+
+
+                //penilaian
+                //Persensi
+                Route::get('/score', [ScoreController::class, 'index'])->name('score.index');
+                Route::get('/score/{id}', [ScoreController::class, 'detail'])->name('score.detail');
+                Route::get('/score/admin/{id}', [ScoreController::class, 'AbsentAdmin'])->name('score.AbsentAdmin');
+                Route::get('/score/admin/form/{id}', [ScoreController::class, 'scoreForm'])->name('score.scoreForm');
+                Route::get('/score/admin/store/{schedule_id}', [ScoreController::class, 'store'])->name('score.store');
+
+
+                Route::get('/score/mahasantri/abs', [ScoreController::class, 'AbsentMahasiswa'])->name('score.mahasantri.index');
+                Route::get('/score/mahasantri/json', [ScoreController::class, 'dataGetScheduleMahasiswa'])->name('score.mahasantri.getData');
 
                 //Mata Kuliah
                 Route::get('/kelas', [ClassController::class, 'index'])->name('kelas.index');
