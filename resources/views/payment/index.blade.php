@@ -11,7 +11,7 @@
                 <!-- PAGE-HEADER -->
                 <div class="page-header">
                     <div>
-                        <h1 class="page-title">Riwayat Indeks Prestasi</h1>
+                        <h1 class="page-title">Data Pembayaran</h1>
                     </div>
                 </div>
                 <!-- PAGE-HEADER END -->

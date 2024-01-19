@@ -122,6 +122,15 @@ Route::middleware(['auth'])->group(
 
                 //Pembayaran
                 Route::get('/pembayaran', [PaymentController::class, 'index'])->name('pembayaran.index');
+
+                //Sidang
+                Route::get('/sidang', [PaymentController::class, 'index'])->name('sidang.index');
+
+                //Wisuda
+                Route::get('/wisuda', [PaymentController::class, 'index'])->name('wisuda.index');
+
+                //Prestasi
+                Route::get('/prestasi', [PaymentController::class, 'index'])->name('prestasi.index');
             }
         );
     }

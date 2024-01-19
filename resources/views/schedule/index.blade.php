@@ -24,7 +24,6 @@
                                                 <th class="wd-15p border-bottom-0">No</th>
                                                 <th class="wd-15p border-bottom-0">Nama Kelas</th>
                                                 <th class="wd-15p border-bottom-0">Tahun Ajaran</th>
-                                                <th class="wd-15p border-bottom-0">Smester</th>
                                                 <th class="wd-15p border-bottom-0">Jenis Kelamin</th>
                                                 <th class="wd-10p border-bottom-0">Action</th>
                                             </tr>
@@ -81,19 +80,15 @@
                             name: 'tahun_ajaran'
                         },
                         {
-                            data: 'smester',
-                            name: 'smester'
-                        },
-                        {
                             data: 'gender',
                             name: 'gender'
                         },
                         {
                             data: null,
                             render: function(data, type, row) {
-                                var route = '{{ route("schedule.detail", ["id" =>":id" ])}}'
+                                var route = '{{ route('schedule.detail', ['id' => ':id']) }}'
                                 route = route.replace(':id', data.id);
-                                return '<a href="'+route+'" class="btn btn-warning">Jadwal</a> '
+                                return '<a href="' + route + '" class="btn btn-warning">Jadwal</a> '
                             },
                             name: 'action'
                         }
@@ -107,7 +102,7 @@
                             "targets": 1
                         }, // Nama Dosen
                         {
-                            "width": "10%",
+                            "width": "25%",
                             "targets": 2
                         } // Action
                     ]
