@@ -99,7 +99,7 @@ class ScoreController extends Controller
     {
         $schedule = Schedule::with("mata_kuliah", "dosen.user", 'class')->findOrFail($schedule_id);
         DB::beginTransaction();
-        $data['siswa'] = Mahasantri::where('kelas_id', $schedule_id)->orderBy('nama_depan', "ASC")->get();
+        $data['siswa'] = Mahasantri::where('kelas_id', $schedule->class->id)->orderBy('nama_depan', "ASC")->get();
         foreach ($data['siswa'] as $val) {
             $val['total'] = Absent::Where('mahasiswa_id', $val->id)->where('schedule_id', $schedule_id)->count();
             $val['hadir'] = Absent::Where('mahasiswa_id', $val->id)->where('status', 'HADIR')->where('schedule_id', $schedule_id)->count();
