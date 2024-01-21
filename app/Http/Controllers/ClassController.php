@@ -76,6 +76,7 @@ class ClassController extends Controller
         $data['matkul'] = MataKuliah::get();
         $data['days'] = array('Senin', 'Selasa', 'Rabu', 'Kamis', "Jum'at", 'Sabtu', 'Minggu');
         $data['smester'] = MataKuliah::distinct('smester')->pluck('smester');
+        $data['type'] = $data['class']->gender == 'Perempuan' ? array('Banat', 'Banin/Banat') : array('Banin', 'Banin/Banat');
         // dd($data["matkul"]);
         return view("kelas.matkulPerKelas.create", compact('data'));
     }

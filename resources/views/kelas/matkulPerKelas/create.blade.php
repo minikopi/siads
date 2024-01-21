@@ -55,6 +55,18 @@
                                             </div>
 
                                             <div class="row mb-4">
+                                                <label class="col-md-3 form-label">Tipe</label>
+                                                <div class="col-md-9">
+                                                <select class="form-control required" name="type" id="day">
+                                                    <option value="">Pilih Salah Satu</option>
+                                                    @foreach ($data["type"] as $item)
+                                                        <option value="{{$item}}">{{$item}}</option>
+                                                    @endforeach
+                                                </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-4">
                                                 <label class="col-md-3 form-label">Hari</label>
                                                 <div class="col-md-9">
                                                 <select class="form-control required" name="day" id="day">

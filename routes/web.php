@@ -66,6 +66,9 @@ Route::middleware(['auth'])->group(
                 Route::get('/mata-kuliah/dataGet', [MataKuliahController::class, 'dataGet'])->name('mata-kuliah.dataGet');
                 Route::get('/mata-kuliah/create', [MataKuliahController::class, 'create'])->name('mata-kuliah.create');
                 Route::post('/mata-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
+                Route::get('/mata-kuliah/{id}', [MataKuliahController::class, 'edit'])->name('mata-kuliah.edit');
+                Route::post('/mata-kuliah/update/{id}', [MataKuliahController::class, 'update'])->name('mata-kuliah.update');
+                Route::delete('/mata-kuliah/delete/{id}', [MataKuliahController::class, 'delete'])->name('mata-kuliah.delete');
 
                 //Schedule
                 Route::get('/jadwal-kuliah', [ScheduleController::class, 'index'])->name('schedule.index');

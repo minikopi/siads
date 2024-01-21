@@ -12,12 +12,12 @@
                     <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Form Pembuatan Data Mata Kuliah</h4>
+                                <h4 class="card-title">Form {{isset($data) ? 'Update' : 'Pembuatan'}} Data Mata Kuliah</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                                        <form method="POST" action="{{ route('mata-kuliah.store') }}"
+                                        <form method="POST" action="{{ isset($data) ? route('mata-kuliah.update', ["id"=>$data->id]):route('mata-kuliah.store') }}"
                                             class="form-horizontal" enctype="multipart/form-data">
                                             @csrf
 
@@ -26,7 +26,7 @@
                                                 <div class="col-md-9">
                                                     <input class="form-control @error('nama') is-invalid @enderror"
                                                         type="input" name="nama" id="nama" autocomplete="off"
-                                                        value="{{ old('nama') }}">
+                                                        value="{{ isset($data) ? $data->nama : '' }}">
                                                     @error('nama')
                                                         <div class="invalid-feedback" style="color: red;">{{ $message }}
                                                         </div>
@@ -39,7 +39,7 @@
                                                 <div class="col-md-9">
                                                     <input class="form-control @error('kode') is-invalid @enderror"
                                                         type="input" name="kode" id="nomor_induk"
-                                                        value="{{ old('kode') }}">
+                                                        value="{{ isset($data) ? $data->kode : '' }}">
                                                     @error('kode')
                                                         <div class="invalid-feedback" style="color: red;">{{ $message }}
                                                         </div>
@@ -52,7 +52,7 @@
                                                 <div class="col-md-9">
                                                     <input class="form-control @error('sks') is-invalid @enderror"
                                                         type="input" name="sks" id="sks"
-                                                        value="{{ old('sks') }}">
+                                                        value="{{ isset($data) ? $data->sks : '' }}">
                                                     @error('sks')
                                                         <div class="invalid-feedback" style="color: red;">{{ $message }}
                                                         </div>
@@ -65,7 +65,7 @@
                                                 <div class="col-md-9">
                                                     <input class="form-control @error('smester') is-invalid @enderror"
                                                         type="number" name="smester" id="smester"
-                                                        value="{{ old('smester') }}">
+                                                        value="{{ isset($data) ? $data->smester : '' }}">
                                                     @error('smester')
                                                         <div class="invalid-feedback" style="color: red;">{{ $message }}
                                                         </div>
