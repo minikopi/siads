@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dosen;
+use App\Models\MataKuliah;
+use App\Models\MatkulDosen;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class DosenController extends Controller
@@ -48,7 +51,20 @@ class DosenController extends Controller
 
     public function create()
     {
-        return view('dosen.create');
+        $data['matkul'] = MataKuliah::get();
+        return view('dosen.create', compact('data'));
+    }
+
+    public function dosenMatkul(Request $request)
+    {
+        if ($request->matkul_id == '') {
+            $data = "Pilih Mata Kuliah terlebih dahulu";
+            return response()->json(array(), 200);
+        }
+        $data = Dosen::with('matkul', 'user')->whereHas("matkul", function ($q) use ($request) {
+            $q->where('matkul_id', $request->matkul_id);
+        })->get();
+        return response()->json($data, 200);
     }
 
     public function store(Request $request)
@@ -76,13 +92,50 @@ class DosenController extends Controller
             'role'      => 'Dosen',
         ]);
 
-        Dosen::create([
+        $dosen = Dosen::create([
             'user_id'       => $user->id,
             'nomor_induk'   => $request->nomor_induk,
             'jabatan'       => $request->jabatan,
             'tipe'          => $request->tipe,
         ]);
-
+        foreach ($request->matkul as $v) {
+            MatkulDosen::create([
+                'dosen_id' => $dosen->id,
+                'matkul_id' => $v
+            ]);
+        }
         return redirect()->route('dosen.index')->with('success', 'Data Dosen Berhasil Dibuat!');
+    }
+
+    public function edit($id)
+    {
+        $data['dosen'] = Dosen::with('matkul', 'user')->findOrFail($id);
+        $data['matkul'] = MataKuliah::get();
+        return view('dosen.create', compact('data'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = Dosen::with('matkul', 'user')->findOrFail($id);
+        DB::beginTransaction();
+        try {
+            $data->update($request->except('matkul', 'nama', 'email'));
+            $data->user->update([
+                'name' => $request->nama,
+                'email' => $request->email
+            ]);
+            $data->matkul()->delete();
+            foreach ($request->matkul as $v) {
+                MatkulDosen::create([
+                    'dosen_id' => $data->id,
+                    'matkul_id' => $v
+                ]);
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        DB::commit();
+        return redirect()->route('dosen.index')->with('success', 'Data Dosen Berhasil Di update!');
     }
 }

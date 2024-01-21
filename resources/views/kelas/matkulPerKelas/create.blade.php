@@ -47,11 +47,9 @@
                                             <div class="row mb-4">
                                                 <label class="col-md-3 form-label">Dosen</label>
                                                 <div class="col-md-9">
-                                                <select class="form-control select2-show-search required" name="dosen_id" id="dosen_id">
+                                                <select class="form-control select2-show-search required dosen" name="dosen_id" id="dosen_id">
                                                     <option value="">Pilih Salah Satu</option>
-                                                    @foreach ($data["dosen"] as $item)
-                                                        <option value="{{$item->id}}">{{$item->user->name}}</option>
-                                                    @endforeach
+
                                                 </select>
                                                 </div>
                                             </div>
@@ -159,6 +157,21 @@
                     $(".matkul").append('<option value="">Pilih Salah Satu</option>');
                     $.each(response, function(index, element) {
                         $(".matkul").append('<option value="' + element.id + '">' + element.nama + '</option>');
+                    });
+                }
+            });
+        })
+        $("#mata_kuliah_id").change(function(){
+            var matkul = $(this).val();
+            $('.dosen').empty();
+            $.ajax({
+                url: '{{route("dosen.json")}}?matkul_id='+matkul,  // Ganti dengan URL endpoint Anda
+                type: 'GET',  // Atur sesuai dengan metode yang dibutuhkan (GET, POST, dll.)
+                success: function(response, xhr) {
+                    console.log(response);
+                    $(".dosen").append('<option value="">Pilih Salah Satu</option>');
+                    $.each(response, function(index, element) {
+                        $(".dosen").append('<option value="' + element.id + '">' + element.user.name + '</option>');
                     });
                 }
             });

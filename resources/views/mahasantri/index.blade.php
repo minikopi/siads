@@ -108,6 +108,21 @@
         <!-- SweetAlert2 JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         <script>
+
+            function deleteRow(test){
+                let token   = $("meta[name='csrf-token']").attr("content");
+                    $.ajax({
+                        url: test,
+                        type: "DELETE",
+                        cache: false,
+                        data: {
+                            "_token": token
+                        },
+                        success: function(response) {
+                             window.location.reload();
+                        }
+                    });
+                }
             $(document).ready(function() {
                 $('#datatables').DataTable({
                     "processing": true,
@@ -134,10 +149,14 @@
                         {
                             data: null,
                             render: function(data, type, row) {
-                                return '<button class="btn btn-warning" onclick="deleteRow(' + row.id +
-                                    ')">Edit</button> <button class="btn btn-danger" onclick="deleteRow(' +
-                                    row.id +
-                                    ')">Delete</button>';
+                                var route = '{{ route("mahasantri.edit", ["id" =>":id" ])}}'
+                                var routeDelete = '{{ route("mahasantri.delete", ["id" =>":id" ])}}'
+                                route = route.replace(':id', data.id);
+                                routeDelete = routeDelete.replace(':id', data.id);
+                                return '<a href="'+route+'" class="btn btn-warning">Edit</a> ' +
+                                    '<button class="btn btn-danger" onclick="deleteRow(`' +
+                                    routeDelete +
+                                    '`)">Delete</button>';
                             },
                             name: 'action'
                         }
@@ -164,7 +183,10 @@
                         } // Action
                     ]
                 });
+
             });
+
+
         </script>
         @if (session('success'))
             <script>

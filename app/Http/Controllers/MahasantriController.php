@@ -63,6 +63,44 @@ class MahasantriController extends Controller
         }
         DB::commit();
 
-        return redirect()->route('mahasantri.index')->with('success', 'Data Mata Kuliah Berhasil Dibuat!');
+        return redirect()->route('mahasantri.index')->with('success', 'Data Mahasantri Berhasil Dibuat!');
+    }
+
+    public function edit($id)
+    {
+        $data = Mahasantri::findOrFail($id);
+        return view('mahasantri.create', compact('data'));
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        $data = Mahasantri::findOrFail($id);
+        DB::beginTransaction();
+        try {
+            $input = $request->except(['jenis_kelamin', 'kelas_id', 'user_id']);
+            $data->update($input);
+
+            $user = User::findOrFail($data->user_id);
+            $user->name = $request->nama_depan . " " . $request->nama_belakang;
+            $user->email = $request->email;
+            $user->save();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        DB::commit();
+        return redirect()->route('mahasantri.index')->with('success', 'Data Mahasantri  Berhasil Di Update!');
+    }
+
+    public function delete($id)
+    {
+        try {
+            Mahasantri::findOrFail($id)->delete();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        return redirect()->route('mahasantri.index')->with('success', 'Data Mahasantri Berhasil Di Delete!');
     }
 }

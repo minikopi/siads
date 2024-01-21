@@ -14,4 +14,8 @@ class Dosen extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function matkul()
+    {
+        return $this->hasMany(MatkulDosen::class, 'dosen_id');
+    }
 }
