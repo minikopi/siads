@@ -9,7 +9,7 @@ class Schedule extends Model
 {
     use HasFactory;
 
-    public $fillable = ['class_id', 'mata_kuliah_id', "dosen_id", "day", "start_date", "end_date", "place"];
+    public $fillable = ['class_id', 'mata_kuliah_id', "dosen_id", "day", "start_date", "end_date", "place", 'type'];
 
     public function class()
     {

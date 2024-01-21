@@ -80,10 +80,14 @@
                         {
                             data: null,
                             render: function(data, type, row) {
-                                return '<button class="btn btn-warning" onclick="deleteRow(' + row.id +
-                                    ')">Edit</button> <button class="btn btn-danger" onclick="deleteRow(' +
-                                    row.id +
-                                    ')">Delete</button>';
+                               var route = '{{ route("mata-kuliah.edit", ["id" =>":id" ])}}'
+                                var routeDelete = '{{ route("mata-kuliah.delete", ["id" =>":id" ])}}'
+                                route = route.replace(':id', data.id);
+                                routeDelete = routeDelete.replace(':id', data.id);
+                                return '<a href="'+route+'" class="btn btn-warning">Edit</a> ' +
+                                    '<button class="btn btn-danger" onclick="deleteRow(`' +
+                                    routeDelete +
+                                    '`)">Delete</button>';
                             },
                             name: 'action'
                         }
