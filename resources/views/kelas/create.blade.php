@@ -17,8 +17,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                                        <form method="POST" action="{{ route('kelas.store') }}"
-                                            class="form-horizontal" enctype="multipart/form-data">
+                                        <form method="POST" action="{{ route('kelas.store') }}" class="form-horizontal"
+                                            enctype="multipart/form-data">
                                             @csrf
 
                                             <div class="row mb-4">
@@ -38,7 +38,7 @@
                                                 <label class="col-md-3 form-label">Tahun ajaran</label>
                                                 <div class="col-md-9">
                                                     <input type="input" class="form-control required" name="tahun_ajaran"
-                                                    id="tahun_ajaran">
+                                                        id="tahun_ajaran">
                                                 </div>
                                             </div>
 
@@ -58,11 +58,11 @@
                                             <div class="row mb-4">
                                                 <label class="col-md-3 form-label">Jenis Kelamin</label>
                                                 <div class="col-md-9">
-                                                <select class="form-control required" name="gender" id="gender">
-                                                    <option value="">Pilih Salah Satu</option>
-                                                    <option value="Laki-laki">Laki-laki</option>
-                                                    <option value="Perempuan">Perempuan</option>
-                                                </select>
+                                                    <select class="form-control required" name="gender" id="gender">
+                                                        <option value="">Pilih Salah Satu</option>
+                                                        <option value="Laki-laki">Laki-laki</option>
+                                                        <option value="Perempuan">Perempuan</option>
+                                                    </select>
                                                 </div>
                                             </div>
 
@@ -107,8 +107,6 @@
                     }
                 });
             });
-
-
         </script>
     @endpush
 @endsection
