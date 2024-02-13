@@ -34,7 +34,7 @@
                             Master</span><i class="angle fa fa-angle-right"></i></a>
                     <ul class="slide-menu">
                         <li class="side-menu-label1"><a href="javascript:void(0)">Data Master</a></li>
-                        @if (Auth::user()->role == 'Dosen')
+                        @if (Auth::user()->role != 'Mahasantri')
                             <li><a href="{{ route('mahasantri.index') }}"
                                     class="slide-item {{ request()->is('master/mahasantri') ? 'active' : '' }}">
                                     Mahasantri</a>
@@ -70,10 +70,26 @@
                         href="{{ route('akademik.index') }}"><i class="side-menu__icon fe fe-grid"></i><span
                             class="side-menu__label">Akademik</span></a>
                 </li>
-                <li>
+                {{-- <li>
                     <a class="side-menu__item  {{ request()->is('pembayaran') ? 'active' : '' }}"
                         href="{{ route('pembayaran.index') }}"><i class="side-menu__icon fe fe-grid"></i><span
                             class="side-menu__label">Pembayaran</span></a>
+                </li> --}}
+                <li class="slide {{ request()->is('pembayaran*') ? 'is-expanded' : '' }}">
+                    <a class="side-menu__item {{ request()->is('pembayaran*') ? 'active is-expanded' : '' }}"
+                        data-bs-toggle="slide" href="javascript:void(0);"><i
+                            class="side-menu__icon fe fe-grid"></i><span class="side-menu__label">Pembayaran</span><i
+                            class="angle fa fa-angle-right"></i></a>
+                    <ul class="slide-menu">
+                        <li><a href="{{ route('paymentType.index') }}"
+                                class="slide-item {{ request()->is('pembayaran/master') ? 'active' : '' }}">
+                                Master Pembayaran</a>
+                        </li>
+                        <li><a href="{{ route('pembayaran.index') }}"
+                                class="slide-item {{ request()->is('pembayaran/mahasiswa') ? 'active' : '' }}">
+                                Pembayaran Mahasiswa</a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="slide {{ request()->is('wisuda*') ? 'is-expanded' : '' }}">
                     <a class="side-menu__item {{ request()->is('wisuda*') ? 'active is-expanded' : '' }}"

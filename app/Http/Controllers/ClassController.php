@@ -133,4 +133,15 @@ class ClassController extends Controller
             ->rawColumns(['action', 'jadwal'])
             ->make(true);
     }
+
+    public function updateCurrentSmester()
+    {
+        // dd('aaaa');
+        $data = Classes::where('current_semaster', '<', 8)->get();
+        // dd($data);
+        $data->each(function ($class) {
+            $class->update(['current_semaster' => $class->current_semaster + 1]);
+        });
+        return redirect()->route('kelas.index')->with('success', 'Data Smester Berhasil Di update!');
+    }
 }

@@ -93,49 +93,109 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row row-sm">
-                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-9">
+                    <div class="">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Daftar Tagihan Semester Berjalan</h3>
+                                <h3 class="card-title">Daftar Tagihan Semester</h3>
+
+                                <p class="ms-auto">
+                                    <button type="submit" class="btn btn-danger rounded-0" id="pay-button" data-token="{{$token['invoice'] != null ? $token['invoice']->snap_token : ''}}" {{$token['invoice'] != null ? '' : 'disabled'}}>{{$token['invoice'] != null ? 'Bayar Sekarang' : 'Tidak Ada Tagihan'}}</button>
+                                </p>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered text-nowrap border-bottom" id="datatables2">
-                                        <thead>
-                                            <tr>
-                                                <th class="wd-15p border-bottom-0">No</th>
-                                                <th class="wd-15p border-bottom-0">Jenis Tagihan</th>
-                                                <th class="wd-20p border-bottom-0">Nominal</th>
-                                                <th class="wd-15p border-bottom-0">Jatuh Tempo</th>
-                                                <th class="wd-10p border-bottom-0">Status</th>
+                                <form action="{{route("pembayaran.store")}}" method="POST">
+                                    @csrf
+                                <div class="panel-group1" id="accordion1">
+                                    @foreach ($data as $i => $item)
+                                        <div class="panel panel-default mb-4">
+                                            <div class="panel-heading1 ">
+                                                <h4 class="panel-title1">
+                                                    <a class="accordion-toggle collapsed" data-bs-toggle="collapse" data-bs-parent="#accordion" href="#collapse{{$i+1}}" aria-expanded="false" disabled>Semester {{$item['semester']}}  ({{$item['status']}})</a>
+
+                                                </h4>
+
+                                            </div>
+                                            <div id="collapse{{$i+1}}" class="panel-collapse collapse" role="tabpanel" aria-expanded="false">
+                                                <div class="panel-body">
+                                                    @if ($item['status'] == 'Belum Berjalan')
+                                                        <h1>Semester Belum Di mulai</h1>
+                                                    @else
+                                                        <div class="form-group m-0">
+														<div class="custom-controls-stacked ">
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th></th>
+                                                                        <th>jenis pembayaran</th>
+                                                                        <th>Jatuh Tempo</th>
+                                                                        <th>Nominal</th>
+                                                                        <th>Status</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                    @foreach ($item['payment_type'] as $pt)
+                                                                        <tr>
+                                                                            <td class="text-center">
+                                                                                <input class="form-check-input toggleColspan {{$pt['value'] == 'lunas' ? 'bg-dark' : ''}}" type="checkbox" name="paymentJenis[]" value="{{ json_encode(['semester' => $i+1, 'payment_type' => $pt['pyment_id']]) }}" id="#toggleColspan" data-payment="{{$pt['id']}}" aria-expanded="false" {{$pt['value'] == 'lunas' ? 'disabled' : ''}}>
+                                                                            </td>
+                                                                            <td>
+                                                                                {{$pt['type']}}
+                                                                            </td>
+                                                                            <td>
+                                                                                {{-- {{$pt['type']}} --}}
+                                                                            </td>
+                                                                            <td>
+                                                                                {{App\Helpers\Formater::RupiahCurrency($pt['total'])}}
+                                                                            </td>
+                                                                            <td>
+                                                                                {{$pt['value']}}
+                                                                            </td>
+
+                                                                        </tr>
+                                                                        <tr >
+                                                                           <td colspan="4" id="{{$pt['id']}}">
+                                                                                <div class="row">
+                                                                                    <label class="col-md-3 form-label" for="nama">Jumlah bayar :</label>
+                                                                                    <div class="col-md-9">
+                                                                                        <input class="form-control numericInput inputNominal"
+                                                                                            type="input" id="{{$pt['id']}}" autocomplete="off"
+                                                                                            value="{{$pt['total']}}" {{$pt['type_code'] != 1 ? '': 'readonly'}} data-target="{{$pt['id']}}">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+														</div>
+													</div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    <div class="summary border border-solid p-4">
+                                        <h3 class="underline">Summary Pembayaran</h3>
+                                        <table class="table">
+                                            <thead >
+                                                <tr>
+                                                    <th>Jenis Pembayaran</th>
+                                                    <th>Nominal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="summary-body">
+                                            </tbody>
+                                            <tr class="table-success">
+                                                <td><strong>Total</strong></td>
+                                                <td class="totals">0</td>
                                             </tr>
-                                        </thead>
-                                    </table>
+                                        </table>
+                                        <button type="submit" class="btn btn-success" id="submit">SEND</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-9">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Daftar Tagihan Semester Selesai</h3>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered text-nowrap border-bottom" id="datatables">
-                                        <thead>
-                                            <tr>
-                                                <th class="wd-15p border-bottom-0">No</th>
-                                                <th class="wd-15p border-bottom-0">Jenis Tagihan</th>
-                                                <th class="wd-20p border-bottom-0">Nominal</th>
-                                                <th class="wd-15p border-bottom-0">Jatuh Tempo</th>
-                                                <th class="wd-10p border-bottom-0">Status</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -154,123 +214,135 @@
         <!-- SweetAlert2 JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         <script>
-            $(document).ready(function() {
-                $('#datatables').DataTable({
-                    "processing": true,
-                    "serverSide": true,
-                    // "ajax": "{{ route('dosen.dataGet') }}", 
-                    "columns": [{
-                            data: null,
-                            render: function(data, type, row, meta) {
-                                return meta.row + 1; // Adding 1 to start the iteration from 1
-                            },
-                            name: 'iteration'
-                        },
-                        {
-                            data: 'nama',
-                            name: 'nama'
-                        },
-                        {
-                            data: 'nomor_induk',
-                            name: 'nomor_induk'
-                        }, {
-                            data: 'jabatan',
-                            name: 'jabatan'
-                        },
-                        {
-                            data: null,
-                            render: function(data, type, row) {
-                                return '<button class="btn btn-warning" onclick="deleteRow(' + row.id +
-                                    ')">Edit</button> <button class="btn btn-danger" onclick="deleteRow(' +
-                                    row.id +
-                                    ')">Delete</button>';
-                            },
-                            name: 'action'
-                        }
-                    ],
-                    "columnDefs": [{
-                            "width": "3%",
-                            "targets": 0
-                        }, // No
-                        {
-                            "width": "25%",
-                            "targets": 1
-                        }, // Nama Dosen
-                        {
-                            "width": "20%",
-                            "targets": 2
-                        }, // Nomor Induk
-                        {
-                            "width": "15%",
-                            "targets": 3
-                        }, // Jabatan
-                        {
-                            "width": "10%",
-                            "targets": 4
-                        } // Action
-                    ]
+            $(document).ready(function () {
+
+                // Hide the initially colspanned row
+                $('td[colspan]').hide();
+
+                // Handle checkbox change event
+                $('.toggleColspan').change(function () {
+                    var inputValue = $(this).attr('data-payment');
+                        var detec = '#'+inputValue
+                    if ($(this).is(':checked')) {
+                        var inputDetect = detec+ ' input'
+                        var specificChildElements = $(inputDetect).val();
+                        var neWElement = '<tr class="input-'+inputValue+'"><td>'+inputValue+'</td><td class="perUnit perunit-'+inputValue+'">'+specificChildElements+'</td></tr>'
+                        $(inputDetect).attr('name', 'value[]');
+                        $('.summary-body').append(neWElement)
+                        $(detec).show();
+                    } else {
+                        var checkElementRemove = '.input-'+inputValue
+
+                        $(checkElementRemove).remove()
+                        $(detec).hide();
+                    }
+                    GetTotal()
                 });
-            });
-        </script>
-        <script>
-            $(document).ready(function() {
-                $('#datatables2').DataTable({
-                    "processing": true,
-                    "serverSide": true,
-                    "ajax": "{{ route('dosen.dataGet2') }}", // Sesuaikan dengan route yang Anda buat
-                    "columns": [{
-                            data: null,
-                            render: function(data, type, row, meta) {
-                                return meta.row + 1; // Adding 1 to start the iteration from 1
-                            },
-                            name: 'iteration'
-                        },
-                        {
-                            data: 'nama',
-                            name: 'nama'
-                        },
-                        {
-                            data: 'nomor_induk',
-                            name: 'nomor_induk'
-                        }, {
-                            data: 'jabatan',
-                            name: 'jabatan'
-                        },
-                        {
-                            data: null,
-                            render: function(data, type, row) {
-                                return '<button class="btn btn-warning" onclick="deleteRow(' + row.id +
-                                    ')">Edit</button> <button class="btn btn-danger" onclick="deleteRow(' +
-                                    row.id +
-                                    ')">Delete</button>';
-                            },
-                            name: 'action'
-                        }
-                    ],
-                    "columnDefs": [{
-                            "width": "3%",
-                            "targets": 0
-                        }, // No
-                        {
-                            "width": "25%",
-                            "targets": 1
-                        }, // Nama Dosen
-                        {
-                            "width": "20%",
-                            "targets": 2
-                        }, // Nomor Induk
-                        {
-                            "width": "15%",
-                            "targets": 3
-                        }, // Jabatan
-                        {
-                            "width": "10%",
-                            "targets": 4
-                        } // Action
-                    ]
+                $('.inputNominal').on('keyup', function() {
+                    var getValueAttr = $(this).attr('data-target')
+                    var detec = '.perunit-'+getValueAttr
+                    $(detec).html($(this).val())
+                    GetTotal()
                 });
+                function GetTotal(){
+                    var sum = 0;
+                    $('.perUnit').each(function() {
+                        sum += parseFloat($(this).html());
+                    });
+                    $('.totals').html(sum)
+                }
+                // $('#submit').click(function() {
+                //     var headers = {
+                //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                //     };
+
+                //     // Data to be sent in the POST request
+                //     var postData = {
+                //         key1: 'value1',
+                //         key2: 'value2'
+                //     };
+
+                //     // URL to send the POST request to
+                //     var postUrl = '{{route("pembayaran.store")}}';
+                //     // Use the .post() method to send the POST request
+                //     $.ajax({
+                //         headers: headers,
+                //         type: 'POST',
+                //         url: postUrl,
+                //         data: postData,
+                //         success: function(data, status) {
+                //             console.log('Data:', data);
+                //             console.log('Status:', status);
+                //         },
+                //         error: function(xhr, status, error) {
+                //             console.error('Error:', error);
+                //         }
+                //     });
+                //     return true;
+
+                // });
             });
+
+
         </script>
+        <script src="{{$token['url']}}" data-client-key="{{$token['clienKey']}}"></script>
+        <script type="text/javascript">
+            $('#pay-button').on('click', function(){
+                let a = $('#pay-button').attr('data-token');
+                mid(a);
+            });
+
+            @if(Session::has('successe'))
+            $(window).load(function(){
+                let a = $('#pay-button').attr('data-token');
+                mid(a);
+            });
+            @endif
+
+
+
+            let mid = (a) => {
+                        snap.pay(a, {
+                        uiMode: "qr",
+                        // Optional
+                        onSuccess: function(result){
+                            // /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                            // toastr.info("Silahikan Tunggu Konfirmasi", "Info!");
+                        },
+                        // Optional
+                        onPending: function(result){
+                            // /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                            // toastr.success("Berhasil Melakukan Pembayaran", "Success!");
+                            // console.log('Pending');
+                            // toastr.info("Silahikan Tunggu Konfirmasi", "Info!");
+                            @if(Session::has('successe'))
+                            const swalWithBootstrapButtons = Swal.mixin({
+                            customClass: {
+                                confirmButton: 'btn btn-danger rounded-0 w-100',
+                            },
+                            buttonsStyling: false
+                            })
+                            swalWithBootstrapButtons.fire({
+                                title: 'Terima Kasih',
+                                text: 'sudah menggunakan Cronapedia! Pesanan Anda kami proses segera ya! Sampai bertemu lagi.',
+                                showConfirmButton: true,
+                                confirmButtonColor: '#D62045',
+                                confirmButtonText: 'Tutup'
+                            })
+                            @endif
+                        },
+                        // Optional
+                        onError: function(result){
+                            // /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                            // toastr.error("Gagal Melakukan Pembayarn!", "Success!");
+                            // console.log('err');
+                            // toastr.info("Silahikan Tunggu Konfirmasi", "Info!");
+                        }
+                    })
+                }
+
+            </script>
+
         @if (session('success'))
             <script>
                 Swal.fire({
@@ -289,6 +361,7 @@
                     text: '{{ session('error') }}',
                 });
             </script>
+
         @endif
     @endpush
 @endsection

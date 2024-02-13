@@ -10,8 +10,10 @@ use App\Http\Controllers\IpkController;
 use App\Http\Controllers\MahasantriController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ScoreController;
+use App\Models\PaymentType;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -107,6 +109,7 @@ Route::middleware(['auth'])->group(
                 Route::get('/kelas/dataGet', [ClassController::class, 'dataGet'])->name('kelas.dataGet');
                 Route::get('/kelas/create', [ClassController::class, 'create'])->name('kelas.create');
                 Route::post('/kelas', [ClassController::class, 'store'])->name('kelas.store');
+                Route::post('/kelas/smester/update', [ClassController::class, 'updateCurrentSmester'])->name('kelas.updateSmester');
                 Route::get('/kelas/{id}', [ClassController::class, 'detail'])->name('kelas.detail');
                 Route::get('/kelas/create/matkul/{id}', [ClassController::class, 'createSchedule'])->name('kelas.matkulPerKelas.detail');
                 Route::post('/kelas/store/matkul/{id}', [ClassController::class, 'storeSchedule'])->name('kelas.matkulPerKelas.store');
@@ -125,7 +128,7 @@ Route::middleware(['auth'])->group(
                 Route::get('/ipk', [IpkController::class, 'index'])->name('ipk.index');
 
                 //Pembayaran
-                Route::get('/pembayaran', [PaymentController::class, 'index'])->name('pembayaran.index');
+                // Route::get('/pembayaran', [PaymentController::class, 'index'])->name('pembayaran.index');
 
                 //Sidang
                 Route::get('/sidang', [PaymentController::class, 'index'])->name('sidang.index');
@@ -137,5 +140,20 @@ Route::middleware(['auth'])->group(
                 Route::get('/prestasi', [PaymentController::class, 'index'])->name('prestasi.index');
             }
         );
+        Route::group(['prefix' => 'pembayaran'], function () {
+            //Pembayaran
+            Route::get('/{test?}', [PaymentController::class, 'index'])->name('pembayaran.index');
+            Route::post('/', [PaymentController::class, 'PaymentSend'])->name('pembayaran.store');
+            //master
+            Route::group(['prefix' => 'master/type', 'middleware' => ['is_admin']], function () {
+                Route::get('/', [PaymentTypeController::class, 'index'])->name('paymentType.index');
+                Route::get('/dataGet', [PaymentTypeController::class, 'dataGet'])->name('paymentType.dataGet');
+                Route::get('/create', [PaymentTypeController::class, 'create'])->name('paymentType.create');
+                Route::post('/', [PaymentTypeController::class, 'store'])->name('paymentType.store');
+                Route::get('/edit/{id}', [PaymentTypeController::class, 'edit'])->name('paymentType.edit');
+                Route::post('/update/{id}', [PaymentTypeController::class, 'update'])->name('paymentType.update');
+                Route::delete('/delete/{id}', [PaymentTypeController::class, 'delete'])->name('paymentType.delete');
+            });
+        });;
     }
 ); //Dosen
