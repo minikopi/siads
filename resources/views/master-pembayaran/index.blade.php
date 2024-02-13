@@ -12,9 +12,9 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Kelas / Daftar Mata Kuliah {{$data['class']->nama}} ({{$data['class']->tahun_ajaran}})</h3>
-                                <p class="ms-auto"><a href="{{ route('kelas.matkulPerKelas.detail',["id"=>$data["class"]->id]) }}"
-                                        class="btn btn-primary btn-sm">Tambah Mata Kuliah</a></p>
+                                <h3 class="card-title">Master Pembayaran</h3>
+                                <p class="ms-auto"><a href="{{ route('paymentType.create') }}"
+                                        class="btn btn-primary btn-sm">Tambah</a></p>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -22,13 +22,11 @@
                                         <thead>
                                             <tr>
                                                 <th class="wd-15p border-bottom-0">No</th>
-                                                <th class="wd-15p border-bottom-0">Mata Kuliah</th>
-                                                <th class="wd-15p border-bottom-0">Kelas</th>
-                                                <th class="wd-15p border-bottom-0">SKS</th>
-                                                <th class="wd-15p border-bottom-0">Jadwal Kuliah</th>
-                                                <th class="wd-15p border-bottom-0">Semester</th>
-                                                <th class="wd-15p border-bottom-0">Dosen Pengampu</th>
-                                                {{-- <th class="wd-10p border-bottom-0">Action</th> --}}
+                                                <th class="wd-15p border-bottom-0">Nama</th>
+                                                <th class="wd-15p border-bottom-0">Tipe</th>
+                                                {{-- <th class="wd-15p border-bottom-0">Smester</th> --}}
+                                                <th class="wd-15p border-bottom-0">Nominal</th>
+                                                <th class="wd-10p border-bottom-0">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -63,12 +61,10 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         <script>
             $(document).ready(function() {
-                var route = '{{ route("kelas.matkulPerKelas.dataGet", ["id" =>$data["class"]->id ])}}'
-                    // route = route.replace(':id', $data["class"]->id);
                 $('#datatables').DataTable({
                     "processing": true,
                     "serverSide": true,
-                    "ajax": route, // Sesuaikan dengan route yang Anda buat
+                    "ajax": "{{ route('paymentType.dataGet') }}", // Sesuaikan dengan route yang Anda buat
                     "columns": [{
                             data: null,
                             render: function(data, type, row, meta) {
@@ -76,43 +72,22 @@
                             },
                             name: 'iteration'
                         },
-
                         {
-                            data: 'mata_kuliah.nama',
-                            name: 'mata_kuliah.nama'
+                            data: 'name',
+                            name: 'nama'
                         },
                         {
-                            data: 'class.nama',
-                            name: 'class.nama'
+                            data: 'tipe',
+                            name: 'type'
                         },
                         {
-                            data: 'mata_kuliah.sks',
-                            name: 'mata_kuliah.sks'
+                            data: 'nomial_format',
+                            name: 'nominal'
                         },
                         {
-                            data: 'jadwal',
-                            name: 'Jadwal Kuliah',
-                        },
-                        {
-                            data: 'mata_kuliah.smester',
-                            name: 'Semester',
-                        },
-                        {
-                            data: 'dosen.user.name',
-                            name: 'dosen.user.name'
-                        },
-                        // {
-                        //     data: null,
-                        //     render: function(data, type, row) {
-                        //         var route = '{{ route("kelas.detail", ["id" =>":id" ])}}'
-                        //         route = route.replace(':id', data.id);
-                        //         return '<a href="'+route+'" class="btn btn-warning">Detail</a> ' +
-                        //             '<button class="btn btn-danger" onclick="deleteRow(' +
-                        //             row.id +
-                        //             ')">Delete</button>';
-                        //     },
-                        //     name: 'action'
-                        // }
+                            data: 'action',
+                            name: 'action'
+                        }
                     ],
                     "columnDefs": [{
                             "width": "3%",

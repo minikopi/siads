@@ -26,7 +26,6 @@
                                                 <th class="wd-15p border-bottom-0">Kelas</th>
                                                 <th class="wd-15p border-bottom-0">SKS</th>
                                                 <th class="wd-15p border-bottom-0">Jadwal Kuliah</th>
-                                                <th class="wd-15p border-bottom-0">Semester</th>
                                                 <th class="wd-15p border-bottom-0">Dosen Pengampu</th>
                                                 {{-- <th class="wd-10p border-bottom-0">Action</th> --}}
                                             </tr>
@@ -92,10 +91,6 @@
                         {
                             data: 'jadwal',
                             name: 'Jadwal Kuliah',
-                        },
-                        {
-                            data: 'mata_kuliah.smester',
-                            name: 'Semester',
                         },
                         {
                             data: 'dosen.user.name',

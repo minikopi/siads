@@ -54,4 +54,9 @@ class Mahasantri extends Model
         'status',
         'kelas_id'
     ];
+
+    public function class()
+    {
+        return $this->belongsTo(Classes::class, 'kelas_id');
+    }
 }

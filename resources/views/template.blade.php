@@ -37,6 +37,12 @@
 
     <!-- JQUERY JS -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
+     <style>
+        /* Custom CSS to remove position: relative from Bootstrap col */
+        .custom-col {
+        position: static !important; /* Override Bootstrap styles */
+        }
+    </style>
 </head>
 
 <body class="app sidebar-mini ltr light-mode">
@@ -139,6 +145,18 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
         <!-- SweetAlert2 JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+        <script>
+            $(document).ready(function() {
+
+                // Allow only numbers in the input field
+                $('.numericInput').on('input', function() {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                    if (this.value === '') {
+                        this.value = '0';
+                    }
+                });
+            });
+        </script>
          @if (session('success'))
             <script>
                 Swal.fire({
