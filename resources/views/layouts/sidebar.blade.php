@@ -85,7 +85,7 @@
                                 class="slide-item {{ request()->is('pembayaran/master') ? 'active' : '' }}">
                                 Master Pembayaran</a>
                         </li>
-                        <li><a href="{{ route('pembayaran.index') }}"
+                        <li><a href="{{ Auth::user()->role == "Mahasantri" ? route('pembayaran.index') : route('pembayaran.ListSiswa') }}"
                                 class="slide-item {{ request()->is('pembayaran/mahasiswa') ? 'active' : '' }}">
                                 Pembayaran Mahasiswa</a>
                         </li>

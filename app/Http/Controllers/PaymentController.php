@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class PaymentController extends Controller
 {
@@ -117,5 +118,25 @@ class PaymentController extends Controller
         }
         DB::commit();
         return back()->with('successe', 'Berhasil!');
+    }
+
+    public function ListSiswa()
+    {
+        return view('ViewDefault.siswa.siswa');
+    }
+    public function ListSiswaData()
+    {
+        $data = Mahasantri::with('class')->orderBy('created_at', 'desc')->get();
+
+        return DataTables::of($data)
+            ->addColumn('nama', function ($data) {
+                $types = $data->nama_depan . ' ' . $data->nama_belakang;
+                return $types;
+            })
+            ->addColumn('action', function ($data) {
+                return view('ViewDefault.siswa.button', compact('data'));
+            })
+            ->rawColumns(['action', 'nama'])
+            ->make(true);
     }
 }

@@ -142,6 +142,8 @@ Route::middleware(['auth'])->group(
         );
         Route::group(['prefix' => 'pembayaran'], function () {
             //Pembayaran
+            Route::get('/', [PaymentController::class, 'ListSiswa'])->name('pembayaran.ListSiswa');
+            Route::get('/data/json', [PaymentController::class, 'ListSiswaData'])->name('pembayaran.ListSiswaData');
             Route::get('/{test?}', [PaymentController::class, 'index'])->name('pembayaran.index');
             Route::post('/', [PaymentController::class, 'PaymentSend'])->name('pembayaran.store');
             //master
