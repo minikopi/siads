@@ -12,4 +12,21 @@ class JsonData
             '3' => 'Pembayaran Sampai Lulus (Lunas / Cicil)',
         ];
     }
+
+    public static function MidtransStatus()
+    {
+        return [
+            '1' => 'Menunggu Pembayaran',
+            '2' => 'Sudah Dibayarkan',
+            '3' => 'Expired',
+        ];
+    }
+
+    public static function PaymentStatus()
+    {
+        return [
+            '1' => 'Belum Lunas',
+            '2' => 'Lunas',
+        ];
+    }
 }

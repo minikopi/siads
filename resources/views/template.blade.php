@@ -151,9 +151,6 @@
                 // Allow only numbers in the input field
                 $('.numericInput').on('input', function() {
                     this.value = this.value.replace(/[^0-9]/g, '');
-                    if (this.value === '') {
-                        this.value = '0';
-                    }
                 });
             });
         </script>

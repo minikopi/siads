@@ -98,10 +98,12 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Daftar Tagihan Semester</h3>
-
-                                <p class="ms-auto">
+                                @if (Auth::user()->role == 'Mahasantri')
+                                    <p class="ms-auto">
                                     <button type="submit" class="btn btn-danger rounded-0" id="pay-button" data-token="{{$token['invoice'] != null ? $token['invoice']->snap_token : ''}}" {{$token['invoice'] != null ? '' : 'disabled'}}>{{$token['invoice'] != null ? 'Bayar Sekarang' : 'Tidak Ada Tagihan'}}</button>
                                 </p>
+                                @endif
+
                             </div>
                             <div class="card-body">
                                 <form action="{{route("pembayaran.store")}}" method="POST">
@@ -112,7 +114,6 @@
                                             <div class="panel-heading1 ">
                                                 <h4 class="panel-title1">
                                                     <a class="accordion-toggle collapsed" data-bs-toggle="collapse" data-bs-parent="#accordion" href="#collapse{{$i+1}}" aria-expanded="false" disabled>Semester {{$item['semester']}}  ({{$item['status']}})</a>
-
                                                 </h4>
 
                                             </div>
@@ -126,10 +127,14 @@
                                                             <table class="table">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th></th>
+                                                                        @if (Auth::user()->role == "Mahasantri")
+                                                                            <th></th>
+                                                                        @endif
+
                                                                         <th>jenis pembayaran</th>
                                                                         <th>Jatuh Tempo</th>
                                                                         <th>Nominal</th>
+                                                                        <th>Sudah Dibayar</th>
                                                                         <th>Status</th>
                                                                     </tr>
                                                                 </thead>
@@ -137,9 +142,12 @@
 
                                                                     @foreach ($item['payment_type'] as $pt)
                                                                         <tr>
+                                                                            @if (Auth::user()->role == "Mahasantri")
                                                                             <td class="text-center">
-                                                                                <input class="form-check-input toggleColspan {{$pt['value'] == 'lunas' ? 'bg-dark' : ''}}" type="checkbox" name="paymentJenis[]" value="{{ json_encode(['semester' => $i+1, 'payment_type' => $pt['pyment_id']]) }}" id="#toggleColspan" data-payment="{{$pt['id']}}" aria-expanded="false" {{$pt['value'] == 'lunas' ? 'disabled' : ''}}>
+                                                                                <input class="form-check-input toggleColspan {{$pt['status_code'] == 2 ? 'bg-dark' : ''}}" type="checkbox" name="paymentJenis[]" value="{{ json_encode(['semester' => $i+1, 'payment_type' => $pt['pyment_id']]) }}" id="#toggleColspan" data-payment="{{$pt['id']}}" aria-expanded="false" {{$pt['status_code'] == 2 ? 'disabled' : ''}}>
                                                                             </td>
+                                                                            @endif
+
                                                                             <td>
                                                                                 {{$pt['type']}}
                                                                             </td>
@@ -150,7 +158,10 @@
                                                                                 {{App\Helpers\Formater::RupiahCurrency($pt['total'])}}
                                                                             </td>
                                                                             <td>
-                                                                                {{$pt['value']}}
+                                                                                {{App\Helpers\Formater::RupiahCurrency($pt['sudah_dibayar'])}}
+                                                                            </td>
+                                                                            <td>
+                                                                                <h5 class="{{$pt['status_code'] == 1 ? 'text-danger' : 'text-success'}}">{{$pt['status_text']}}</h5>
                                                                             </td>
 
                                                                         </tr>
@@ -176,7 +187,8 @@
                                             </div>
                                         </div>
                                     @endforeach
-                                    <div class="summary border border-solid p-4">
+                                    @if (Auth::user()->role == "Mahasantri")
+                                        <div class="summary border border-solid p-4">
                                         <h3 class="underline">Summary Pembayaran</h3>
                                         <table class="table">
                                             <thead >
@@ -194,6 +206,8 @@
                                         </table>
                                         <button type="submit" class="btn btn-success" id="submit">SEND</button>
                                     </div>
+                                    @endif
+
                                 </div>
                                 </form>
                             </div>
@@ -251,36 +265,7 @@
                     });
                     $('.totals').html(sum)
                 }
-                // $('#submit').click(function() {
-                //     var headers = {
-                //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                //     };
 
-                //     // Data to be sent in the POST request
-                //     var postData = {
-                //         key1: 'value1',
-                //         key2: 'value2'
-                //     };
-
-                //     // URL to send the POST request to
-                //     var postUrl = '{{route("pembayaran.store")}}';
-                //     // Use the .post() method to send the POST request
-                //     $.ajax({
-                //         headers: headers,
-                //         type: 'POST',
-                //         url: postUrl,
-                //         data: postData,
-                //         success: function(data, status) {
-                //             console.log('Data:', data);
-                //             console.log('Status:', status);
-                //         },
-                //         error: function(xhr, status, error) {
-                //             console.error('Error:', error);
-                //         }
-                //     });
-                //     return true;
-
-                // });
             });
 
 
@@ -321,13 +306,6 @@
                                 confirmButton: 'btn btn-danger rounded-0 w-100',
                             },
                             buttonsStyling: false
-                            })
-                            swalWithBootstrapButtons.fire({
-                                title: 'Terima Kasih',
-                                text: 'sudah menggunakan Cronapedia! Pesanan Anda kami proses segera ya! Sampai bertemu lagi.',
-                                showConfirmButton: true,
-                                confirmButtonColor: '#D62045',
-                                confirmButtonText: 'Tutup'
                             })
                             @endif
                         },

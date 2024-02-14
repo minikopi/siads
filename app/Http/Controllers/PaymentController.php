@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Condition;
+use App\Helpers\JsonData;
 use App\Helpers\Midtrans;
 use App\Models\DetailInvoice;
 use App\Models\Invoice;
@@ -34,14 +35,22 @@ class PaymentController extends Controller
             foreach ($type as $t) {
                 $code = str_replace(" ", "-", $t->name);
                 $id = $code . '-' . $i;
+                $TotalPayment = DetailInvoice::where('semester', $i)->where('payment_type_id', $t->id)->whereHas('invoice', function ($q) use ($siswa) {
+                    $q->where('status', 2);
+                    $q->where('mahasantri_id', $siswa->id);
+                })->sum('nominal');
+                $statusLast = $TotalPayment >= $t->nominal ? 2 : 1;
                 $tx = [
                     'id' => $id,
                     'type' => $t->name,
                     'pyment_id' => $t->id,
                     'type_code' => $t->type,
                     'code' => $code,
-                    'value' => 'Belum Lunas',
-                    'total' => $t->nominal
+                    'status_text' =>
+                    JsonData::PaymentStatus()[$statusLast],
+                    'status_code' => $statusLast,
+                    'total' => $t->nominal,
+                    'sudah_dibayar' => $TotalPayment,
                 ];
                 $payment_type[] = $tx;
             }
@@ -50,7 +59,7 @@ class PaymentController extends Controller
         }
         $currentDateTime = Carbon::now();
 
-        $token['invoice'] = Invoice::where('mahasantri_id', Auth::user()->mahasantri->id)->where('status', 1)->where('expired_at', '>', $currentDateTime)->first();
+        $token['invoice'] = Invoice::where('mahasantri_id', $siswa->id)->where('status', 1)->where('expired_at', '>', $currentDateTime)->first();
         $token['url'] = env('MIDTRANS_URL');
         $token['clienKey'] = env('MIDTRANS_CLIENTKEY');
         return view('payment.index', compact('data', 'token'));
