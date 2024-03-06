@@ -11,6 +11,7 @@ use App\Http\Controllers\MahasantriController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentTypeController;
+use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ScoreController;
 use App\Models\PaymentType;
@@ -40,6 +41,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth'])->group(
     function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+        Route::get('/test', [PrestasiController::class, 'index'])->name('prestasi.index');
 
         Route::prefix('master')->group(
             function () {
@@ -52,6 +54,15 @@ Route::middleware(['auth'])->group(
                 Route::get('/dosen/edit/{id}', [DosenController::class, 'edit'])->name('dosen.edit');
                 Route::post('/dosen/update/{id}', [DosenController::class, 'update'])->name('dosen.update');
                 Route::delete('/dosen/delete/{id}', [DosenController::class, 'delete'])->name('dosen.delete');
+
+                //Prestasi
+                Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');
+                Route::get('/data_prestasi', [PrestasiController::class, 'dataGet'])->name('prestasi.dataGet');
+                Route::get('/prestasi/create', [PrestasiController::class, 'create'])->name('prestasi.create');
+                Route::post('/prestasi', [PrestasiController::class, 'store'])->name('prestasi.store');
+                Route::get('/prestasi/edit/{id}', [PrestasiController::class, 'edit'])->name('prestasi.edit');
+                Route::post('/prestasi/update/{id}', [PrestasiController::class, 'update'])->name('prestasi.update');
+                Route::delete('/prestasi/delete/{id}', [PrestasiController::class, 'delete'])->name('prestasi.delete');
 
                 //Mahasantri
                 Route::get('/mahasantri', [MahasantriController::class, 'index'])->name('mahasantri.index');
@@ -80,19 +91,18 @@ Route::middleware(['auth'])->group(
                 // Route::post('/jadwal-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
 
                 //Persensi
-                Route::get('/persensi', [AbsentController::class, 'index'])->name('absent.index');
-                Route::get('/persensi/{id}', [AbsentController::class, 'detail'])->name('absent.detail');
-                Route::get('/persensi/admin/{id}', [AbsentController::class, 'AbsentAdmin'])->name('absent.AbsentAdmin');
-                Route::get('/persensi/admin/form/{id}', [AbsentController::class, 'AbsentForm'])->name('absent.AbsentForm');
-                Route::get('/persensi/admin/store/{schedule_id}', [AbsentController::class, 'store'])->name('absent.store');
+                Route::get('/presensi', [AbsentController::class, 'index'])->name('absent.index');
+                Route::get('/presensi/{id}', [AbsentController::class, 'detail'])->name('absent.detail');
+                Route::get('/presensi/admin/{id}', [AbsentController::class, 'AbsentAdmin'])->name('absent.AbsentAdmin');
+                Route::get('/presensi/admin/form/{id}', [AbsentController::class, 'AbsentForm'])->name('absent.AbsentForm');
+                Route::get('/presensi/admin/store/{schedule_id}', [AbsentController::class, 'store'])->name('absent.store');
 
 
-                Route::get('/persensi/mahasantri/abs', [AbsentController::class, 'AbsentMahasiswa'])->name('absent.mahasantri.index');
-                Route::get('/persensi/mahasantri/json', [AbsentController::class, 'dataGetScheduleMahasiswa'])->name('absent.mahasantri.getData');
+                Route::get('/presensi/mahasantri/abs', [AbsentController::class, 'AbsentMahasiswa'])->name('absent.mahasantri.index');
+                Route::get('/presensi/mahasantri/json', [AbsentController::class, 'dataGetScheduleMahasiswa'])->name('absent.mahasantri.getData');
 
 
                 //penilaian
-                //Persensi
                 Route::get('/score', [ScoreController::class, 'index'])->name('score.index');
                 Route::get('/score/{id}', [ScoreController::class, 'detail'])->name('score.detail');
                 Route::get('/score/admin/{id}', [ScoreController::class, 'AbsentAdmin'])->name('score.AbsentAdmin');
@@ -135,9 +145,6 @@ Route::middleware(['auth'])->group(
 
                 //Wisuda
                 Route::get('/wisuda', [PaymentController::class, 'index'])->name('wisuda.index');
-
-                //Prestasi
-                Route::get('/prestasi', [PaymentController::class, 'index'])->name('prestasi.index');
             }
         );
         Route::group(['prefix' => 'pembayaran'], function () {
@@ -158,4 +165,4 @@ Route::middleware(['auth'])->group(
             });
         });;
     }
-); //Dosen
+);
