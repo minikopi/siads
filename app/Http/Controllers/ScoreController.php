@@ -91,7 +91,12 @@ class ScoreController extends Controller
             $val['total'] = Absent::Where('mahasiswa_id', $val->id)->where('schedule_id', $id)->count();
             $val['hadir'] = Absent::Where('mahasiswa_id', $val->id)->where('status', 'HADIR')->where('schedule_id', $id)->count();
             $val['persent'] = ($val['total'] !== 0) ? ($val['hadir'] / $val['total']) * 100 : 0;
+            $scheckScore = Score::Where('mahasiswa_id', $val->id)->where('schedule_id', $id)->first();
+            $val['akademin'] = isset($scheckScore) ? $scheckScore->akademik : "";
+            $val['non_akademin'] = isset($scheckScore) ? $scheckScore->non_akademik : "";
+            // dd(isset($scheckScore) ? "a" : "b");
         }
+        // dd($data['siswa']);
         return view('score.formScore', compact('data'));
     }
 
@@ -108,14 +113,22 @@ class ScoreController extends Controller
         // dd($request->all());
         foreach ($data['siswa'] as $key => $s) {
             try {
-                Score::create([
-                    'schedule_id' => $schedule_id,
-                    'mahasiswa_id' => $s->id,
-                    'total_pelajaran' => $s->total,
-                    'persentasi_kehadiran' => round($s->persent),
-                    'akademik' => $request->akademik[$s->id],
-                    'non_akademik' => $request->non_akademik[$s->id],
-                ]);
+                $scheckScore = Score::Where('mahasiswa_id', $val->id)->where('schedule_id', $schedule_id)->first();
+                if (isset($scheckScore)) {
+                    $scheckScore->update([
+                        'akademik' => $request->akademik[$s->id],
+                        'non_akademik' => $request->non_akademik[$s->id]
+                    ]);
+                } else {
+                    Score::create([
+                        'schedule_id' => $schedule_id,
+                        'mahasiswa_id' => $s->id,
+                        'total_pelajaran' => $s->total,
+                        'persentasi_kehadiran' => round($s->persent),
+                        'akademik' => $request->akademik[$s->id],
+                        'non_akademik' => $request->non_akademik[$s->id],
+                    ]);
+                }
             } catch (\Exception $e) {
                 DB::rollback();
                 return redirect()->back()->with('error', $e->getMessage());
