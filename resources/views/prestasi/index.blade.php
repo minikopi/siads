@@ -11,8 +11,11 @@
                 <div class="row row-sm mt-5">
                     <div class="col-lg-12">
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header d-flex justify-content-between align-items-center">
                                 <h3 class="card-title">Data Prestasi Akademik</h3>
+                                @if (Auth::user()->role == 'Mahasantri')
+                                    <a class="btn btn-primary" href="{{ route('prestasi.create') }}">Tambah</a>
+                                @endif
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -82,18 +85,24 @@
                         },
                         {
                             data: null,
+                            visible: @json(Auth::user()->role == 'Admin'),
                             render: function(data, type, row) {
-                                var route = '{{ route('dosen.edit', ['id' => ':id']) }}'
-                                var routeDelete = '{{ route('dosen.delete', ['id' => ':id']) }}'
-                                route = route.replace(':id', data.id);
-                                routeDelete = routeDelete.replace(':id', data.id);
-                                return '<a href="' + route + '" class="btn btn-warning">Edit</a> ' +
-                                    '<button class="btn btn-danger" onclick="deleteRow(`' +
-                            routeDelete +
-                            '`)">Delete</button>';
+                                var acceptButton =
+                                    '<button class="btn btn-success accept-button" data-id="' + row.id +
+                                    '">Terima</button>';
+                                var rejectButton =
+                                    '<button class="btn btn-danger reject-button" data-id="' + row.id +
+                                    '">Tolak</button>';
+
+                                if (row.status === 'Diterima' || row.status === 'Ditolak') {
+                                    return '';
+                                } else {
+                                    return acceptButton + ' ' + rejectButton;
+                                }
                             },
                             name: 'action'
                         }
+
                     ],
                     "colum00nDefs": [{
                             "width": "3%",
@@ -126,70 +135,87 @@
                     ]
                 });
             });
-        </script>
-        <script>
-            $(document).ready(function() {
-                $('#datatables2').DataTable({
-                    "processing": true,
-                    "serverSide": true,
-                    "ajax": "{{ route('dosen.dataGet2') }}", // Sesuaikan dengan route yang Anda buat
-                    "columns": [{
-                            data: null,
-                            render: function(data, type, row, meta) {
-                                return meta.row + 1; // Adding 1 to start the iteration from 1
-                            },
-                            name: 'iteration'
-                        },
-                        {
-                            data: 'nama',
-                            name: 'nama'
-                        },
-                        {
-                            data: 'nomor_induk',
-                            name: 'nomor_induk'
-                        }, {
-                            data: 'jabatan',
-                            name: 'jabatan'
-                        },
-                        {
-                            data: null,
-                            render: function(data, type, row) {
-                                var route = '{{ route('dosen.edit', ['id' => ':id']) }}'
-                                var routeDelete = '{{ route('dosen.delete', ['id' => ':id']) }}'
-                                route = route.replace(':id', data.id);
-                                routeDelete = routeDelete.replace(':id', data.id);
-                                return '<a href="' + route + '" class="btn btn-warning">Edit</a> ' +
-                                    '<button class="btn btn-danger" onclick="deleteRow(`' +
-                            routeDelete +
-                            '`)">Delete</button>';
-                            },
-                            name: 'action'
-                        }
-                    ],
-                    "columnDefs": [{
-                            "width": "3%",
-                            "targets": 0
-                        }, // No
-                        {
-                            "width": "25%",
-                            "targets": 1
-                        }, // Nama Dosen
-                        {
-                            "width": "20%",
-                            "targets": 2
-                        }, // Nomor Induk
-                        {
-                            "width": "15%",
-                            "targets": 3
-                        }, // Jabatan
-                        {
-                            "width": "10%",
-                            "targets": 4
-                        } // Action
-                    ]
-                });
+            $('#datatables').on('click', '.accept-button', function() {
+                var rowId = $(this).data('id');
+                acceptRow(rowId);
             });
+            $('#datatables').on('click', '.reject-button', function() {
+                var rowId = $(this).data('id');
+                rejectRow(rowId);
+            });
+
+            function acceptRow(rowId) {
+                // Make an AJAX request to update the row with the new status "Diterima"
+                Swal.fire({
+                    title: 'Konfirmasi',
+                    text: 'Apakah Anda yakin ingin menerima prestasi ini?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Terima',
+                    cancelButtonText: 'Batal',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // User clicked "Ya, Terima," proceed with the AJAX request
+                        $.ajax({
+                            url: '{{ route('prestasi.accept', ['id' => '_ID_']) }}'.replace('_ID_', rowId),
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                status: 'Diterima'
+                            },
+                            success: function(response) {
+                                // Handle the success response if needed
+                                console.log(response);
+                                $('#datatables').DataTable().draw();
+                            },
+                            error: function(error) {
+                                // Handle the error response if needed
+                                console.error(error);
+                            }
+                        });
+                    }
+                });
+            }
+
+            function rejectRow(rowId) {
+                // Show SweetAlert2 prompt for providing a reason
+                Swal.fire({
+                    title: 'Berikan alasan penolakan',
+                    html: '<textarea id="reason" class="swal2-input" "></textarea>',
+                    showCancelButton: true,
+                    confirmButtonText: 'Tolak',
+                    cancelButtonText: 'Batal',
+                    preConfirm: function() {
+                        var reason = document.getElementById('reason').value;
+
+                        // Make an AJAX request to update the row with the new status "Ditolak"
+                        $.ajax({
+                            url: '{{ route('prestasi.reject', ['id' => '_ID_']) }}'.replace('_ID_', rowId),
+                            method: 'POST', // or 'PUT', 'PATCH', depending on your server route
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                status: 'Ditolak',
+                                reason: reason
+                            },
+                            success: function(response) {
+                                // Handle the success response if needed
+                                console.log(response);
+                                $('#datatables').DataTable().draw();
+                            },
+                            error: function(error) {
+                                // Handle the error response if needed
+                                console.error(error);
+                            }
+                        });
+                    }
+                });
+            }
         </script>
+
         @if (session('success'))
             <script>
                 Swal.fire({

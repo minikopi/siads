@@ -28,7 +28,7 @@
                                                 <th class="wd-15p border-bottom-0">Total Kelas</th>
                                                 <th class="wd-15p border-bottom-0">Total Kehadiran</th>
                                                 <th class="wd-15p border-bottom-0">Persentasi Kehadiran</th>
-                                                <th class="wd-15p border-bottom-0">Peneliaan Akademik</th>
+                                                <th class="wd-15p border-bottom-0">Penilaian Akademik</th>
                                                 <th class="wd-15p border-bottom-0">Penilaian Non Akademik</th>
                                                 {{-- <th class="wd-10p border-bottom-0">Action</th> --}}
                                             </tr>

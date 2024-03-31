@@ -14,26 +14,14 @@
                             <div class="card-header">
                                 <h3 class="card-title">Kelas</h3>
                                 <p class="ms-auto">
-                                    <a href="{{ route('kelas.create') }}" class="btn btn-primary d-inline-block mx-1">Tambah</a>
-                                    <form action="{{route('kelas.updateSmester')}}"
-                                                onsubmit="return confirm('Are you sure?')" class="d-inline-block mx-1"
-                                                method="POST">
-                                                @csrf
-                                                <button type="submit" class="btn btn-info">Update Semester</button>
-                                    </form>
-
-                                    {{-- <a href="{{ route('kelas.create') }}"
-                                        class="btn btn-primary btn-sm d-inline-block">Tambah</a>
-
-                                    <form action="{{route('kelas.updateSmester')}}"
-                                                onsubmit="return confirm('Are you sure?')" class="d-inline-block"
-                                                method="POST">
-                                                @csrf
-                                                <input type="hidden" name="_method" value="DELETE">
-
-                                            <button type="submit" class="btn btn-warning btn-sm" >Delete</button>
-                                        </form> --}}
-                                        </p>
+                                    <a href="{{ route('kelas.create') }}"
+                                        class="btn btn-primary d-inline-block mx-1">Tambah</a>
+                                <form action="{{ route('kelas.updateSmester') }}" onsubmit="return confirm('Are you sure?')"
+                                    class="d-inline-block mx-1" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-info">Update Semester</button>
+                                </form>
+                                </p>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -110,9 +98,9 @@
                         {
                             data: null,
                             render: function(data, type, row) {
-                                var route = '{{ route("kelas.detail", ["id" =>":id" ])}}'
+                                var route = '{{ route('kelas.detail', ['id' => ':id']) }}'
                                 route = route.replace(':id', data.id);
-                                return '<a href="'+route+'" class="btn btn-warning">Detail</a> ' +
+                                return '<a href="' + route + '" class="btn btn-warning">Detail</a> ' +
                                     '<button class="btn btn-danger" onclick="deleteRow(' +
                                     row.id +
                                     ')">Delete</button>';

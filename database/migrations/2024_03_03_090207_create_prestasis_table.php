@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('mahasiswa_id')->nullable();
             $table->text('prestasi')->nullable();
             $table->string('status')->nullable();
+            $table->string('keterangan')->nullable();
             $table->text('file')->nullable();
             $table->timestamps();
         });

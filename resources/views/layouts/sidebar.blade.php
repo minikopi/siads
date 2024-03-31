@@ -51,7 +51,8 @@
                             </li>
                             <li><a href="#" class="slide-item"> Transkrip Akademik</a></li>
                             <li><a href="{{ route('ipk.index') }}"
-                                    class="slide-item {{ request()->is('ipk') ? 'active' : '' }}"> Riwayat IP</a>
+                                    class="slide-item {{ request()->is('master/akademik') ? 'active' : '' }}"> Riwayat
+                                    IP</a>
                             </li>
                         @endif
                         <li><a href="{{ Auth::user()->role == 'Mahasantri' ? route('schedule.detail', ['id' => Auth::user()->mahasantri->kelas_id]) : route('schedule.index') }}"
@@ -85,7 +86,7 @@
                                 class="slide-item {{ request()->is('pembayaran/master') ? 'active' : '' }}">
                                 Master Pembayaran</a>
                         </li>
-                        <li><a href="{{ Auth::user()->role == "Mahasantri" ? route('pembayaran.index') : route('pembayaran.ListSiswa') }}"
+                        <li><a href="{{ Auth::user()->role == 'Mahasantri' ? route('pembayaran.index') : route('pembayaran.ListSiswa') }}"
                                 class="slide-item {{ request()->is('pembayaran/mahasiswa') ? 'active' : '' }}">
                                 Pembayaran Mahasiswa</a>
                         </li>
@@ -98,14 +99,14 @@
                             class="angle fa fa-angle-right"></i></a>
                     <ul class="slide-menu">
                         <li><a href="{{ route('sidang.index') }}"
-                                class="slide-item {{ request()->is('wisuda/mahasantri') ? 'active' : '' }}">
+                                class="slide-item {{ request()->is('wisuda/sidang') ? 'active' : '' }}">
                                 Daftar Sidang</a>
                         </li>
                         <li><a href="{{ route('wisuda.index') }}"
-                                class="slide-item {{ request()->is('wisuda/dosen') ? 'active' : '' }}"> Daftar
+                                class="slide-item {{ request()->is('wisuda/wisuda') ? 'active' : '' }}"> Daftar
                                 Wisuda</a></li>
                         <li><a href="{{ route('prestasi.index') }}"
-                                class="slide-item {{ request()->is('wisuda/mata-kuliah') ? 'active' : '' }}"> Upload
+                                class="slide-item {{ request()->is('wisuda/prestasi') ? 'active' : '' }}"> Upload
                                 Prestasi Akademik</a>
                         </li>
                     </ul>

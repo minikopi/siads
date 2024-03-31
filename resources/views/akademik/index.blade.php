@@ -11,10 +11,9 @@
                 <div class="row row-sm mt-5">
                     <div class="col-lg-12">
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header d-flex justify-content-between align-items-center">
                                 <h3 class="card-title">Kalander Akademik</h3>
-                                <p class="ms-auto"><a href="{{ route('akademik.createKalender') }}"
-                                        class="btn btn-primary btn-sm">Tambah</a></p>
+                                <a href="{{ route('akademik.createKalender') }}" class="btn btn-primary">Tambah</a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -39,7 +38,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Surat Edaran</h3>
                                 <p class="ms-auto"><a href="{{ route('akademik.createEdaran') }}"
-                                        class="btn btn-primary btn-sm">Tambah</a></p>
+                                        class="btn btn-primary">Tambah</a></p>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -133,7 +132,7 @@
                             "targets": 4
                         },
                         {
-                            "width": "10%",
+                            "width": "15%",
                             "targets": 5
                         }
                     ]

@@ -33,7 +33,7 @@
                                                 <th class="wd-15p border-bottom-0">Sakit</th>
                                                 <th class="wd-15p border-bottom-0">Izin</th>
                                                 <th class="wd-15p border-bottom-0">Ghoib</th>
-                                                <th class="wd-15p border-bottom-0">Terlambar</th>
+                                                <th class="wd-15p border-bottom-0">Terlambat</th>
                                                 <th class="wd-15p border-bottom-0">% Hadir</th>
                                                 {{-- <th class="wd-10p border-bottom-0">Action</th> --}}
                                             </tr>

@@ -9,10 +9,10 @@ class Prestasi extends Model
 {
     use HasFactory;
 
-    public $fillable = ['mahasiswa_id', 'prestasi', 'file', 'status'];
+    public $fillable = ['mahasiswa_id', 'prestasi', 'file', 'status', 'keterangan'];
 
     public function mahasiswa()
     {
-        return $this->belongsTo(Mahasantri::class, 'mahasiswa_id');
+        return $this->hasMany(Mahasantri::class, 'user_id', 'mahasiswa_id');
     }
 }

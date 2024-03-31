@@ -41,7 +41,6 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::middleware(['auth'])->group(
     function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-        Route::get('/test', [PrestasiController::class, 'index'])->name('prestasi.index');
 
         Route::prefix('master')->group(
             function () {
@@ -54,15 +53,6 @@ Route::middleware(['auth'])->group(
                 Route::get('/dosen/edit/{id}', [DosenController::class, 'edit'])->name('dosen.edit');
                 Route::post('/dosen/update/{id}', [DosenController::class, 'update'])->name('dosen.update');
                 Route::delete('/dosen/delete/{id}', [DosenController::class, 'delete'])->name('dosen.delete');
-
-                //Prestasi
-                Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');
-                Route::get('/data_prestasi', [PrestasiController::class, 'dataGet'])->name('prestasi.dataGet');
-                Route::get('/prestasi/create', [PrestasiController::class, 'create'])->name('prestasi.create');
-                Route::post('/prestasi', [PrestasiController::class, 'store'])->name('prestasi.store');
-                Route::get('/prestasi/edit/{id}', [PrestasiController::class, 'edit'])->name('prestasi.edit');
-                Route::post('/prestasi/update/{id}', [PrestasiController::class, 'update'])->name('prestasi.update');
-                Route::delete('/prestasi/delete/{id}', [PrestasiController::class, 'delete'])->name('prestasi.delete');
 
                 //Mahasantri
                 Route::get('/mahasantri', [MahasantriController::class, 'index'])->name('mahasantri.index');
@@ -163,6 +153,20 @@ Route::middleware(['auth'])->group(
                 Route::post('/update/{id}', [PaymentTypeController::class, 'update'])->name('paymentType.update');
                 Route::delete('/delete/{id}', [PaymentTypeController::class, 'delete'])->name('paymentType.delete');
             });
-        });;
+        });
+        Route::group(['prefix' => 'wisuda'], function () {
+            //Prestasi
+            Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');
+            Route::get('/data_prestasi', [PrestasiController::class, 'dataGet'])->name('prestasi.dataGet');
+            Route::get('/prestasi/create', [PrestasiController::class, 'create'])->name('prestasi.create');
+            Route::post('/prestasi', [PrestasiController::class, 'store'])->name('prestasi.store');
+            Route::get('/prestasi/edit/{id}', [PrestasiController::class, 'edit'])->name('prestasi.edit');
+            Route::post('/prestasi/update/{id}', [PrestasiController::class, 'update'])->name('prestasi.update');
+            Route::delete('/prestasi/delete/{id}', [PrestasiController::class, 'delete'])->name('prestasi.delete');
+            Route::post('/prestasi/accept/{id}', [PrestasiController::class, 'accept'])->name('prestasi.accept');
+
+            // Route for updating status to "Ditolak" with a reason
+            Route::post('/prestasi/reject/{id}', [PrestasiController::class, 'reject'])->name('prestasi.reject');
+        });
     }
 );
