@@ -50,11 +50,11 @@
                                     class="slide-item {{ request()->is('master/kelas') ? 'active' : '' }}"> Kelas</a>
                             </li>
                             <li><a href="#" class="slide-item"> Transkrip Akademik</a></li>
-                            <li><a href="{{ route('ipk.index') }}"
-                                    class="slide-item {{ request()->is('master/akademik') ? 'active' : '' }}"> Riwayat
-                                    IP</a>
-                            </li>
                         @endif
+                        <li><a href="{{ route('ipk.index') }}"
+                                class="slide-item {{ request()->is('master/akademik') ? 'active' : '' }}"> Riwayat
+                                IP</a>
+                        </li>
                         <li><a href="{{ Auth::user()->role == 'Mahasantri' ? route('schedule.detail', ['id' => Auth::user()->mahasantri->kelas_id]) : route('schedule.index') }}"
                                 class="slide-item {{ request()->is('master/jadwal-kuliah') ? 'active' : '' }}"> Jadwal
                                 Kuliah</a></li>

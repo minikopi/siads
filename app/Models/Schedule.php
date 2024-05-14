@@ -27,4 +27,9 @@ class Schedule extends Model
     {
         return $this->hasMany(Absent::class, 'id');
     }
+
+    public function score()
+    {
+        return $this->hasMany(Score::class, 'schedule_id');
+    }
 }

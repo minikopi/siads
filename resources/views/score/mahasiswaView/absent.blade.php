@@ -12,7 +12,7 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Persensi Kuliah / {{ Auth::user()->name }}</h3>
+                                <h3 class="card-title">Nilai Kuliah / {{ Auth::user()->name }}</h3>
                                 {{-- <p class="ms-auto"><a href="{{ route('kelas.matkulPerKelas.detail',["id"=>$data["class"]->id]) }}"
                                         class="btn btn-primary btn-sm">Tambah Mata Kuliah</a></p> --}}
                             </div>
@@ -36,30 +36,14 @@
                                         <thead>
                                             <tr>
                                                 <th class="wd-15p border-bottom-0">No</th>
+                                                <th class="wd-15p border-bottom-0">Kode</th>
                                                 <th class="wd-15p border-bottom-0">Mata Kuliah</th>
-                                                <th class="wd-15p border-bottom-0">Kelas</th>
                                                 <th class="wd-15p border-bottom-0">SKS</th>
-                                                <th class="wd-15p border-bottom-0">Kuliah</th>
-                                                <th class="wd-15p border-bottom-0">Hadir</th>
-                                                <th class="wd-15p border-bottom-0">Sakit</th>
-                                                <th class="wd-15p border-bottom-0">Izin</th>
-                                                <th class="wd-15p border-bottom-0">Ghoib</th>
-                                                <th class="wd-15p border-bottom-0">Terlambar</th>
-                                                <th class="wd-15p border-bottom-0">% Hadir</th>
+                                                <th class="wd-15p border-bottom-0">Nilai</th>
+                                                <th class="wd-15p border-bottom-0">Huruf</th>
                                                 {{-- <th class="wd-10p border-bottom-0">Action</th> --}}
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Sahih al-Bukhary</td>
-
-                                                <td>
-                                                    <a href="" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                                                    <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -83,9 +67,7 @@
             $(document).ready(function() {
                 var smester = $('.smester').val();
                 var route;
-                route = '{{ route('absent.mahasantri.getData') }}?smester=' + smester
-
-                // route = route.replace(':id', $data["class"]->id);
+                route = '{{ route('score.mahasantri.getData') }}?smester=' + smester
                 var table = $('#datatables').DataTable({
                     "processing": true,
                     "serverSide": true,
@@ -97,46 +79,25 @@
                             },
                             name: 'iteration'
                         },
-
+                        {
+                            data: 'mata_kuliah.kode',
+                            name: 'mata_kuliah.kode'
+                        },
                         {
                             data: 'mata_kuliah.nama',
                             name: 'mata_kuliah.nama'
-                        },
-                        {
-                            data: 'class.nama',
-                            name: 'class.nama'
                         },
                         {
                             data: 'mata_kuliah.sks',
                             name: 'mata_kuliah.sks'
                         },
                         {
-                            data: 'total',
-                            name: 'total',
+                            data: 'score',
+                            name: 'score'
                         },
                         {
-                            data: 'hadir',
-                            name: 'hadir',
-                        },
-                        {
-                            data: 'sakit',
-                            name: 'sakit',
-                        },
-                        {
-                            data: 'izin',
-                            name: 'izin',
-                        },
-                        {
-                            data: 'ghoib',
-                            name: 'ghoib',
-                        },
-                        {
-                            data: 'terlambat',
-                            name: 'terlambat',
-                        },
-                        {
-                            data: 'persent',
-                            name: 'persent',
+                            data: 'huruf',
+                            name: 'huruf'
                         },
                     ],
                     "columnDefs": [{
@@ -150,14 +111,18 @@
                         {
                             "width": "10%",
                             "targets": 2
-                        } // Action
+                        }, // Action
+                        {
+                            "width": "10%",
+                            "targets": 3
+                        }, // Action
                     ]
                 });
 
                 $('.smester').change(function() {
                     smester = $(this).val();
                     console.log(smester);
-                    route = '{{ route('absent.mahasantri.getData') }}?smester=' + smester
+                    route = '{{ route('score.mahasantri.getData') }}?smester=' + smester
                     table.ajax.url(route).load();
                 })
             });

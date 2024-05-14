@@ -102,6 +102,7 @@ Route::middleware(['auth'])->group(
 
                 Route::get('/score/mahasantri/abs', [ScoreController::class, 'AbsentMahasiswa'])->name('score.mahasantri.index');
                 Route::get('/score/mahasantri/json', [ScoreController::class, 'dataGetScheduleMahasiswa'])->name('score.mahasantri.getData');
+                Route::get('/score/mahasantri/cetak', [ScoreController::class, 'cetak'])->name('score.mahasantri.cetak');
 
                 //Mata Kuliah
                 Route::get('/kelas', [ClassController::class, 'index'])->name('kelas.index');
@@ -126,6 +127,7 @@ Route::middleware(['auth'])->group(
 
                 //IPK
                 Route::get('/ipk', [IpkController::class, 'index'])->name('ipk.index');
+                Route::get('/ipk/dataGet', [IpkController::class, 'dataGet'])->name('ipk.dataGet');
 
                 //Pembayaran
                 // Route::get('/pembayaran', [PaymentController::class, 'index'])->name('pembayaran.index');

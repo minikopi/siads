@@ -10,4 +10,14 @@ class Score extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function mahasiswa()
+    {
+        return $this->belongsTo(Mahasantri::class);
+    }
+
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class);
+    }
 }

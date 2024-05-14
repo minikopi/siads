@@ -28,7 +28,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="wd-15p border-bottom-0">No</th>
-                                                <th class="wd-15p border-bottom-0">Tahun Akademik</th>
+                                                <th class="wd-20p border-bottom-0">Tahun Ajaran</th>
                                                 <th class="wd-20p border-bottom-0">Semester</th>
                                                 <th class="wd-15p border-bottom-0">Jumlah SKS</th>
                                                 <th class="wd-10p border-bottom-0">IP</th>
@@ -94,7 +94,7 @@
                 $('#datatables').DataTable({
                     "processing": true,
                     "serverSide": true,
-                    // "ajax": "{{ route('dosen.dataGet') }}", 
+                    "ajax": "{{ route('ipk.dataGet') }}",
                     "columns": [{
                             data: null,
                             render: function(data, type, row, meta) {
@@ -103,25 +103,21 @@
                             name: 'iteration'
                         },
                         {
-                            data: 'nama',
-                            name: 'nama'
+                            data: 'tahun',
+                            name: 'tahun'
                         },
                         {
-                            data: 'nomor_induk',
-                            name: 'nomor_induk'
-                        }, {
-                            data: 'jabatan',
-                            name: 'jabatan'
+                            data: 'semester',
+                            name: 'semester'
                         },
                         {
-                            data: null,
-                            render: function(data, type, row) {
-                                return '<button class="btn btn-warning" onclick="deleteRow(' + row.id +
-                                    ')">Edit</button> <button class="btn btn-danger" onclick="deleteRow(' +
-                                    row.id +
-                                    ')">Delete</button>';
-                            },
-                            name: 'action'
+                            data: 'sks',
+                            name: 'sks'
+                        },
+                        {
+                            data: 'ips',
+                            name: 'ips',
+
                         }
                     ],
                     "columnDefs": [{
@@ -140,69 +136,6 @@
                             "width": "15%",
                             "targets": 3
                         }, // Jabatan
-                        {
-                            "width": "10%",
-                            "targets": 4
-                        } // Action
-                    ]
-                });
-            });
-        </script>
-        <script>
-            $(document).ready(function() {
-                $('#datatables2').DataTable({
-                    "processing": true,
-                    "serverSide": true,
-                    "ajax": "{{ route('dosen.dataGet2') }}", // Sesuaikan dengan route yang Anda buat
-                    "columns": [{
-                            data: null,
-                            render: function(data, type, row, meta) {
-                                return meta.row + 1; // Adding 1 to start the iteration from 1
-                            },
-                            name: 'iteration'
-                        },
-                        {
-                            data: 'nama',
-                            name: 'nama'
-                        },
-                        {
-                            data: 'nomor_induk',
-                            name: 'nomor_induk'
-                        }, {
-                            data: 'jabatan',
-                            name: 'jabatan'
-                        },
-                        {
-                            data: null,
-                            render: function(data, type, row) {
-                                return '<button class="btn btn-warning" onclick="deleteRow(' + row.id +
-                                    ')">Edit</button> <button class="btn btn-danger" onclick="deleteRow(' +
-                                    row.id +
-                                    ')">Delete</button>';
-                            },
-                            name: 'action'
-                        }
-                    ],
-                    "columnDefs": [{
-                            "width": "3%",
-                            "targets": 0
-                        }, // No
-                        {
-                            "width": "25%",
-                            "targets": 1
-                        }, // Nama Dosen
-                        {
-                            "width": "20%",
-                            "targets": 2
-                        }, // Nomor Induk
-                        {
-                            "width": "15%",
-                            "targets": 3
-                        }, // Jabatan
-                        {
-                            "width": "10%",
-                            "targets": 4
-                        } // Action
                     ]
                 });
             });

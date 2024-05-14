@@ -15,11 +15,11 @@
                                 <h3 class="card-title">Kelas</h3>
                                 <p class="ms-auto">
                                     <a href="{{ route('kelas.create') }}"
-                                        class="btn btn-primary d-inline-block mx-1">Tambah</a>
+                                        class="btn btn-primary btn-sm d-inline-block mx-1">Tambah</a>
                                 <form action="{{ route('kelas.updateSmester') }}" onsubmit="return confirm('Are you sure?')"
-                                    class="d-inline-block mx-1" method="POST">
+                                    method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-info">Update Semester</button>
+                                    <button type="submit" class="btn btn-sm btn-info">Update Semester</button>
                                 </form>
                                 </p>
                             </div>

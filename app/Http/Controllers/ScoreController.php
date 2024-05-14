@@ -9,7 +9,10 @@ use App\Models\MataKuliah;
 use App\Models\Schedule;
 use App\Models\Score;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
+use Spatie\LaravelPdf\Facades\Pdf;
 
 class ScoreController extends Controller
 {
@@ -48,39 +51,48 @@ class ScoreController extends Controller
 
     public function dataGetScheduleMahasiswa(Request $request)
     {
-        $data = Schedule::with("mata_kuliah", "dosen.user", 'class')->where("class_id", Auth::user()->mahasantri->kelas_id)
+        $data = Schedule::with("score", "mata_kuliah", "dosen.user", 'class')->where("class_id", Auth::user()->mahasantri->kelas_id)
             ->when($request->smester, function ($q) use ($request) {
                 return $q->whereHas("mata_kuliah", function ($b) use ($request) {
                     $b->where("smester", $request->smester);
                 });
             })
             ->orderBy('created_at', 'desc')->get();
-        foreach ($data as $key => $val) {
-            $val['total'] = Absent::Where('mahasiswa_id', Auth::user()->mahasantri->id)->where('schedule_id', $val->id)->count();
-            $val['hadir'] = Absent::Where('mahasiswa_id', Auth::user()->mahasantri->id)->where('status', 'HADIR')->where('schedule_id', $val->id)->count();
-            $val['sakit'] = Absent::Where('mahasiswa_id', Auth::user()->mahasantri->id)->where('status', 'SAKIT')->where('schedule_id', $val->id)->count();
-            $val['izin'] = Absent::Where('mahasiswa_id', Auth::user()->mahasantri->id)->where('status', 'IZIN')->where('schedule_id', $val->id)->count();
-            $val['ghoib'] = Absent::Where('mahasiswa_id', Auth::user()->mahasantri->id)->where('status', 'GHOIB')->where('schedule_id', $val->id)->count();
-            $val['terlambat'] = Absent::Where('mahasiswa_id', Auth::user()->mahasantri->id)->where('status', 'TERLAMBAT')->where('schedule_id', $val->id)->count();
-            $val['persent'] = ($val['total'] !== 0) ? ($val['hadir'] / $val['total']) * 100 : 0;
-        }
+
         return DataTables::of($data)
-            ->addColumn('jadwal', function ($data) {
-                $start = Carbon::parse($data->start_date)->format('H:i');
-                $end = Carbon::parse($data->end_date)->format('H:i');
-                return $data->day . " " . $start . "-" . $end . " " . $data->place;
+            ->editColumn('score', function ($data) {
+                return ($data->score[0]->akademik * 60 / 100) + ($data->score[0]->non_akademik * 40 / 100);
             })
-            ->addColumn('peserta', function ($data) {
-                // dd($data->class->id);
-                $peserta = Mahasantri::where('kelas_id', $data->class->id)->count();
-                // dd($peserta);
-                return $peserta;
+            ->editColumn('huruf', function ($data) {
+                $nilai = ($data->score[0]->akademik * 60 / 100) + ($data->score[0]->non_akademik * 40 / 100);
+                if ($nilai > 80) {
+                    return "A";
+                } elseif ($nilai > 70) {
+                    return "B";
+                } elseif ($nilai > 60) {
+                    return "C";
+                } elseif ($nilai > 50) {
+                    return "D";
+                } else {
+                    return "E";
+                }
             })
-            ->addColumn('action', function ($data) {
-                //
-            })
-            ->rawColumns(['action', 'jadwal'])
             ->make(true);
+    }
+
+    public function cetak()
+    {
+        $data = Schedule::with("score", "mata_kuliah", "dosen.user", 'class')->where("class_id", Auth::user()->mahasantri->kelas_id)
+            ->when($request->smester, function ($q) use ($request) {
+                return $q->whereHas("mata_kuliah", function ($b) use ($request) {
+                    $b->where("smester", $request->smester);
+                });
+            })
+            ->orderBy('created_at', 'desc')->get();
+
+        Pdf::view('score.mahasiswaView.cetak', ['data' => $data])
+            ->format('a4')
+            ->save('invoice.pdf');
     }
 
     public function scoreForm($id)
