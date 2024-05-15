@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kartu Hasil Studi</title>
+    <title>Kartu Rencana Studi</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -112,7 +112,7 @@
     <div class="container">
         <div class="header">
             <img src="{{ public_path('images/logo-khs.png') }}" alt="Logo Darsun">
-            <h3>KARTU HASIL STUDI</h3>
+            <h3>KARTU RENCANA STUDI</h3>
         </div>
         <div class="details">
             <table>
@@ -158,41 +158,32 @@
                 </tr>
             </table>
         </div>
-        <table class="table" style="width: 100%;">
+        <table class="table">
             <thead>
                 <tr>
                     <th>No</th>
                     <th>Kode</th>
                     <th>Mata Kuliah</th>
                     <th>SKS</th>
-                    <th>Nilai</th>
-                    <th>Huruf</th>
+                    <th>Dosen</th>
+                    <th>Hari/Waktu</th>
+                    <th>Ruang</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($score as $index => $item)
+                @foreach ($schedule as $index => $item)
                     @php
                         $total_sks += $item->mata_kuliah->sks;
-                        $nilai = ($item->score[0]->akademik * 60) / 100 + ($item->score[0]->non_akademik * 40) / 100;
-                        if ($nilai > 80) {
-                            $grade = 'A';
-                        } elseif ($nilai > 70) {
-                            $grade = 'B';
-                        } elseif ($nilai > 60) {
-                            $grade = 'C';
-                        } elseif ($nilai > 50) {
-                            $grade = 'D';
-                        } else {
-                            $grade = 'E';
-                        }
                     @endphp
                     <tr style="text-align: center">
                         <td><strong>{{ $index + 1 }}</strong></td>
                         <td>{{ $item->mata_kuliah->kode }}</td>
                         <td>{{ $item->mata_kuliah->nama }}</td>
-                        <td>{{ $item->mata_kuliah->sks }}</td>
-                        <td>{{ $item->score[0]->akademik }}</td>
-                        <td>{{ $grade }}</td>
+                        <td style="text-align: left">{{ $item->mata_kuliah->sks }}</td>
+                        <td>{{ $item->dosen->user->name }}</td>
+                        <td>{{ $item->day }}<br>{{ $item->start_date }} -
+                            {{ $item->end_date }}</td>
+                        <td>{{ $item->place }}</td>
                     </tr>
                 @endforeach
                 <tr>

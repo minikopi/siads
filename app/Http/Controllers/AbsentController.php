@@ -7,6 +7,7 @@ use App\Models\Classes;
 use App\Models\Mahasantri;
 use App\Models\MataKuliah;
 use App\Models\Schedule;
+use Barryvdh\DomPDF\PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,6 +41,13 @@ class AbsentController extends Controller
         $data['smester'] = MataKuliah::distinct('smester')->pluck('smester');
 
         return view('absent.mahasiswaView.absent', compact('data'));
+    }
+
+    public function generatePDF()
+    {
+        $data = ['title' => 'domPDF in Laravel 10'];
+        $pdf = PDF::loadView('pdf.document', $data);
+        return $pdf->download('document.pdf');
     }
 
     public function dataGetScheduleMahasiswa(Request $request)

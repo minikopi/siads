@@ -19,7 +19,7 @@
                                 <form action="{{ route('kelas.updateSmester') }}" onsubmit="return confirm('Are you sure?')"
                                     method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-sm btn-info">Update Semester</button>
+                                    {{-- <button type="submit" class="btn btn-sm btn-info">Update Semester</button> --}}
                                 </form>
                                 </p>
                             </div>

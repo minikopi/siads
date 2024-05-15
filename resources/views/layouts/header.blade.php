@@ -7,24 +7,20 @@
             <div class="responsive-logo">
                 <a href="index.html" class="header-logo">
                     <img src="{{ asset('images/logo.png') }}" class="mobile-logo logo-1" alt="logo">
-                    <img src="{{ asset('images/logo.png') }}" class="mobile-logo dark-logo-1"
-                        alt="logo">
+                    <img src="{{ asset('images/logo.png') }}" class="mobile-logo dark-logo-1" alt="logo">
                 </a>
             </div>
             <!-- sidebar-toggle-->
             <a class="logo-horizontal " href="index.html">
-                <img src="{{ asset('images/logo.png') }}" class="header-brand-img desktop-logo"
-                    alt="logo">
-                <img src="{{ asset('images/logo.png') }}" class="header-brand-img light-logo1"
-                    alt="logo">
+                <img src="{{ asset('images/logo.png') }}" class="header-brand-img desktop-logo" alt="logo">
+                <img src="{{ asset('images/logo.png') }}" class="header-brand-img light-logo1" alt="logo">
             </a>
             <!-- LOGO -->
             <div class="d-flex order-lg-2 ms-auto header-right-icons">
                 <!-- SEARCH -->
                 <button class="navbar-toggler navresponsive-toggler d-lg-none ms-auto" type="button"
                     data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent-4"
-                    aria-controls="navbarSupportedContent-4" aria-expanded="false"
-                    aria-label="Toggle navigation">
+                    aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon fe fe-more-vertical text-dark"></span>
                 </button>
                 <div class="navbar navbar-collapse responsive-navbar p-0">
@@ -41,8 +37,8 @@
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                     <div class="drop-heading">
                                         <div class="text-center">
-                                            <h5 class="text-dark mb-0">Nama Admin</h5>
-                                            <small class="text-muted">Administrator</small>
+                                            <h5 class="text-dark mb-0">{{ Auth::user()->name }}</h5>
+                                            <small class="text-muted">{{ Auth::user()->role }}</small>
                                         </div>
                                     </div>
                                     <div class="dropdown-divider m-0"></div>
@@ -56,7 +52,8 @@
                                     <a class="dropdown-item" href="emailservices.html">
                                         <i class="dropdown-icon fe fe-settings"></i> Settings
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         <i class="dropdown-icon fe fe-alert-circle"></i> Sign out
                                     </a>

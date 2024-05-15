@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 18, 2024 at 12:56 PM
+-- Generation Time: May 15, 2024 at 11:34 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -65,18 +65,28 @@ CREATE TABLE `classes` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `tahun_ajaran` year(4) DEFAULT NULL,
-  `smester` int(11) DEFAULT NULL,
+  `current_semaster` int(11) DEFAULT 1,
   `gender` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `classes`
+-- Table structure for table `detail_invoices`
 --
 
-INSERT INTO `classes` (`id`, `nama`, `tahun_ajaran`, `smester`, `gender`, `created_at`, `updated_at`) VALUES
-(1, 'Kelas A', '2020', NULL, 'Laki-laki', '2024-01-18 02:25:06', '2024-01-18 02:25:06');
+CREATE TABLE `detail_invoices` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `invoice_id` int(11) NOT NULL,
+  `payment_type_id` int(11) NOT NULL,
+  `nominal` int(11) NOT NULL,
+  `name_payment` varchar(255) NOT NULL,
+  `semester` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -99,7 +109,7 @@ CREATE TABLE `dosens` (
 --
 
 INSERT INTO `dosens` (`id`, `user_id`, `nomor_induk`, `jabatan`, `tipe`, `created_at`, `updated_at`) VALUES
-(1, '1', '1', '2', 'Dosen', '2024-01-18 02:24:11', '2024-01-18 02:24:11');
+(1, '2', '12314', 'Dosen', 'Dosen', '2024-02-09 00:57:58', '2024-02-09 00:57:58');
 
 -- --------------------------------------------------------
 
@@ -132,6 +142,24 @@ CREATE TABLE `failed_jobs` (
   `payload` longtext NOT NULL,
   `exception` longtext NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `invoices`
+--
+
+CREATE TABLE `invoices` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `invoice_code` varchar(255) NOT NULL,
+  `mahasantri_id` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `total` int(11) NOT NULL,
+  `expired_at` timestamp NULL DEFAULT NULL,
+  `snap_token` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -185,7 +213,6 @@ CREATE TABLE `mahasantris` (
   `tinggi_badan` varchar(255) DEFAULT NULL,
   `penyakit` varchar(255) DEFAULT NULL,
   `jenis_kelamin` varchar(255) DEFAULT NULL,
-  `class_id` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -195,9 +222,9 @@ CREATE TABLE `mahasantris` (
 -- Dumping data for table `mahasantris`
 --
 
-INSERT INTO `mahasantris` (`id`, `user_id`, `kelas_id`, `nim`, `nama_depan`, `nama_belakang`, `email`, `handphone`, `nik`, `alamat`, `kode_pos`, `tanggal_lahir`, `suku`, `saudara`, `whatsapp`, `foto`, `nama_ayah`, `tempat_ayah`, `lahir_ayah`, `pendidikan_ayah`, `pekerjaan_ayah`, `penghasilan_ayah`, `nama_ibu`, `tempat_ibu`, `lahir_ibu`, `pendidikan_ibu`, `pekerjaan_ibu`, `penghasilan_ibu`, `nama_wali`, `alamat_wali`, `handphone_wali`, `whatsapp_wali`, `asal_sekolah`, `alamat_sekolah`, `nomor_ijazah`, `tanggal_ijazah`, `asal_pesantren`, `alamat_pesantren`, `hobi`, `golongan_darah`, `berat_badan`, `tinggi_badan`, `penyakit`, `jenis_kelamin`, `class_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, '1', NULL, '139172931', 'test', 'nama', NULL, NULL, '139172931', NULL, NULL, NULL, NULL, NULL, '139172931', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '139172931', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'aktif', '2024-01-18 02:24:51', '2024-01-18 02:24:51'),
-(2, '1', 1, '139172931', 'test', NULL, NULL, NULL, '139172931', NULL, NULL, NULL, NULL, NULL, '139172931', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '139172931', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Laki-laki', NULL, 'aktif', '2024-01-18 04:01:03', '2024-01-18 04:01:03');
+INSERT INTO `mahasantris` (`id`, `user_id`, `kelas_id`, `nim`, `nama_depan`, `nama_belakang`, `email`, `handphone`, `nik`, `alamat`, `kode_pos`, `tanggal_lahir`, `suku`, `saudara`, `whatsapp`, `foto`, `nama_ayah`, `tempat_ayah`, `lahir_ayah`, `pendidikan_ayah`, `pekerjaan_ayah`, `penghasilan_ayah`, `nama_ibu`, `tempat_ibu`, `lahir_ibu`, `pendidikan_ibu`, `pekerjaan_ibu`, `penghasilan_ibu`, `nama_wali`, `alamat_wali`, `handphone_wali`, `whatsapp_wali`, `asal_sekolah`, `alamat_sekolah`, `nomor_ijazah`, `tanggal_ijazah`, `asal_pesantren`, `alamat_pesantren`, `hobi`, `golongan_darah`, `berat_badan`, `tinggi_badan`, `penyakit`, `jenis_kelamin`, `status`, `created_at`, `updated_at`) VALUES
+(1, '3', 2, '139172931', 'Bahri', 'Maknun', 'bahri@gmail.com', '0813273641234', '139172931', 'jl.swatantra IV rt 001/04 no 50 jatiasih bekasi', '17423', '2024-02-06', '3123123', NULL, '139172931', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '139172931', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Laki-laki', 'aktif', '2024-02-09 01:01:44', '2024-02-09 01:01:44'),
+(2, '4', 2, '139172931', 'Dimas Putra', 'Pamungkas', 'dimas@gmail.com', '081224377189', '139172931', 'Pramuka No.33', '13120', NULL, NULL, NULL, '139172931', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '139172931', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Laki-laki', 'aktif', '2024-05-13 22:03:57', '2024-05-13 22:03:57');
 
 -- --------------------------------------------------------
 
@@ -215,13 +242,19 @@ CREATE TABLE `mata_kuliahs` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `mata_kuliahs`
+-- Table structure for table `matkul_dosens`
 --
 
-INSERT INTO `mata_kuliahs` (`id`, `nama`, `kode`, `sks`, `smester`, `created_at`, `updated_at`) VALUES
-(1, 'asdf', 'asdf', 1, 1, '2024-01-18 04:00:24', '2024-01-18 04:00:24'),
-(2, 'asdfas', 'dfasdf', 2, 2, '2024-01-18 04:02:22', '2024-01-18 04:02:22');
+CREATE TABLE `matkul_dosens` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `dosen_id` int(11) DEFAULT NULL,
+  `matkul_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -242,18 +275,26 @@ CREATE TABLE `migrations` (
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '2014_10_12_000000_create_users_table', 1),
 (2, '2014_10_12_100000_create_password_reset_tokens_table', 1),
-(3, '2014_10_12_100000_create_password_resets_table', 1),
-(4, '2019_08_19_000000_create_failed_jobs_table', 1),
-(5, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(6, '2023_11_12_062518_create_dosens_table', 1),
-(7, '2023_11_12_093844_create_mata_kuliahs_table', 1),
-(8, '2023_11_13_072258_create_akademiks_table', 1),
-(9, '2023_11_13_072305_create_edarans_table', 1),
-(10, '2023_12_03_042736_create_mahasantris_table', 1),
-(11, '2024_01_01_133557_create_classes_table', 1),
-(12, '2024_01_01_221259_create_schedules_table', 1),
-(13, '2024_01_08_232919_alter_mahasantris_table', 1),
-(14, '2024_01_10_010033_create__absents_table', 1);
+(3, '2019_08_19_000000_create_failed_jobs_table', 1),
+(4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
+(5, '2023_11_12_062518_create_dosens_table', 1),
+(6, '2023_11_12_093844_create_mata_kuliahs_table', 1),
+(7, '2023_11_13_072258_create_akademiks_table', 1),
+(8, '2023_11_13_072305_create_edarans_table', 1),
+(9, '2023_12_03_042736_create_mahasantris_table', 1),
+(10, '2024_01_01_133557_create_classes_table', 1),
+(11, '2024_01_01_221259_create_schedules_table', 2),
+(12, '2024_01_08_232919_alter_mahasantris_table', 3),
+(13, '2024_01_10_010033_create__absents_table', 4),
+(14, '2014_10_12_100000_create_password_resets_table', 5),
+(15, '2024_01_19_004124_create_scores_table', 6),
+(16, '2024_01_21_095607_create_matkul_dosens_table', 7),
+(17, '2024_01_21_125827_alter_schedules_table', 8),
+(18, '2024_02_09_041602_create_payment_types_table', 9),
+(19, '2024_02_09_082959_alter_class_table', 10),
+(22, '2024_02_11_105034_create_invoices_table', 11),
+(23, '2024_02_11_105052_create_detail_invoices_table', 11),
+(24, '2024_02_21_011828_create_prestasis_table', 12);
 
 -- --------------------------------------------------------
 
@@ -282,6 +323,32 @@ CREATE TABLE `password_reset_tokens` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `payment_types`
+--
+
+CREATE TABLE `payment_types` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `nominal` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `payment_types`
+--
+
+INSERT INTO `payment_types` (`id`, `name`, `type`, `nominal`, `created_at`, `updated_at`) VALUES
+(1, 'Wakaf Wajib', '3', 6000000, '2024-02-09 04:01:24', '2024-02-09 04:01:24'),
+(2, 'SPP', '1', 3000000, '2024-02-09 04:01:44', '2024-02-09 04:01:44'),
+(3, 'Kalender', '1', 50000, '2024-02-09 04:02:06', '2024-02-09 04:02:06'),
+(4, 'hangeuo', '2', 700000, '2024-02-09 04:02:32', '2024-02-09 04:02:32'),
+(5, 'kitab-kitab', '2', 8000000, '2024-02-09 04:02:47', '2024-02-09 04:02:47');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `personal_access_tokens`
 --
 
@@ -301,6 +368,22 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `prestasis`
+--
+
+CREATE TABLE `prestasis` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `mahasiswa_id` int(11) DEFAULT NULL,
+  `prestasi` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `file` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `schedules`
 --
 
@@ -313,17 +396,28 @@ CREATE TABLE `schedules` (
   `start_date` time DEFAULT NULL,
   `end_date` time DEFAULT NULL,
   `place` varchar(255) DEFAULT NULL,
+  `type` varchar(255) DEFAULT 'Banin',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `schedules`
+-- Table structure for table `scores`
 --
 
-INSERT INTO `schedules` (`id`, `class_id`, `mata_kuliah_id`, `dosen_id`, `day`, `start_date`, `end_date`, `place`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 'Selasa', '12:00:00', '12:00:00', '1', '2024-01-18 04:01:32', '2024-01-18 04:01:32'),
-(2, 1, 2, 1, 'Selasa', '12:00:00', '12:00:00', '2', '2024-01-18 04:02:40', '2024-01-18 04:02:40');
+CREATE TABLE `scores` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `mahasiswa_id` int(11) DEFAULT NULL,
+  `schedule_id` int(11) DEFAULT NULL,
+  `total_pelajaran` int(11) DEFAULT NULL,
+  `persentasi_kehadiran` int(11) DEFAULT NULL,
+  `akademik` double(8,2) DEFAULT NULL,
+  `non_akademik` double(8,2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -348,7 +442,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'test', 'admin@mail.com', NULL, '$2y$10$tk/Lw.a1M7BDMUf2gW0/GuYj9BXL3wQPvWYkrlXDAywajTOAyQsI2', 'Dosen', NULL, '2024-01-18 02:24:11', '2024-01-18 02:24:11');
+(1, 'admin', 'admin@gmail.com', NULL, '$2y$10$wEjrDpK90Jvz9GLYlIZI5e7LKjMJ375MmlY2QARKxMCg44xu/cNXy', 'Admin', NULL, '2024-02-09 00:54:59', '2024-02-09 00:54:59'),
+(2, 'thoriq', 'dosen@gmail.com', NULL, '$2y$10$0yISeN.Y./p/W6pF5yM3AeAk/6t7iDwoft8l0FDKxzuj8WFSoqP8W', 'Dosen', NULL, '2024-02-09 00:57:58', '2024-02-09 00:57:58'),
+(3, 'Bahri Maknun', 'mahasantri@gmail.com', NULL, '$2y$10$BRti/dnyDrBon09H8rAosOc.L/6UK5drBP4s7QKxkNwaxd6dmVky6', 'Mahasantri', NULL, '2024-02-09 01:01:44', '2024-02-09 01:01:44'),
+(4, 'Dimas Putra Pamungkas', 'dimas@gmail.com', NULL, '$2y$10$2rQbPqQ.ZMw38dsADYhG2eRoc.OhNHcMz39tY/C2HkQ5/gX9dyvmi', 'Mahasantri', NULL, '2024-05-13 22:03:57', '2024-05-13 22:03:57');
 
 --
 -- Indexes for dumped tables
@@ -373,6 +470,12 @@ ALTER TABLE `classes`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `detail_invoices`
+--
+ALTER TABLE `detail_invoices`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `dosens`
 --
 ALTER TABLE `dosens`
@@ -392,6 +495,12 @@ ALTER TABLE `failed_jobs`
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
 
 --
+-- Indexes for table `invoices`
+--
+ALTER TABLE `invoices`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `mahasantris`
 --
 ALTER TABLE `mahasantris`
@@ -401,6 +510,12 @@ ALTER TABLE `mahasantris`
 -- Indexes for table `mata_kuliahs`
 --
 ALTER TABLE `mata_kuliahs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `matkul_dosens`
+--
+ALTER TABLE `matkul_dosens`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -422,6 +537,12 @@ ALTER TABLE `password_reset_tokens`
   ADD PRIMARY KEY (`email`);
 
 --
+-- Indexes for table `payment_types`
+--
+ALTER TABLE `payment_types`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
@@ -430,9 +551,21 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
+-- Indexes for table `prestasis`
+--
+ALTER TABLE `prestasis`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `schedules`
 --
 ALTER TABLE `schedules`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `scores`
+--
+ALTER TABLE `scores`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -450,19 +583,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `absents`
 --
 ALTER TABLE `absents`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `akademiks`
 --
 ALTER TABLE `akademiks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `classes`
 --
 ALTER TABLE `classes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `detail_invoices`
+--
+ALTER TABLE `detail_invoices`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `dosens`
@@ -474,13 +613,19 @@ ALTER TABLE `dosens`
 -- AUTO_INCREMENT for table `edarans`
 --
 ALTER TABLE `edarans`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `invoices`
+--
+ALTER TABLE `invoices`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `mahasantris`
@@ -492,13 +637,25 @@ ALTER TABLE `mahasantris`
 -- AUTO_INCREMENT for table `mata_kuliahs`
 --
 ALTER TABLE `mata_kuliahs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `matkul_dosens`
+--
+ALTER TABLE `matkul_dosens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT for table `payment_types`
+--
+ALTER TABLE `payment_types`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -507,16 +664,28 @@ ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `prestasis`
+--
+ALTER TABLE `prestasis`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `scores`
+--
+ALTER TABLE `scores`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

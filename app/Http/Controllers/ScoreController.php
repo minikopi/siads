@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
-use Spatie\LaravelPdf\Facades\Pdf;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ScoreController extends Controller
 {
@@ -80,21 +80,6 @@ class ScoreController extends Controller
             ->make(true);
     }
 
-    public function cetak()
-    {
-        $data = Schedule::with("score", "mata_kuliah", "dosen.user", 'class')->where("class_id", Auth::user()->mahasantri->kelas_id)
-            ->when($request->smester, function ($q) use ($request) {
-                return $q->whereHas("mata_kuliah", function ($b) use ($request) {
-                    $b->where("smester", $request->smester);
-                });
-            })
-            ->orderBy('created_at', 'desc')->get();
-
-        Pdf::view('score.mahasiswaView.cetak', ['data' => $data])
-            ->format('a4')
-            ->save('invoice.pdf');
-    }
-
     public function scoreForm($id)
     {
         $data['schedule'] = Schedule::with("mata_kuliah", "dosen.user", 'class')->findOrFail($id);
@@ -148,5 +133,29 @@ class ScoreController extends Controller
         }
         DB::commit();
         return redirect()->route('score.AbsentAdmin', ['id' => $schedule_id])->with('success', 'Absen Berhasil Dibuat!');
+    }
+
+    public function generatePDF(Request $request)
+    {
+        $score = Schedule::with("score", "mata_kuliah", "dosen.user", 'class')->where("class_id", Auth::user()->mahasantri->kelas_id)
+            ->when($request->id, function ($q) use ($request) {
+                return $q->whereHas("mata_kuliah", function ($b) use ($request) {
+                    $b->where("smester", $request->id);
+                });
+            })
+            ->orderBy('created_at', 'desc')->get();
+        $data = [
+            'nama' => Auth::user()->name,
+            'nim' => Auth::user()->mahasantri->nim,
+            'angkatan' => 'MAZAYA',
+            'semester' => $request->id,
+            'tahun_akademik' => '2024/2025',
+            'musyrif_pa' => 'Ahmad Shodiqol Umam',
+            'score' => $score,
+            'total_sks' => $score->sum('sks')
+        ];
+        // dd($score);
+        $pdf = Pdf::loadView('score.mahasiswaView.cetak', $data);
+        return $pdf->download('KHS - ' . Auth::user()->name . '.pdf');
     }
 }

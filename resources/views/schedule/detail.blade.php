@@ -12,24 +12,38 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Jadwal Kuliah / Daftar Mata Kuliah {{$data['class']->nama}} ({{$data['class']->tahun_ajaran}})</h3>
+                                <h3 class="card-title">Jadwal Kuliah / Daftar Mata Kuliah {{ $data['class']->nama }}
+                                    ({{ $data['class']->tahun_ajaran }})</h3>
                                 {{-- <p class="ms-auto"><a href="{{ route('kelas.matkulPerKelas.detail',["id"=>$data["class"]->id]) }}"
                                         class="btn btn-primary btn-sm">Tambah Mata Kuliah</a></p> --}}
                             </div>
                             <div class="card-body">
-                                <div class="row justify-content-md-center">
-                                    <div class="col-6">
-                                        <div class="control-group form-group">
-                                            <label class="form-label">Semester</label>
-                                            <select class="form-control smester" name="smester" id="smester">
-                                                @foreach ($data['smester'] as $item)
-                                                    <option value="{{$item}}">Semester {{$item}}</option>
-                                                @endforeach
-
-                                            </select>
+                                <div class="row">
+                                    <div class="col-12 d-flex justify-content-between align-items-center">
+                                        <div class="col-3">
+                                            <!-- Empty column to keep space on the left side -->
+                                        </div>
+                                        <div class="col-6 text-center">
+                                            <div class="control-group form-group">
+                                                <label class="form-label">Semester</label>
+                                                <select class="form-control smester" name="smester" id="smester">
+                                                    @foreach ($data['smester'] as $item)
+                                                        <option value="{{ $item }}">Semester {{ $item }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-3 text-end">
+                                            <div class="control-group form-group">
+                                                <a class="btn btn-success"
+                                                    href="{{ route('schedule.cetak', ['id' => Auth::user()->mahasantri->kelas_id]) }}">Cetak
+                                                    KRS</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="table-responsive">
                                     <table class="table table-bordered text-nowrap border-bottom" id="datatables">
                                         <thead>
@@ -44,17 +58,6 @@
                                                 {{-- <th class="wd-10p border-bottom-0">Action</th> --}}
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Sahih al-Bukhary</td>
-
-                                                <td>
-                                                    <a href="" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                                                    <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -78,8 +81,8 @@
             $(document).ready(function() {
                 var smester = $('.smester').val();
                 var route;
-                route = '{{ route("kelas.matkulPerKelas.dataGet", ["id" =>$data["class"]->id ])}}?smester='+smester
-                    // route = route.replace(':id', $data["class"]->id);
+                route = '{{ route('kelas.matkulPerKelas.dataGet', ['id' => $data['class']->id]) }}?smester=' + smester
+                // route = route.replace(':id', $data["class"]->id);
                 var table = $('#datatables').DataTable({
                     "processing": true,
                     "serverSide": true,
@@ -119,7 +122,7 @@
                         // {
                         //     data: null,
                         //     render: function(data, type, row) {
-                        //         var route = '{{ route("kelas.detail", ["id" =>":id" ])}}'
+                        //         var route = '{{ route('kelas.detail', ['id' => ':id']) }}'
                         //         route = route.replace(':id', data.id);
                         //         return '<a href="'+route+'" class="btn btn-warning">Detail</a> ' +
                         //             '<button class="btn btn-danger" onclick="deleteRow(' +
@@ -144,11 +147,13 @@
                     ]
                 });
 
-                $('.smester').change(function(){
+                $('.smester').change(function() {
                     smester = $(this).val();
                     console.log(smester);
-                    route = '{{ route("kelas.matkulPerKelas.dataGet", ["id" =>$data["class"]->id ])}}?smester='+smester
-                    table.ajax.url( route ).load();
+                    route =
+                        '{{ route('kelas.matkulPerKelas.dataGet', ['id' => $data['class']->id]) }}?smester=' +
+                        smester
+                    table.ajax.url(route).load();
                 })
             });
         </script>

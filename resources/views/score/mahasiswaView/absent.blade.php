@@ -13,21 +13,30 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Nilai Kuliah / {{ Auth::user()->name }}</h3>
-                                {{-- <p class="ms-auto"><a href="{{ route('kelas.matkulPerKelas.detail',["id"=>$data["class"]->id]) }}"
-                                        class="btn btn-primary btn-sm">Tambah Mata Kuliah</a></p> --}}
                             </div>
                             <div class="card-body">
-                                <div class="row justify-content-md-center">
-                                    <div class="col-6">
-                                        <div class="control-group form-group">
-                                            <label class="form-label">Semester</label>
-                                            <select class="form-control smester" name="smester" id="smester">
-                                                @foreach ($data['smester'] as $item)
-                                                    <option value="{{ $item }}">Semester {{ $item }}
-                                                    </option>
-                                                @endforeach
-
-                                            </select>
+                                <div class="row">
+                                    <div class="col-12 d-flex justify-content-between align-items-center">
+                                        <div class="col-3">
+                                            <!-- Empty column to keep space on the left side -->
+                                        </div>
+                                        <div class="col-6 text-center">
+                                            <div class="control-group form-group">
+                                                <label class="form-label">Semester</label>
+                                                <select class="form-control smester" name="smester" id="smester">
+                                                    @foreach ($data['smester'] as $item)
+                                                        <option value="{{ $item }}">Semester {{ $item }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-3 text-end">
+                                            <div class="control-group form-group">
+                                                <a class="btn btn-success"
+                                                    href="{{ route('score.mahasantri.cetak', ['id' => Auth::user()->mahasantri->kelas_id]) }}">Cetak
+                                                    KHS</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

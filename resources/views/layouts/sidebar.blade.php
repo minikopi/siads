@@ -49,12 +49,14 @@
                             <li><a href="{{ route('kelas.index') }}"
                                     class="slide-item {{ request()->is('master/kelas') ? 'active' : '' }}"> Kelas</a>
                             </li>
-                            <li><a href="#" class="slide-item"> Transkrip Akademik</a></li>
+                            {{-- <li><a href="#" class="slide-item"> Transkrip Akademik</a></li> --}}
                         @endif
-                        <li><a href="{{ route('ipk.index') }}"
-                                class="slide-item {{ request()->is('master/akademik') ? 'active' : '' }}"> Riwayat
-                                IP</a>
-                        </li>
+                        @if (Auth::user()->role == 'Mahasantri')
+                            <li><a href="{{ route('ipk.index') }}"
+                                    class="slide-item {{ request()->is('master/akademik') ? 'active' : '' }}"> Riwayat
+                                    IP</a>
+                            </li>
+                        @endif
                         <li><a href="{{ Auth::user()->role == 'Mahasantri' ? route('schedule.detail', ['id' => Auth::user()->mahasantri->kelas_id]) : route('schedule.index') }}"
                                 class="slide-item {{ request()->is('master/jadwal-kuliah') ? 'active' : '' }}"> Jadwal
                                 Kuliah</a></li>
@@ -110,18 +112,6 @@
                                 Prestasi Akademik</a>
                         </li>
                     </ul>
-                </li>
-                <li>
-                    <a class="side-menu__item" href="widgets.html"><i class="side-menu__icon fe fe-grid"></i><span
-                            class="side-menu__label">Evaluasi</span></a>
-                </li>
-                <li>
-                    <a class="side-menu__item" href="widgets.html"><i class="side-menu__icon fe fe-grid"></i><span
-                            class="side-menu__label">Notifikasi</span></a>
-                </li>
-                <li>
-                    <a class="side-menu__item" href="widgets.html"><i class="side-menu__icon fe fe-grid"></i><span
-                            class="side-menu__label">Pengaturan</span></a>
                 </li>
             </ul>
             <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"

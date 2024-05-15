@@ -76,6 +76,7 @@ Route::middleware(['auth'])->group(
                 //Schedule
                 Route::get('/jadwal-kuliah', [ScheduleController::class, 'index'])->name('schedule.index');
                 Route::get('/jadwal-kuliah/{id}', [ScheduleController::class, 'detail'])->name('schedule.detail');
+                Route::get('/jadwal-kuliah/cetak/{id}', [ScheduleController::class, 'generatePDF'])->name('schedule.cetak');
                 // Route::get('/jadwal-kuliah/dataGet', [MataKuliahController::class, 'dataGet'])->name('mata-kuliah.dataGet');
                 // Route::get('/jadwal-kuliah/create', [MataKuliahController::class, 'create'])->name('mata-kuliah.create');
                 // Route::post('/jadwal-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
@@ -90,6 +91,7 @@ Route::middleware(['auth'])->group(
 
                 Route::get('/presensi/mahasantri/abs', [AbsentController::class, 'AbsentMahasiswa'])->name('absent.mahasantri.index');
                 Route::get('/presensi/mahasantri/json', [AbsentController::class, 'dataGetScheduleMahasiswa'])->name('absent.mahasantri.getData');
+                Route::get('/presensi/mahasiswa/cetak', [AbsentController::class, 'GeneratePDF'])->name('absent.mahasantri.cetak');
 
 
                 //penilaian
@@ -102,7 +104,7 @@ Route::middleware(['auth'])->group(
 
                 Route::get('/score/mahasantri/abs', [ScoreController::class, 'AbsentMahasiswa'])->name('score.mahasantri.index');
                 Route::get('/score/mahasantri/json', [ScoreController::class, 'dataGetScheduleMahasiswa'])->name('score.mahasantri.getData');
-                Route::get('/score/mahasantri/cetak', [ScoreController::class, 'cetak'])->name('score.mahasantri.cetak');
+                Route::get('/score/mahasantri/cetak', [ScoreController::class, 'generatePDF'])->name('score.mahasantri.cetak');
 
                 //Mata Kuliah
                 Route::get('/kelas', [ClassController::class, 'index'])->name('kelas.index');
