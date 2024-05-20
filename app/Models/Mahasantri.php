@@ -16,6 +16,8 @@ class Mahasantri extends Model
         'email',
         'handphone',
         'nik',
+        'anak_ke',
+        'kondisi_kemampuan',
         'alamat',
         'kode_pos',
         'tanggal_lahir',
