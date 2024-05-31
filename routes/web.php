@@ -86,7 +86,10 @@ Route::middleware(['auth'])->group(
                 Route::get('/presensi/{id}', [AbsentController::class, 'detail'])->name('absent.detail');
                 Route::get('/presensi/admin/{id}', [AbsentController::class, 'AbsentAdmin'])->name('absent.AbsentAdmin');
                 Route::get('/presensi/admin/form/{id}', [AbsentController::class, 'AbsentForm'])->name('absent.AbsentForm');
-                Route::get('/presensi/admin/store/{schedule_id}', [AbsentController::class, 'store'])->name('absent.store');
+                Route::get('/presensi/admin/edit/{id}/tanggal/{date}', [AbsentController::class, 'AbsentFormEdit'])->name('absent.AbsentFormEdit');
+                Route::delete('/presensi/admin/delete/{id}/tanggal/{date}', [AbsentController::class, 'DeleteAbsent'])->name('absent.delete');
+                Route::post('/presensi/admin/store/{schedule_id}', [AbsentController::class, 'store'])->name('absent.store');
+                Route::post('/presensi/admin/update/{schedule_id}', [AbsentController::class, 'update'])->name('absent.update');
 
 
                 Route::get('/presensi/mahasantri/abs', [AbsentController::class, 'AbsentMahasiswa'])->name('absent.mahasantri.index');

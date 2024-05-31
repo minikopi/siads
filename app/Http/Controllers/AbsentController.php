@@ -118,4 +118,45 @@ class AbsentController extends Controller
         DB::commit();
         return redirect()->route('absent.AbsentAdmin', ['id' => $schedule_id])->with('success', 'Absen Berhasil Dibuat!');
     }
+
+    public function update($schedule_id, Request $request)
+    {
+        $schedule = Schedule::with("mata_kuliah", "dosen.user", 'class')->findOrFail($schedule_id);
+        DB::beginTransaction();
+        // dd($request->all());
+        foreach ($request->siswa as $key => $s) {
+            try {
+                Absent::where('id', $key)->update([
+                    'tanggal' => Carbon::parse(
+                        $request->tanggal_pelajaran
+                    ),
+                    'status' => $s
+                ]);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return redirect()->back()->with('error', $e->getMessage());
+            }
+        }
+        DB::commit();
+        return redirect()->route('absent.AbsentAdmin', ['id' => $schedule_id])->with('success', 'Absen Berhasil DiEdit!');
+    }
+
+    public function AbsentFormEdit($id, $date)
+    {
+        $data['schedule'] = Schedule::with("mata_kuliah", "dosen.user", 'class')->findOrFail($id);
+        $data['siswa'] = Mahasantri::where('kelas_id', $data['schedule']->class->id)->orderBy('nama_depan', "ASC")->get();
+        $data['absent'] = Absent::where('schedule_id', $id)->where('tanggal', $date)->get();
+        // dd($data['absent']->where('mahasiswa_id', 7)->first()->status);
+        // dd($a);
+        // foreach ($a as $as) {
+        //     dd($as['mahasiswa_id']);
+        // }
+        return view('absent.formAbsentEdit', compact('id', 'date', 'data'));
+    }
+
+    public function DeleteAbsent($id, $date)
+    {
+        $data['absent'] = Absent::where('schedule_id', $id)->where('tanggal', $date)->delete();
+        return redirect()->route('absent.AbsentAdmin', ['id' => $id])->with('success', 'Absen Berhasil Didelete!');
+    }
 }

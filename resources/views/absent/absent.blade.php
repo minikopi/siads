@@ -35,7 +35,7 @@
                                                 <th class="wd-15p border-bottom-0">Ghoib</th>
                                                 <th class="wd-15p border-bottom-0">Terlambat</th>
                                                 <th class="wd-15p border-bottom-0">% Hadir</th>
-                                                {{-- <th class="wd-10p border-bottom-0">Action</th> --}}
+                                                <th class="wd-10p border-bottom-0">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -50,6 +50,17 @@
                                                     <td>{{ $item->jumlah_ghoib }}</td>
                                                     <td>{{ $item->jumlah_terlambat }}</td>
                                                     <td>{{ $item->persen }}</td>
+                                                    <td>
+                                                        <a href="{{route('absent.AbsentFormEdit',['id'=>$data['schedule']->id, 'date'=>$item->tanggal])}}" class="btn btn-primary">Edit Persensi</a>
+                                                        <form action="{{route('absent.delete', ['id'=>$data['schedule']->id, 'date'=>$item->tanggal])}}"
+                                                                onsubmit="return confirm('Are you sure?')" class="d-inline"
+                                                                method="POST">
+                                                                @csrf
+                                                                <input type="hidden" name="_method" value="DELETE">
+
+                                                            <button type="submit" class="btn btn-danger" >Delete</button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                             {{-- <tr>

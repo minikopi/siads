@@ -13,23 +13,22 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Persensi Kuliah / {{$data['schedule']->class->nama}} ({{$data['schedule']->class->tahun_ajaran}} - {{$data['schedule']->class->smester}}) / {{$data['schedule']->mata_kuliah->nama}} / Form Absen</h3>
-                                {{-- <p class="ms-auto"><a href="{{ route('kelas.matkulPerKelas.detail',["id"=>$data["class"]->id]) }}"
-                                        class="btn btn-primary btn-sm">Tambah Absen</a></p> --}}
+                                {{-- {{$id}}
+                                {{$date}} --}}
                             </div>
 
-                            <form action="{{route('absent.store', ["schedule_id"=> $data['schedule']->id])}}"method="POST">
+                            <form action="{{route('absent.update', ["schedule_id"=> $data['schedule']->id])}}" method="POST">
                                 @csrf
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-3">
                                         <div class="control-group form-group">
-                                            {{-- <label class="form-label">Tanggal Pelajaran</label> --}}
                                             <input type="date" class="form-control required" name="tanggal_pelajaran"
-                                                id="tanggal_lahir">
+                                                id="tanggal_lahir" value="{{$date}}">
                                         </div>
                                     </div>
                                     <div class="col-3">
-                                        <button class="btn btn-success">Submit Absen</button>
+                                        <button class="btn btn-success">Update Absen</button>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
@@ -42,31 +41,31 @@
                                                 <td>{{$siswa->nama_depan}} {{$siswa->nama_belakang}}</td>
                                                 <td>
                                                     <label class="custom-control custom-radio presence_{{ $siswa->id }}">
-                                                        <input type="radio" class="custom-control-input" name="siswa[{{ $siswa->id }}]" value="HADIR">
+                                                        <input type="radio" class="custom-control-input" name="siswa[{{ $data['absent']->where('mahasiswa_id', $siswa->id)->first()->id }}]" value="HADIR" {{$data['absent']->where('mahasiswa_id', $siswa->id)->first()->status == 'HADIR' ? 'checked' : ''}}>
                                                         <span class="custom-control-label">Hadir</span>
                                                     </label>
                                                 </td>
                                                 <td>
                                                     <label class="custom-control custom-radio presence_{{ $siswa->id }}">
-                                                        <input type="radio" class="custom-control-input" name="siswa[{{ $siswa->id }}]" value="SAKIT">
+                                                        <input type="radio" class="custom-control-input" name="siswa[{{ $data['absent']->where('mahasiswa_id', $siswa->id)->first()->id }}]" value="SAKIT"  {{$data['absent']->where('mahasiswa_id', $siswa->id)->first()->status == 'SAKIT' ? 'checked' : ''}}>
                                                         <span class="custom-control-label">Sakit</span>
                                                     </label>
                                                 </td>
                                                 <td>
                                                     <label class="custom-control custom-radio presence_{{ $siswa->id }}">
-                                                        <input type="radio" class="custom-control-input" name="siswa[{{ $siswa->id }}]" value="IZIN">
+                                                        <input type="radio" class="custom-control-input" name="siswa[{{ $data['absent']->where('mahasiswa_id', $siswa->id)->first()->id }}]" value="IZIN"  {{$data['absent']->where('mahasiswa_id', $siswa->id)->first()->status == 'IZIN' ? 'checked' : ''}}>
                                                         <span class="custom-control-label">Izin</span>
                                                     </label>
                                                 </td>
                                                 <td>
                                                     <label class="custom-control custom-radio presence_{{ $siswa->id }}">
-                                                        <input type="radio" class="custom-control-input" name="siswa[{{ $siswa->id }}]" value="GHOIB">
+                                                        <input type="radio" class="custom-control-input" name="siswa[{{ $data['absent']->where('mahasiswa_id', $siswa->id)->first()->id }}]" value="GHOIB"  {{$data['absent']->where('mahasiswa_id', $siswa->id)->first()->status == 'GHOIB' ? 'checked' : ''}}>
                                                         <span class="custom-control-label">Ghoib</span>
                                                     </label>
                                                 </td>
                                                 <td>
                                                     <label class="custom-control custom-radio presence_{{ $siswa->id }}">
-                                                        <input type="radio" class="custom-control-input" name="siswa[{{ $siswa->id }}]" value="TERLAMBAT">
+                                                        <input type="radio" class="custom-control-input" name="siswa[{{ $data['absent']->where('mahasiswa_id', $siswa->id)->first()->id }}]" value="TERLAMBAT"  {{$data['absent']->where('mahasiswa_id', $siswa->id)->first()->status == 'TERLAMBAT' ? 'checked' : ''}}>
                                                         <span class="custom-control-label">Terlambat</span>
                                                     </label>
                                                 </td>
