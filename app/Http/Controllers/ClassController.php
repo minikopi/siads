@@ -87,17 +87,9 @@ class ClassController extends Controller
         $request->validate([
             'mata_kuliah_id'          => 'required',
             'dosen_id'          => 'required',
-            'day'          => 'required',
-            'start_date'          => 'required',
-            'end_date'          => 'required',
-            'place'          => 'required',
         ], [
             'mata_kuliah_id.required'     => 'Mata Kuliah diperlukan',
             'dosen_id.required'     => 'Dosen diperlukan',
-            'day.required'     => 'Hari diperlukan',
-            'start_date.required'     => 'Waktu Mulai diperlukan',
-            'end_date.required'     => 'Waktu Selesai diperlukan',
-            'place.required'     => 'Tempat diperlukan',
         ]);
         $req = $request->all();
         $req['class_id'] = $id;
@@ -109,9 +101,6 @@ class ClassController extends Controller
     public function dataGetSchedule(Request $request, $id)
     {
         $data = Schedule::with("mata_kuliah", "dosen.user", 'class')
-            ->whereHas('mata_kuliah', function ($query) {
-                $query->where('sks', '!=', 0);
-            })
             ->where("class_id", $id)
             ->when($request->smester, function ($q) use ($request) {
                 return $q->whereHas("mata_kuliah", function ($b) use ($request) {
@@ -123,9 +112,13 @@ class ClassController extends Controller
 
         return DataTables::of($data)
             ->addColumn('jadwal', function ($data) {
-                $start = Carbon::parse($data->start_date)->format('H:i');
-                $end = Carbon::parse($data->end_date)->format('H:i');
-                return $data->day . " " . $start . "-" . $end . " " . $data->place;
+                if ($data->mata_kuliah->sks != 0) {
+                    $start = Carbon::parse($data->start_date)->format('H:i');
+                    $end = Carbon::parse($data->end_date)->format('H:i');
+                    return $data->day . " " . $start . "-" . $end . " " . $data->place;
+                } else {
+                    return "Pelaksanaan Dilaksanakan Diakhir Semester";
+                }
             })
             ->addColumn('peserta', function ($data) {
                 $peserta = Mahasantri::where('kelas_id', $data->class->id)->count();
