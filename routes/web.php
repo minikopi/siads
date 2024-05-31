@@ -100,6 +100,7 @@ Route::middleware(['auth'])->group(
                 Route::get('/score/admin/{id}', [ScoreController::class, 'AbsentAdmin'])->name('score.AbsentAdmin');
                 Route::get('/score/admin/form/{id}', [ScoreController::class, 'scoreForm'])->name('score.scoreForm');
                 Route::get('/score/admin/store/{schedule_id}', [ScoreController::class, 'store'])->name('score.store');
+                Route::get('/score/data-get/{id}', [ScoreController::class, 'dataGet'])->name('score.matkulPerKelas.dataGet');
 
 
                 Route::get('/score/mahasantri/abs', [ScoreController::class, 'AbsentMahasiswa'])->name('score.mahasantri.index');

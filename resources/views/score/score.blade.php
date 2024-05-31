@@ -28,8 +28,7 @@
                                                 <th class="wd-15p border-bottom-0">Total Kelas</th>
                                                 <th class="wd-15p border-bottom-0">Total Kehadiran</th>
                                                 <th class="wd-15p border-bottom-0">Persentasi Kehadiran</th>
-                                                <th class="wd-15p border-bottom-0">Penilaian Akademik</th>
-                                                <th class="wd-15p border-bottom-0">Penilaian Non Akademik</th>
+                                                <th class="wd-15p border-bottom-0">Penilaian</th>
                                                 {{-- <th class="wd-10p border-bottom-0">Action</th> --}}
                                             </tr>
                                         </thead>
@@ -42,8 +41,6 @@
                                                     <td>{{ $item->hadir }}</td>
                                                     <td>{{ round($item->persent) }}%</td>
                                                     <td>{{ isset($item->nilai) ? $item->nilai->akademik : 'Belum Terisi' }}
-                                                    </td>
-                                                    <td>{{ isset($item->nilai) ? $item->nilai->non_akademik : 'Belum Terisi' }}
                                                     </td>
                                                 </tr>
                                             @endforeach

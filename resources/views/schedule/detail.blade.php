@@ -36,9 +36,11 @@
                                         </div>
                                         <div class="col-3 text-end">
                                             <div class="control-group form-group">
-                                                <a class="btn btn-success"
-                                                    href="{{ route('schedule.cetak', ['id' => Auth::user()->mahasantri->kelas_id]) }}">Cetak
-                                                    KRS</a>
+                                                @if (Auth::user()->role == 'Mahasantri')
+                                                    <a class="btn btn-success"
+                                                        href="{{ route('schedule.cetak', ['id' => Auth::user()->mahasantri->kelas_id]) }}">Cetak
+                                                        KRS</a>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

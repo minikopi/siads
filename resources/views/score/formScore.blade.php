@@ -40,15 +40,9 @@
                                                         </td>
                                                         <td>
                                                             <input type="text" class="form-control required"
-                                                                name="akademik[{{ $siswa->id }}]" id="asal_sekolah" value="{{$siswa->akademin}}"
-                                                                style="height: 30px" placeholder="Penilaian Akademik">
-
-                                                        </td>
-                                                        <td>
-
-                                                            <input type="text" class="form-control required"
-                                                                name="non_akademik[{{ $siswa->id }}]" id="asal_sekolah" value="{{$siswa->non_akademin}}"
-                                                                style="height: 30px" placeholder="Penilaian Non Akademik">
+                                                                name="akademik[{{ $siswa->id }}]" id="asal_sekolah"
+                                                                value="{{ $siswa->akademin }}" style="height: 30px"
+                                                                placeholder="Penilaian">
 
                                                         </td>
 

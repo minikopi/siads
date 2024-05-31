@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class ScoreController extends Controller
 {
@@ -61,10 +62,10 @@ class ScoreController extends Controller
 
         return DataTables::of($data)
             ->editColumn('score', function ($data) {
-                return ($data->score[0]->akademik * 60 / 100) + ($data->score[0]->non_akademik * 40 / 100);
+                return $data->score[0]->akademik;
             })
             ->editColumn('huruf', function ($data) {
-                $nilai = ($data->score[0]->akademik * 60 / 100) + ($data->score[0]->non_akademik * 40 / 100);
+                $nilai = $data->score[0]->akademik;
                 if ($nilai > 80) {
                     return "A";
                 } elseif ($nilai > 70) {
@@ -157,5 +158,38 @@ class ScoreController extends Controller
         // dd($score);
         $pdf = Pdf::loadView('score.mahasiswaView.cetak', $data);
         return $pdf->download('KHS - ' . Auth::user()->name . '.pdf');
+    }
+
+    public function dataGet(Request $request, $id)
+    {
+        $data = Schedule::with("mata_kuliah", "dosen.user", 'class')
+            ->where("class_id", $id)
+            ->when($request->smester, function ($q) use ($request) {
+                return $q->whereHas("mata_kuliah", function ($b) use ($request) {
+                    $b->where("smester", $request->smester);
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return DataTables::of($data)
+            ->addColumn('jadwal', function ($data) {
+                if ($data->mata_kuliah->sks != 0) {
+                    $start = Carbon::parse($data->start_date)->format('H:i');
+                    $end = Carbon::parse($data->end_date)->format('H:i');
+                    return $data->day . " " . $start . "-" . $end . " " . $data->place;
+                } else {
+                    return "Pelaksanaan Dilaksanakan Diakhir Semester";
+                }
+            })
+            ->addColumn('peserta', function ($data) {
+                $peserta = Mahasantri::where('kelas_id', $data->class->id)->count();
+                return $peserta;
+            })
+            ->addColumn('action', function ($data) {
+                //
+            })
+            ->rawColumns(['action', 'jadwal'])
+            ->make(true);
     }
 }

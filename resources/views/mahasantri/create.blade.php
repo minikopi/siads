@@ -86,16 +86,16 @@
                                             </div>
                                             <div class="control-group form-group">
                                                 <label class="form-label">Alamat</label>
-                                                <textarea class="form-control required" name="alamat" id="alamat">{{ isset($data) ? $data->alamat : '' }}</textarea>
+                                                <textarea class="form-control" name="alamat" id="alamat">{{ isset($data) ? $data->alamat : '' }}</textarea>
                                             </div>
                                             <div class="control-group form-group">
                                                 <label class="form-label">Kode Pos</label>
-                                                <input type="number" class="form-control required" name="kode_pos"
-                                                    id="kode_pos" value="{{ isset($data) ? $data->kode_pos : '' }}">
+                                                <input type="number" class="form-control" name="kode_pos" id="kode_pos"
+                                                    value="{{ isset($data) ? $data->kode_pos : '' }}">
                                             </div>
                                             <div class="control-group form-group">
                                                 <label class="form-label">Tempat Lahir</label>
-                                                <input type="text" class="form-control required" name="kode_pos"
+                                                <input type="text" class="form-control" name="tempat_lahir"
                                                     id="tempat_lahir"
                                                     value="{{ isset($data) ? $data->tempat_lahir : '' }}">
                                             </div>

@@ -65,6 +65,7 @@ class ClassController extends Controller
     public function detail($id)
     {
         $data['class'] = Classes::findOrFail($id);
+        // dd($data['class']);
         return view("kelas.detail", compact('data'));
     }
 
@@ -107,13 +108,18 @@ class ClassController extends Controller
 
     public function dataGetSchedule(Request $request, $id)
     {
-        $data = Schedule::with("mata_kuliah", "dosen.user", 'class')->where("class_id", $id)
+        $data = Schedule::with("mata_kuliah", "dosen.user", 'class')
+            ->whereHas('mata_kuliah', function ($query) {
+                $query->where('sks', '!=', 0);
+            })
+            ->where("class_id", $id)
             ->when($request->smester, function ($q) use ($request) {
                 return $q->whereHas("mata_kuliah", function ($b) use ($request) {
                     $b->where("smester", $request->smester);
                 });
             })
-            ->orderBy('created_at', 'desc')->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return DataTables::of($data)
             ->addColumn('jadwal', function ($data) {
@@ -122,9 +128,7 @@ class ClassController extends Controller
                 return $data->day . " " . $start . "-" . $end . " " . $data->place;
             })
             ->addColumn('peserta', function ($data) {
-                // dd($data->class->id);
                 $peserta = Mahasantri::where('kelas_id', $data->class->id)->count();
-                // dd($peserta);
                 return $peserta;
             })
             ->addColumn('action', function ($data) {

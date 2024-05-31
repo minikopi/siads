@@ -37,7 +37,7 @@ class ScheduleController extends Controller
         $data = [
             'nama' => Auth::user()->name,
             'nim' => Auth::user()->mahasantri->nim,
-            'angkatan' => 'MAZAYA',
+            'angkatan' => $kelas->nama,
             'semester' => $kelas->current_semaster,
             'tahun_akademik' => $kelas->tahun_ajaran,
             'musyrif_pa' => 'Ahmad Shodiqol Umam',
