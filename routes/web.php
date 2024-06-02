@@ -119,7 +119,10 @@ Route::middleware(['auth'])->group(
                 Route::post('/kelas/smester/update', [ClassController::class, 'updateCurrentSmester'])->name('kelas.updateSmester');
                 Route::get('/kelas/{id}', [ClassController::class, 'detail'])->name('kelas.detail');
                 Route::get('/kelas/create/matkul/{id}', [ClassController::class, 'createSchedule'])->name('kelas.matkulPerKelas.detail');
+                Route::get('/kelas/edit/matkul/{id}', [ClassController::class, 'editSchedule'])->name('kelas.matkulPerKelas.edit');
+                Route::post('/kelas/update/matkul/{id}', [ClassController::class, 'updateSchedule'])->name('kelas.matkulPerKelas.update');
                 Route::post('/kelas/store/matkul/{id}', [ClassController::class, 'storeSchedule'])->name('kelas.matkulPerKelas.store');
+                Route::delete('/kelas/delete/matkul/{id}', [ClassController::class, 'deleteSchedule'])->name('kelas.matkulPerKelas.delete');
                 Route::get('/kelas/data-get/{id}', [ClassController::class, 'dataGetSchedule'])->name('kelas.matkulPerKelas.dataGet');
 
                 //Akademik

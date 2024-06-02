@@ -28,7 +28,7 @@
                                                 <th class="wd-15p border-bottom-0">Jadwal Kuliah</th>
                                                 <th class="wd-15p border-bottom-0">Semester</th>
                                                 <th class="wd-15p border-bottom-0">Dosen Pengampu</th>
-                                                {{-- <th class="wd-10p border-bottom-0">Action</th> --}}
+                                                <th class="wd-10p border-bottom-0">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -101,18 +101,20 @@
                             data: 'dosen.user.name',
                             name: 'dosen.user.name'
                         },
-                        // {
-                        //     data: null,
-                        //     render: function(data, type, row) {
-                        //         var route = '{{ route("kelas.detail", ["id" =>":id" ])}}'
-                        //         route = route.replace(':id', data.id);
-                        //         return '<a href="'+route+'" class="btn btn-warning">Detail</a> ' +
-                        //             '<button class="btn btn-danger" onclick="deleteRow(' +
-                        //             row.id +
-                        //             ')">Delete</button>';
-                        //     },
-                        //     name: 'action'
-                        // }
+                        {
+                            data: null,
+                            render: function(data, type, row) {
+                                var route = '{{ route("kelas.matkulPerKelas.edit", ["id" =>":id" ])}}'
+                                route = route.replace(':id', data.id);
+                                var routeDelete = '{{ route("kelas.matkulPerKelas.delete", ["id" =>":id" ])}}'
+                                routeDelete = routeDelete.replace(':id', data.id);
+                                return '<a href="'+route+'" class="btn btn-primary">Edit</a> ' +
+                                    '<button class="btn btn-danger" onclick="deleteRow(`' +
+                                    routeDelete +
+                                    '`)">Delete</button>';
+                            },
+                            name: 'action'
+                        }
                     ],
                     "columnDefs": [{
                             "width": "3%",

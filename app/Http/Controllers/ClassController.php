@@ -131,6 +131,44 @@ class ClassController extends Controller
             ->make(true);
     }
 
+    public function editSchedule($id)
+    {
+        $data['schedule'] = Schedule::findOrFail($id);
+        $data['class'] = Classes::findOrFail($data['schedule']->class_id);
+        $data['dosen'] = Dosen::with("user")->get();
+        $data['matkul'] = MataKuliah::get();
+        $data['days'] = array('Senin', 'Selasa', 'Rabu', 'Kamis', "Jum'at", 'Sabtu', 'Minggu');
+        $data['smester'] = MataKuliah::distinct('smester')->pluck('smester');
+        // dd($data['smester']);
+        $data['type'] = $data['class']->gender == 'Perempuan' ? array('Banat', 'Banin/Banat') : array('Banin', 'Banin/Banat');
+
+        // dd($data["matkul"]);
+        return view("kelas.matkulPerKelas.edit", compact('data'));
+    }
+
+    public function updateSchedule($id, Request $request)
+    {
+        $updt = Schedule::findOrFail($id);
+        $updt->update([
+            'mata_kuliah_id' => $request->mata_kuliah_id,
+            'dosen_id' => $request->dosen_id,
+            'day' => $request->day,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'place' => $request->place,
+            'semester' => $request->semester,
+            'type' => $request->type,
+        ]);
+        return redirect()->route('kelas.detail', ['id' => $updt->class_id])->with('success', 'Jadwal Matkul Berhasil Di Update!');
+    }
+
+    public function deleteSchedule($id)
+    {
+        $updt = Schedule::findOrFail($id);
+        $updt->delete();
+        return redirect()->route('kelas.detail', ['id' => $updt->class_id])->with('success', 'Jadwal Matkul Berhasil Di Delete!');
+    }
+
     public function updateCurrentSmester()
     {
         // dd('aaaa');
