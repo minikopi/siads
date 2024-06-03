@@ -114,8 +114,7 @@ class ScoreController extends Controller
                 $scheckScore = Score::Where('mahasiswa_id', $val->id)->where('schedule_id', $schedule_id)->first();
                 if (isset($scheckScore)) {
                     $scheckScore->update([
-                        'akademik' => $request->akademik[$s->id],
-                        'non_akademik' => $request->non_akademik[$s->id]
+                        'akademik' => $request->akademik[$s->id]
                     ]);
                 } else {
                     Score::create([
@@ -123,8 +122,7 @@ class ScoreController extends Controller
                         'mahasiswa_id' => $s->id,
                         'total_pelajaran' => $s->total,
                         'persentasi_kehadiran' => round($s->persent),
-                        'akademik' => $request->akademik[$s->id],
-                        'non_akademik' => $request->non_akademik[$s->id],
+                        'akademik' => $request->akademik[$s->id]
                     ]);
                 }
             } catch (\Exception $e) {
@@ -133,7 +131,7 @@ class ScoreController extends Controller
             }
         }
         DB::commit();
-        return redirect()->route('score.AbsentAdmin', ['id' => $schedule_id])->with('success', 'Absen Berhasil Dibuat!');
+        return redirect()->route('score.AbsentAdmin', ['id' => $schedule_id])->with('success', 'Penilaian Berhasil Dibuat!');
     }
 
     public function generatePDF(Request $request)
