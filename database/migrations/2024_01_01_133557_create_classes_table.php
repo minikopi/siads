@@ -17,6 +17,7 @@ return new class extends Migration
             $table->year('tahun_ajaran')->nullable();
             $table->integer('smester')->nullable();
             $table->string('gender')->nullable();
+            $table->string('musyrif_id')->nullable();
             $table->timestamps();
         });
     }

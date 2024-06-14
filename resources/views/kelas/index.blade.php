@@ -33,6 +33,7 @@
                                                 <th class="wd-15p border-bottom-0">Tahun Ajaran</th>
                                                 {{-- <th class="wd-15p border-bottom-0">Smester</th> --}}
                                                 <th class="wd-15p border-bottom-0">Jenis Kelamin</th>
+                                                <th class="wd-10p border-bottom-0">Musyrif</th>
                                                 <th class="wd-10p border-bottom-0">Action</th>
                                             </tr>
                                         </thead>
@@ -94,6 +95,10 @@
                         {
                             data: 'gender',
                             name: 'gender'
+                        },
+                        {
+                            data: 'musyrif_id',
+                            name: 'musyrif_id'
                         },
                         {
                             data: null,

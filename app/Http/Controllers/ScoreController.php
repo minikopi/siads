@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Absent;
 use App\Models\Classes;
+use App\Models\Dosen;
 use App\Models\Mahasantri;
 use App\Models\MataKuliah;
 use App\Models\Schedule;
@@ -139,23 +140,43 @@ class ScoreController extends Controller
         $score = Schedule::with("score", "mata_kuliah", "dosen.user", 'class')->where("class_id", Auth::user()->mahasantri->kelas_id)
             ->when($request->id, function ($q) use ($request) {
                 return $q->whereHas("mata_kuliah", function ($b) use ($request) {
-                    $b->where("smester", $request->id);
+                    $b->where("smester", 4);
                 });
             })
             ->orderBy('created_at', 'desc')->get();
+
+        $kelas = Classes::where("id", Auth::user()->mahasantri->kelas_id)->first();
+
+        $tahun_ajaran = $kelas->tahun_ajaran;
+        $current_semester = $kelas->current_semaster;
+        $tahun_akademik = $this->get_tahun_akademik($tahun_ajaran, $current_semester);
+        $data_musyrif = Dosen::where('id', $kelas->musyrif_id)->first();
+
         $data = [
             'nama' => Auth::user()->name,
             'nim' => Auth::user()->mahasantri->nim,
-            'angkatan' => 'MAZAYA',
-            'semester' => $request->id,
-            'tahun_akademik' => '2024/2025',
-            'musyrif_pa' => 'Ahmad Shodiqol Umam',
+            'angkatan' => $kelas->nama,
+            'semester' => 4,
+            'tahun_akademik' => $tahun_akademik,
+            'musyrif_pa' => $musyrif,
             'score' => $score,
             'total_sks' => $score->sum('sks')
         ];
         // dd($score);
         $pdf = Pdf::loadView('score.mahasiswaView.cetak', $data);
         return $pdf->download('KHS - ' . Auth::user()->name . '.pdf');
+    }
+
+    function get_tahun_akademik($tahun_ajaran, $current_semester)
+    {
+        $offset = intdiv($current_semester - 1, 2);
+
+        $start_year = $tahun_ajaran + $offset;
+        $end_year = $start_year + 1;
+
+        $tahun_akademik = $start_year . '/' . $end_year;
+
+        return $tahun_akademik;
     }
 
     public function dataGet(Request $request, $id)

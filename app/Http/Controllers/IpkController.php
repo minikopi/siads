@@ -20,11 +20,17 @@ class IpkController extends Controller
     {
         $mahasiswa = Mahasantri::where('user_id', Auth::user()->id)->first();
         $tahun = Classes::where('id', $mahasiswa->kelas_id)->first();
+        $current_semester = $tahun->current_semaster;
         $semesters = \DB::table('mata_kuliahs')->distinct()->pluck('smester');
 
         $results = [];
         $startYear = $tahun->tahun_ajaran;
         foreach ($semesters as $index => $semester) {
+
+            if ($index + 1 > $current_semester) {
+                break;
+            }
+
             $scores = Score::where('mahasiswa_id', $mahasiswa->id)
                 ->whereHas('schedule.mata_kuliah', function ($query) use ($semester) {
                     $query->where('smester', $semester);

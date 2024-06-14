@@ -66,6 +66,19 @@
                                                 </div>
                                             </div>
 
+                                            <div class="row mb-4">
+                                                <label class="col-md-3 form-label">Musyrif</label>
+                                                <div class="col-md-9">
+                                                    <select class="form-control required" name="gender" id="gender">
+                                                        <option value="">Pilih Salah Satu</option>
+                                                        @foreach ($musyrif as $data)
+                                                            <option value="{{ $data->user_id }}">{{ $data->user->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+
                                             <div class="mb-0 mt-4 row justify-content-end">
                                                 <div class="col-md-9">
                                                     <button type="submit" class="btn btn-primary">Submit</button>

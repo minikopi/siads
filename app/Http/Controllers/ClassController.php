@@ -42,7 +42,9 @@ class ClassController extends Controller
 
     public function create()
     {
-        return view('kelas.create');
+        $musyrif = Dosen::with('user')->where('tipe', 'Musyrif')->get();
+        // dd($musyrif);
+        return view('kelas.create', compact('musyrif'));
     }
 
     public function store(Request $request)
