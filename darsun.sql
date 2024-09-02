@@ -225,6 +225,7 @@ CREATE TABLE `mahasantris` (
 INSERT INTO `mahasantris` (`id`, `user_id`, `kelas_id`, `nim`, `nama_depan`, `nama_belakang`, `email`, `handphone`, `nik`, `alamat`, `kode_pos`, `tanggal_lahir`, `suku`, `saudara`, `whatsapp`, `foto`, `nama_ayah`, `tempat_ayah`, `lahir_ayah`, `pendidikan_ayah`, `pekerjaan_ayah`, `penghasilan_ayah`, `nama_ibu`, `tempat_ibu`, `lahir_ibu`, `pendidikan_ibu`, `pekerjaan_ibu`, `penghasilan_ibu`, `nama_wali`, `alamat_wali`, `handphone_wali`, `whatsapp_wali`, `asal_sekolah`, `alamat_sekolah`, `nomor_ijazah`, `tanggal_ijazah`, `asal_pesantren`, `alamat_pesantren`, `hobi`, `golongan_darah`, `berat_badan`, `tinggi_badan`, `penyakit`, `jenis_kelamin`, `status`, `created_at`, `updated_at`) VALUES
 (1, '3', 2, '139172931', 'Bahri', 'Maknun', 'bahri@gmail.com', '0813273641234', '139172931', 'jl.swatantra IV rt 001/04 no 50 jatiasih bekasi', '17423', '2024-02-06', '3123123', NULL, '139172931', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '139172931', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Laki-laki', 'aktif', '2024-02-09 01:01:44', '2024-02-09 01:01:44'),
 (2, '4', 2, '139172931', 'Dimas Putra', 'Pamungkas', 'dimas@gmail.com', '081224377189', '139172931', 'Pramuka No.33', '13120', NULL, NULL, NULL, '139172931', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '139172931', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Laki-laki', 'aktif', '2024-05-13 22:03:57', '2024-05-13 22:03:57');
+(3,'4', 7, '7,23.21.010', 'Athia', 'Mubarok', 'mubarokathia26@gmail.com', '089516942290', '3275062611020015', 'Jl. Sultan Agung gg sabilillah rt 05 rw 03 no. 129', '17182', '26-11-2002', 'Betawi', '4', '089516942290', NULL, 'Alm. Abu kosim', 'Bekasi', '15-07-1955', 'SMA/MA', NULL, NULL, 'Suhaidah', 'Bekasi', '1-4-1959', 'SMA/MA', 'Guru ngaji', '1.000.000 - 3.000.000', 'Hj. Suhaidah', 'Jl Sultan Agung gg sabilillah rt05 rw03 no. 129', '+62 856-9257-0740', '+62 856-9257-0740', 'SMA NAhdlatul wahtan Bogor,Kp. Saitem ds ciburayut kec. Cigombong kab. Bogor', 'DN-02/M-SMA/13/0074421', NULL, 'Ponpes modern nurul haramain nw bogor,Kp. Saitem Ds ciburayut kec. Cigombong','Membaca, menulis','A','65','160','Tidak ada','Laki-laki', 'Aktif',NULL, NULL)
 
 -- --------------------------------------------------------
 
@@ -242,7 +243,6 @@ CREATE TABLE `mata_kuliahs` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `matkul_dosens`

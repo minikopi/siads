@@ -23,7 +23,7 @@
                                             <tr>
                                                 <th class="wd-15p border-bottom-0">No</th>
                                                 <th class="wd-15p border-bottom-0">Nama Kelas</th>
-                                                <th class="wd-15p border-bottom-0">Tahun Ajaran</th>
+                                                <th class="wd-15p border-bottom-0">Tahun</th>
                                                 <th class="wd-15p border-bottom-0">Jenis Kelamin</th>
                                                 <th class="wd-10p border-bottom-0">Action</th>
                                             </tr>
