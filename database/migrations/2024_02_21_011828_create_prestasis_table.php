@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('prestasis', function (Blueprint $table) {
             $table->id();
             $table->integer('mahasiswa_id')->nullable();
-            $table->string('nama')->nullable();
+            $table->string('prestasi')->nullable();
             $table->string('status')->nullable();
             $table->text('file')->nullable();
             $table->timestamps();
