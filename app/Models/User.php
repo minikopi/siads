@@ -6,11 +6,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laratrust\Contracts\LaratrustUser;
+use Laratrust\Traits\HasRolesAndPermissions;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements LaratrustUser
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use HasRolesAndPermissions;
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +24,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
     ];
 
     /**
