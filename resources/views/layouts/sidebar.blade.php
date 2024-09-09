@@ -84,14 +84,27 @@
                             class="side-menu__icon fe fe-grid"></i><span class="side-menu__label">Pembayaran</span><i
                             class="angle fa fa-angle-right"></i></a>
                     <ul class="slide-menu">
-                        <li><a href="{{ route('paymentType.index') }}"
-                                class="slide-item {{ request()->is('pembayaran/master') ? 'active' : '' }}">
-                                Master Pembayaran</a>
+                        @role('admin')
+                        <li>
+                            <a href="{{ route('paymentType.index') }}" class="slide-item {{ request()->is('pembayaran/master') ? 'active' : '' }}">
+                                Master Pembayaran
+                            </a>
                         </li>
-                        <li><a href="{{ Auth::user()->role == 'Mahasantri' ? route('pembayaran.index') : route('pembayaran.ListSiswa') }}"
+                        <li>
+                            <a href="{{ Auth::user()->role == 'Mahasantri' ? route('pembayaran.index') : route('pembayaran.ListSiswa') }}"
                                 class="slide-item {{ request()->is('pembayaran/mahasiswa') ? 'active' : '' }}">
-                                Pembayaran Mahasiswa</a>
+                                Pembayaran Mahasiswa
+                            </a>
                         </li>
+                        @endrole
+                        @role('mahasantri')
+                        <li>
+                            <a href="{{ route('mahasantri.pembayaran.index') }}"
+                                class="slide-item {{ request()->is('mahasantri/pembayaran') ? 'active' : '' }}">
+                                Tagihan
+                            </a>
+                        </li>
+                        @endrole
                     </ul>
                 </li>
                 <li class="slide {{ request()->is('wisuda*') ? 'is-expanded' : '' }}">

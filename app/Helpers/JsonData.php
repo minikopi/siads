@@ -2,14 +2,16 @@
 
 namespace App\Helpers;
 
+use App\Models\PaymentType;
+
 class JsonData
 {
     public static function TypePayment()
     {
         return [
-            '1' => 'Pembayaran Awal Smester (Lunas)',
-            '2' => 'Pembayaran Harus Lunas Sebelum Smester Berkahir (Lunas / Cicil)',
-            '3' => 'Pembayaran Sampai Lulus (Lunas / Cicil)',
+            '1' => PaymentType::TIPE_PEMBAYARAN_AWAL_SEMESTER_LUNAS_TEXT,
+            '2' => PaymentType::TIPE_PEMBAYARAN_HARUS_SEBELUM_SEMESTER_BERAKHIR_LUNASCICIL_TEXT,
+            '3' => PaymentType::TIPE_PEMBAYARAN_SAMPAI_LULUS_LUNASCICIL_TEXT,
         ];
     }
 
