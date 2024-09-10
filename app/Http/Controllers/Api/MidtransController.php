@@ -20,7 +20,6 @@ class MidtransController extends Controller
         try {
             $notif = new Notification();
             $notif = $notif->getResponse();
-            // Log::info($notif);
         } catch (\Exception $e) {
             Log::warning($e->getMessage());
             Payload::create([
@@ -36,8 +35,8 @@ class MidtransController extends Controller
         $code = $notif->status_code;
         $type = $notif->payment_type;
         $order_id = $notif->order_id;
+        $model = Invoice::where('invoice_code', $order_id)->first();
 
-        // simpan payload
         Payload::create([
             'payload_type' => 'response',
             'payload' => json_encode($notif)
@@ -51,31 +50,50 @@ class MidtransController extends Controller
                     // TODO merchant should decide whether this transaction is authorized or not in MAP
                     Log::info("Transaction order_id: " . $order_id . " is challenged by FDS");
                 } else {
-                    // TODO set payment status in merchant's database to 'Success'
+                    // set payment status in merchant's database to 'Success'
                     Log::info("Transaction order_id: " . $order_id . " successfully captured using " . $type);
+
+                    if ($model) {
+                        $model->status = 2;
+                        $model->save();
+                    }
                 }
             }
         } else if ($transaction == 'settlement') {
-            // TODO set payment status in merchant's database to 'Settlement'
+            // set payment status in merchant's database to 'Settlement'
             Log::info("Transaction order_id: " . $order_id . " successfully transfered using " . $type);
 
-            $model = Invoice::where('invoice_code', $order_id)->first();
             if ($model) {
                 $model->status = 2;
                 $model->save();
             }
         } else if ($transaction == 'pending') {
-            // TODO set payment status in merchant's database to 'Pending'
+            // set payment status in merchant's database to 'Pending'
             Log::info("Waiting customer to finish transaction order_id: " . $order_id . " using " . $type);
         } else if ($transaction == 'deny') {
-            // TODO set payment status in merchant's database to 'Denied'
+            // set payment status in merchant's database to 'Denied'
             Log::info("Payment using " . $type . " for transaction order_id: " . $order_id . " is denied.");
+
+            if ($model) {
+                $model->status = 3;
+                $model->save();
+            }
         } else if ($transaction == 'expire') {
-            // TODO set payment status in merchant's database to 'expire'
+            // set payment status in merchant's database to 'expire'
             Log::info("Payment using " . $type . " for transaction order_id: " . $order_id . " is expired.");
+
+            if ($model) {
+                $model->status = 3;
+                $model->save();
+            }
         } else if ($transaction == 'cancel') {
-            // TODO set payment status in merchant's database to 'Denied'
+            // set payment status in merchant's database to 'Denied'
             Log::info("Payment using " . $type . " for transaction order_id: " . $order_id . " is canceled.");
+
+            if ($model) {
+                $model->status = 3;
+                $model->save();
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\Payload;
 use Illuminate\Support\Facades\Auth;
 use Midtrans\Config;
 use Midtrans\Snap;
@@ -57,6 +58,12 @@ class Midtrans
             'item_details'           => $items,
             'customer_details'   => $customer_details
         );
+
+        Payload::create([
+            'user_id' => auth()->id(),
+            'payload_type' => 'response',
+            'payload' => json_encode($transaction_data)
+        ]);
         $paymentUrl = Snap::createTransaction($transaction_data)->redirect_url;
         return $paymentUrl;
     }
