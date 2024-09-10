@@ -78,13 +78,14 @@
                         href="{{ route('pembayaran.index') }}"><i class="side-menu__icon fe fe-grid"></i><span
                             class="side-menu__label">Pembayaran</span></a>
                 </li> --}}
+
+                @role('admin')
                 <li class="slide {{ request()->is('pembayaran*') ? 'is-expanded' : '' }}">
                     <a class="side-menu__item {{ request()->is('pembayaran*') ? 'active is-expanded' : '' }}"
                         data-bs-toggle="slide" href="javascript:void(0);"><i
                             class="side-menu__icon fe fe-grid"></i><span class="side-menu__label">Pembayaran</span><i
                             class="angle fa fa-angle-right"></i></a>
                     <ul class="slide-menu">
-                        @role('admin')
                         <li>
                             <a href="{{ route('paymentType.index') }}" class="slide-item {{ request()->is('pembayaran/master') ? 'active' : '' }}">
                                 Master Pembayaran
@@ -96,17 +97,27 @@
                                 Pembayaran Mahasiswa
                             </a>
                         </li>
-                        @endrole
-                        @role('mahasantri')
+                    </ul>
+                </li>
+                @endrole
+
+                @role('mahasantri')
+                <li class="slide {{ request()->is('mahasantri/pembayaran*') ? 'is-expanded' : '' }}">
+                    <a class="side-menu__item {{ request()->is('mahasantri/pembayaran*') ? 'active is-expanded' : '' }}"
+                        data-bs-toggle="slide" href="javascript:void(0);"><i
+                            class="side-menu__icon fe fe-grid"></i><span class="side-menu__label">Pembayaran</span><i
+                            class="angle fa fa-angle-right"></i></a>
+                    <ul class="slide-menu">
                         <li>
                             <a href="{{ route('mahasantri.pembayaran.index') }}"
                                 class="slide-item {{ request()->is('mahasantri/pembayaran') ? 'active' : '' }}">
                                 Tagihan
                             </a>
                         </li>
-                        @endrole
                     </ul>
                 </li>
+                @endrole
+
                 <li class="slide {{ request()->is('wisuda*') ? 'is-expanded' : '' }}">
                     <a class="side-menu__item {{ request()->is('wisuda*') ? 'active is-expanded' : '' }}"
                         data-bs-toggle="slide" href="javascript:void(0);"><i
