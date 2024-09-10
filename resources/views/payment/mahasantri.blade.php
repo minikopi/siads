@@ -104,13 +104,13 @@
                                 <h3 class="card-title">Daftar Tagihan Semester</h3>
                                 @if (Auth::user()->role == 'Mahasantri')
                                     <p class="ms-auto">
-                                    <a class="btn btn-danger rounded-0" id="pay-button" target="_blank" href="{{$token['invoice'] != null ? $token['invoice']->payment_url : ''}}" {{$token['invoice'] != null ? '' : 'disabled'}}>{{$token['invoice'] != null ? 'Bayar Sekarang' : 'Tidak Ada Tagihan'}}</a>
+                                    <a class="btn @if($token['invoice'] != null) btn-danger @else btn-success @endif text-white rounded-0" id="pay-button" @if($token['invoice'] != null) href="{{ $token['invoice']->payment_url }}" target="_blank" @else disabled @endif>{{$token['invoice'] != null ? 'Bayar Sekarang' : 'Tidak Ada Tagihan'}}</a>
                                 </p>
                                 @endif
 
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('mahasantri.pembayaran.store') }}" method="POST" target="_blank">
+                                <form action="{{ route('mahasantri.pembayaran.store') }}" method="POST">
                                     @csrf
                                 <div class="panel-group1" id="accordion1">
                                     @foreach ($data as $i => $item)
@@ -176,7 +176,7 @@
                                                                                     <div class="col-md-9">
                                                                                         <input class="form-control numericInput inputNominal"
                                                                                             type="input" id="{{$pt['id']}}" autocomplete="off"
-                                                                                            value="{{$pt['total']}}" {{$pt['type_code'] != 1 ? '': 'readonly'}} data-target="{{$pt['id']}}">
+                                                                                            value="{{ $pt['total'] - $pt['sudah_dibayar'] }}" {{$pt['type_code'] != 1 ? '': 'readonly'}} data-target="{{$pt['id']}}">
                                                                                     </div>
                                                                                 </div>
                                                                             </td>
@@ -274,52 +274,6 @@
 
 
         </script>
-        <script src="{{$token['url']}}" data-client-key="{{$token['clienKey']}}"></script>
-        <script type="text/javascript">
-
-            @if(Session::has('successe'))
-            $(window).load(function(){
-                let a = $('#pay-button').attr('data-token');
-                mid(a);
-            });
-            @endif
-
-
-
-            let mid = (a) => {
-                        snap.pay(a, {
-                        uiMode: "qr",
-                        // Optional
-                        onSuccess: function(result){
-                            // /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                            // toastr.info("Silahikan Tunggu Konfirmasi", "Info!");
-                        },
-                        // Optional
-                        onPending: function(result){
-                            // /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                            // toastr.success("Berhasil Melakukan Pembayaran", "Success!");
-                            // console.log('Pending');
-                            // toastr.info("Silahikan Tunggu Konfirmasi", "Info!");
-                            @if(Session::has('successe'))
-                            const swalWithBootstrapButtons = Swal.mixin({
-                            customClass: {
-                                confirmButton: 'btn btn-danger rounded-0 w-100',
-                            },
-                            buttonsStyling: false
-                            })
-                            @endif
-                        },
-                        // Optional
-                        onError: function(result){
-                            // /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                            // toastr.error("Gagal Melakukan Pembayarn!", "Success!");
-                            // console.log('err');
-                            // toastr.info("Silahikan Tunggu Konfirmasi", "Info!");
-                        }
-                    })
-                }
-
-            </script>
 
         @if (session('success'))
             <script>

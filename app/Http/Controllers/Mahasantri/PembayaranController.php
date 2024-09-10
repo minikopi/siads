@@ -140,7 +140,7 @@ class PembayaranController extends Controller
             return back()->with('error', 'Terjadi Kesalahan!');
         }
         DB::commit();
-        return back()->with('successe', 'Berhasil!');
+        return back()->with('success', 'Berhasil!');
     }
 
     /**

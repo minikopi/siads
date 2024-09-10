@@ -29,6 +29,7 @@ class JsonData
         return [
             '1' => 'Belum Lunas',
             '2' => 'Lunas',
+            '3' => 'Kedaluwarsa'
         ];
     }
 }
