@@ -114,6 +114,12 @@
                                 Tagihan
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ route('mahasantri.pembayaran.riwayat.index') }}"
+                                class="slide-item {{ request()->is('mahasantri/pembayaran/riwayat') ? 'active' : '' }}">
+                                Riwayat
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 @endrole

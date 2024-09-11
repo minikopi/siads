@@ -11,7 +11,7 @@
                 <!-- PAGE-HEADER -->
                 <div class="page-header">
                     <div>
-                        <h1 class="page-title">Data Pembayaran Mahasantri</h1>
+                        <h1 class="page-title">Tagihan Pembayaran Darus-Sunnah</h1>
                     </div>
                 </div>
                 <!-- PAGE-HEADER END -->
@@ -76,7 +76,8 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <h6 class="">Total Tagihan</h6>
-                                                    <h3 class="mb-2 number-font">Rp 30.000.000<sup><span class="text-danger">*</span></sup></h3>
+                                                    <h3 class="mb-2 number-font">Rp 30.000.000<sup><span
+                                                                class="text-danger">*</span></sup></h3>
                                                     {{-- <p class="text-muted mb-0">
                                                         <span class="text-success"><i
                                                                 class="fa fa-chevron-circle-down text-success me-1"></i>
@@ -104,115 +105,141 @@
                                 <h3 class="card-title">Daftar Tagihan Semester</h3>
                                 @if (Auth::user()->role == 'Mahasantri')
                                     <p class="ms-auto">
-                                    <a class="btn @if($token['invoice'] != null) btn-danger @else btn-success @endif text-white rounded-0" id="pay-button" @if($token['invoice'] != null) href="{{ $token['invoice']->payment_url }}" target="_blank" @else disabled @endif>{{$token['invoice'] != null ? 'Bayar Sekarang' : 'Tidak Ada Tagihan'}}</a>
-                                </p>
+                                        <a class="btn @if ($token['invoice'] != null) btn-danger @else btn-success @endif text-white rounded-0"
+                                            id="pay-button"
+                                            @if ($token['invoice'] != null) href="{{ $token['invoice']->payment_url }}" target="_blank" @else disabled @endif>{{ $token['invoice'] != null ? 'Bayar Sekarang' : 'Tidak Ada Tagihan' }}</a>
+                                    </p>
                                 @endif
 
                             </div>
                             <div class="card-body">
                                 <form action="{{ route('mahasantri.pembayaran.store') }}" method="POST">
                                     @csrf
-                                <div class="panel-group1" id="accordion1">
-                                    @foreach ($data as $i => $item)
-                                        <div class="panel panel-default mb-4">
-                                            <div class="panel-heading1 ">
-                                                <h4 class="panel-title1">
-                                                    <a class="accordion-toggle collapsed" data-bs-toggle="collapse" data-bs-parent="#accordion" href="#collapse{{$i+1}}" aria-expanded="false" disabled>Semester {{$item['semester']}}  ({{$item['status']}})</a>
-                                                </h4>
+                                    <div class="panel-group1" id="accordion1">
+                                        @foreach ($data as $i => $item)
+                                            <div class="panel panel-default mb-4">
+                                                <div class="panel-heading1 ">
+                                                    <h4 class="panel-title1">
+                                                        <a class="accordion-toggle collapsed" data-bs-toggle="collapse"
+                                                            data-bs-parent="#accordion" href="#collapse{{ $i + 1 }}"
+                                                            aria-expanded="false" disabled>Semester {{ $item['semester'] }}
+                                                            ({{ $item['status'] }})</a>
+                                                    </h4>
 
-                                            </div>
-                                            <div id="collapse{{$i+1}}" class="panel-collapse collapse" role="tabpanel" aria-expanded="false">
-                                                <div class="panel-body">
-                                                    @if ($item['status'] == 'Belum Berjalan')
-                                                        <h1>Semester Belum Di mulai</h1>
-                                                    @else
-                                                        <div class="form-group m-0">
-														<div class="custom-controls-stacked ">
-                                                            <table class="table">
-                                                                <thead>
-                                                                    <tr>
-                                                                        @if (Auth::user()->role == "Mahasantri")
-                                                                            <th></th>
-                                                                        @endif
+                                                </div>
+                                                <div id="collapse{{ $i + 1 }}" class="panel-collapse collapse"
+                                                    role="tabpanel" aria-expanded="false">
+                                                    <div class="panel-body">
+                                                        @if ($item['status'] == 'Belum Berjalan')
+                                                            <h1>Semester Belum Di mulai</h1>
+                                                        @else
+                                                            <div class="form-group m-0">
+                                                                <div class="custom-controls-stacked ">
+                                                                    <table class="table">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                @if (Auth::user()->role == 'Mahasantri')
+                                                                                    <th></th>
+                                                                                @endif
 
-                                                                        <th>jenis pembayaran</th>
-                                                                        <th>Jatuh Tempo</th>
-                                                                        <th>Nominal</th>
-                                                                        <th>Sudah Dibayar</th>
-                                                                        <th>Status</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
+                                                                                <th>jenis pembayaran</th>
+                                                                                <th>Jatuh Tempo</th>
+                                                                                <th>Nominal</th>
+                                                                                <th>Sudah Dibayar</th>
+                                                                                <th>Status</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
 
-                                                                    @foreach ($item['payment_type'] as $pt)
-                                                                        <tr>
-                                                                            @if (Auth::user()->role == "Mahasantri")
-                                                                            <td class="text-center">
-                                                                                <input class="form-check-input toggleColspan {{$pt['status_code'] == 2 ? 'bg-dark' : ''}}" type="checkbox" name="paymentJenis[]" value="{{ json_encode(['semester' => $i+1, 'payment_type' => $pt['pyment_id']]) }}" id="#toggleColspan" data-payment="{{$pt['id']}}" aria-expanded="false" {{$pt['status_code'] == 2 ? 'disabled' : ''}}>
-                                                                            </td>
-                                                                            @endif
+                                                                            @foreach ($item['payment_type'] as $pt)
+                                                                                <tr>
+                                                                                    @if (Auth::user()->role == 'Mahasantri')
+                                                                                        <td class="text-center">
+                                                                                            <input
+                                                                                                class="form-check-input toggleColspan {{ $pt['status_code'] == 2 ? 'bg-dark' : '' }}"
+                                                                                                type="checkbox"
+                                                                                                name="paymentJenis[]"
+                                                                                                value="{{ json_encode(['semester' => $i + 1, 'payment_type' => $pt['pyment_id']]) }}"
+                                                                                                id="#toggleColspan"
+                                                                                                data-payment="{{ $pt['id'] }}"
+                                                                                                aria-expanded="false"
+                                                                                                {{ $pt['status_code'] == 2 ? 'disabled' : '' }}>
+                                                                                        </td>
+                                                                                    @endif
 
-                                                                            <td>
-                                                                                {{$pt['type']}}
-                                                                            </td>
-                                                                            <td>
-                                                                                {{-- {{$pt['type']}} --}}
-                                                                            </td>
-                                                                            <td>
-                                                                                {{App\Helpers\Formater::RupiahCurrency($pt['total'])}}
-                                                                            </td>
-                                                                            <td>
-                                                                                {{App\Helpers\Formater::RupiahCurrency($pt['sudah_dibayar'])}}
-                                                                            </td>
-                                                                            <td>
-                                                                                <h5 class="{{$pt['status_code'] == 1 ? 'text-danger' : 'text-success'}}">{{$pt['status_text']}}</h5>
-                                                                            </td>
+                                                                                    <td>
+                                                                                        {{ $pt['type'] }}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{-- {{$pt['type']}} --}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{ App\Helpers\Formater::RupiahCurrency($pt['total']) }}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{ App\Helpers\Formater::RupiahCurrency($pt['sudah_dibayar']) }}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <h5
+                                                                                            class="{{ $pt['status_code'] == 1 ? 'text-danger' : 'text-success' }}">
+                                                                                            {{ $pt['status_text'] }}</h5>
+                                                                                    </td>
 
-                                                                        </tr>
-                                                                        <tr >
-                                                                           <td colspan="4" id="{{$pt['id']}}">
-                                                                                <div class="row">
-                                                                                    <label class="col-md-3 form-label" for="nama">Jumlah bayar :</label>
-                                                                                    <div class="col-md-9">
-                                                                                        <input class="form-control numericInput inputNominal"
-                                                                                            type="input" id="{{$pt['id']}}" autocomplete="off"
-                                                                                            value="{{ $pt['total'] - $pt['sudah_dibayar'] }}" {{$pt['type_code'] != 1 ? '': 'readonly'}} data-target="{{$pt['id']}}">
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                </tbody>
-                                                            </table>
-														</div>
-													</div>
-                                                    @endif
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td colspan="4"
+                                                                                        id="{{ $pt['id'] }}">
+                                                                                        <div class="row">
+                                                                                            <label
+                                                                                                class="col-md-3 form-label"
+                                                                                                for="nama">Jumlah bayar
+                                                                                                :</label>
+                                                                                            <div class="col-md-9">
+                                                                                                <input
+                                                                                                    class="form-control numericInput inputNominal"
+                                                                                                    type="input"
+                                                                                                    id="{{ $pt['id'] }}"
+                                                                                                    autocomplete="off"
+                                                                                                    value="{{ $pt['total'] - $pt['sudah_dibayar'] }}"
+                                                                                                    {{ $pt['type_code'] != 1 ? '' : 'readonly' }}
+                                                                                                    data-target="{{ $pt['id'] }}">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            @endforeach
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endforeach
-                                    @if (Auth::user()->role == "Mahasantri")
-                                        <div class="summary border border-solid p-4">
-                                        <h3 class="underline">Summary Pembayaran</h3>
-                                        <table class="table">
-                                            <thead >
-                                                <tr>
-                                                    <th>Jenis Pembayaran</th>
-                                                    <th>Nominal</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="summary-body">
-                                            </tbody>
-                                            <tr class="table-success">
-                                                <td><strong>Total</strong></td>
-                                                <td class="totals">0</td>
-                                            </tr>
-                                        </table>
-                                        <button type="submit" class="btn btn-success" id="submit">BAYAR</button>
-                                    </div>
-                                    @endif
+                                        @endforeach
+                                        @if (Auth::user()->role == 'Mahasantri')
+                                            <div class="summary border border-solid p-4">
+                                                <h3 class="underline">Ringkasan Pembayaran</h3>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Jenis Pembayaran</th>
+                                                            <th>Nominal</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="summary-body">
+                                                    </tbody>
+                                                    <tr class="table-success">
+                                                        <td><strong>Total</strong></td>
+                                                        <td class="totals">0</td>
+                                                    </tr>
+                                                </table>
+                                                <button type="submit" class="btn btn-success"
+                                                    id="submit">BAYAR</button>
+                                            </div>
+                                        @endif
 
-                                </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -232,24 +259,26 @@
         <!-- SweetAlert2 JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         <script>
-            $(document).ready(function () {
+            $(document).ready(function() {
 
                 // Hide the initially colspanned row
                 $('td[colspan]').hide();
 
                 // Handle checkbox change event
-                $('.toggleColspan').change(function () {
+                $('.toggleColspan').change(function() {
                     var inputValue = $(this).attr('data-payment');
-                        var detec = '#'+inputValue
+                    var detec = '#' + inputValue
                     if ($(this).is(':checked')) {
-                        var inputDetect = detec+ ' input'
+                        var inputDetect = detec + ' input'
                         var specificChildElements = $(inputDetect).val();
-                        var neWElement = '<tr class="input-'+inputValue+'"><td>'+inputValue+'</td><td class="perUnit perunit-'+inputValue+'">'+specificChildElements+'</td></tr>'
+                        var neWElement = '<tr class="input-' + inputValue + '"><td>' + inputValue +
+                            '</td><td class="perUnit perunit-' + inputValue + '">' + specificChildElements +
+                            '</td></tr>'
                         $(inputDetect).attr('name', 'value[]');
                         $('.summary-body').append(neWElement)
                         $(detec).show();
                     } else {
-                        var checkElementRemove = '.input-'+inputValue
+                        var checkElementRemove = '.input-' + inputValue
 
                         $(checkElementRemove).remove()
                         $(detec).hide();
@@ -258,11 +287,12 @@
                 });
                 $('.inputNominal').on('keyup', function() {
                     var getValueAttr = $(this).attr('data-target')
-                    var detec = '.perunit-'+getValueAttr
+                    var detec = '.perunit-' + getValueAttr
                     $(detec).html($(this).val())
                     GetTotal()
                 });
-                function GetTotal(){
+
+                function GetTotal() {
                     var sum = 0;
                     $('.perUnit').each(function() {
                         sum += parseFloat($(this).html());
@@ -271,8 +301,6 @@
                 }
 
             });
-
-
         </script>
 
         @if (session('success'))
@@ -293,7 +321,6 @@
                     text: '{{ session('error') }}',
                 });
             </script>
-
         @endif
     @endpush
 @endsection
