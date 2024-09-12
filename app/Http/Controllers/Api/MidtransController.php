@@ -41,10 +41,6 @@ class MidtransController extends Controller
             $model->transaction_status = $transaction;
             $model->fraud_status = $fraud;
             $model->payment_type = $type;
-
-            $merchant = $this->parsePayment($notif);
-            $model->merchant_name = $merchant['name'];
-            $model->merchant_number = $merchant['number'];
         }
 
         Payload::create([
@@ -60,12 +56,24 @@ class MidtransController extends Controller
                     // TODO set payment status in merchant's database to 'Challenge by FDS'
                     // TODO merchant should decide whether this transaction is authorized or not in MAP
                     Log::info("Transaction order_id: " . $order_id . " is challenged by FDS");
+
+                    if ($model) {
+                        $model->status = Invoice::Void;
+                        $merchant = $this->parsePayment($notif);
+                        $model->merchant_name = $merchant['name'];
+                        $model->merchant_number = $merchant['number'];
+                        $model->save();
+                    }
                 } else {
                     // set payment status in merchant's database to 'Success'
                     Log::info("Transaction order_id: " . $order_id . " successfully captured using " . $type);
 
                     if ($model) {
                         $model->status = Invoice::Paid;
+                        $merchant = $this->parsePayment($notif);
+                        $model->merchant_amount = $merchant['amount'];
+                        $model->merchant_name = $merchant['name'];
+                        $model->merchant_number = $merchant['number'];
                         $model->save();
                     }
                 }
@@ -76,6 +84,8 @@ class MidtransController extends Controller
 
             if ($model) {
                 $model->status = Invoice::Paid;
+                $merchant = $this->parsePayment($notif);
+                $model->merchant_amount = $merchant['amount'];
                 $model->save();
             }
         } else if ($transaction == 'pending') {
@@ -84,6 +94,9 @@ class MidtransController extends Controller
 
             if ($model) {
                 $model->status = Invoice::Pending;
+                $merchant = $this->parsePayment($notif);
+                $model->merchant_name = $merchant['name'];
+                $model->merchant_number = $merchant['number'];
                 $model->save();
             }
         } else if ($transaction == 'deny') {
@@ -100,6 +113,9 @@ class MidtransController extends Controller
 
             if ($model) {
                 $model->status = Invoice::Void;
+                $merchant = $this->parsePayment($notif);
+                $model->merchant_name = $merchant['name'];
+                $model->merchant_number = $merchant['number'];
                 $model->save();
             }
         } else if ($transaction == 'cancel') {
@@ -108,6 +124,9 @@ class MidtransController extends Controller
 
             if ($model) {
                 $model->status = Invoice::Void;
+                $merchant = $this->parsePayment($notif);
+                $model->merchant_name = $merchant['name'];
+                $model->merchant_number = $merchant['number'];
                 $model->save();
             }
         }
@@ -116,8 +135,17 @@ class MidtransController extends Controller
     public function parsePayment($response)
     {
         $res = [];
-        $res['name'] = null;
+        $res['name'] = $response->payment_type;;
         $res['number'] = null;
+        $res['amount'] = $response->gross_amount * 0.017;
+
+        // Credit Card
+        if ($response->payment_type == 'credit_card') {
+            $res['name'] = $response->bank;
+            $res['number'] = $response->masked_card;
+            $fixed_fee = 2000;
+            $res['amount'] = ($response->gross_amount * 0.029) + $fixed_fee; // 2,9% + 2ribu
+        }
 
         // Bank Transfer
         if ($response->payment_type == 'bank_transfer') {
@@ -129,24 +157,36 @@ class MidtransController extends Controller
                 $res['name'] = 'permata';
                 $res['number'] = $response->permata_va_number;
             }
+            $res['amount'] = 4000;
         }
 
         // QRIS/GoPay/GoPay Later
         if ($response->payment_type == 'qris') {
             $res['name'] = $response->acquirer;
+
+            if ($response->acquirer == 'airpay shopee') {
+                $res['amount'] = $response->gross_amount * 0.02; // 2%
+            }
+
+            if ($response->acquirer == 'gopay') {
+                $res['amount'] = $response->gross_amount * 0.02; // 2%
+            }
         }
 
         // Indomaret/Alfamart
         if ($response->payment_type == 'cstore') {
             $res['name'] = $response->store;
             $res['number'] = $response->payment_code;
+
+            $res['amount'] = 5000;
         }
 
-        // Akulaku
-        if ($response->payment_type == 'akulaku') {
-            $res['name'] = $response->payment_type;
-            $res['number'] = $response->redirect_url;
-        }
+        // // Akulaku
+        // if ($response->payment_type == 'akulaku') {
+        //     $res['name'] = $response->payment_type;
+        //     $res['number'] = $response->redirect_url;
+        //     $res['amount'] = $response->gross_amount * 0.017; // 1,7%
+        // }
 
         return $res;
     }
