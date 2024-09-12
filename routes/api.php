@@ -15,7 +15,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('verif/payment', [MidtransController::class, 'VerifPayment']);
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::any('web/hook/mid/trans', [MidtransController::class, 'VerifPayment']);

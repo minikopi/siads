@@ -179,5 +179,9 @@ Route::middleware(['auth'])->group(
             // Route for updating status to "Ditolak" with a reason
             Route::post('/prestasi/reject/{id}', [PrestasiController::class, 'reject'])->name('prestasi.reject');
         });
+
+        Route::prefix('mahasantri')->as('mahasantri.')->middleware(['auth:sanctum'])->group(
+            base_path('routes/modules/mahasantri.php'),
+        );
     }
 );

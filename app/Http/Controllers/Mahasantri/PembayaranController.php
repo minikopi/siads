@@ -1,30 +1,37 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Mahasantri;
 
 use App\Helpers\Condition;
 use App\Helpers\JsonData;
 use App\Helpers\Midtrans;
+use App\Http\Controllers\Controller;
 use App\Models\DetailInvoice;
 use App\Models\Invoice;
 use App\Models\Mahasantri;
 use App\Models\PaymentType;
-use Carbon\Carbon;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Log;
 
-class PaymentController extends Controller
+class PembayaranController extends Controller
 {
-    public function index(?string $id = null)
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
     {
+        $user = Auth::user();
         $data = [];
-        if (Auth::user()->role == 'Mahasantri') {
-            $siswa = Mahasantri::with('class')->findOrFail(Auth::user()->mahasantri->id);
-        } else {
-            $siswa = Mahasantri::with('class')->findOrFail($id);
+
+        if (! $user->hasRole(Role::Mahasantri)) {
+            return to_route('dashboard.index');
         }
+
+        $siswa = Mahasantri::with('class')->findOrFail($user->mahasantri->id);
 
         $type = PaymentType::get();
         for ($i = 1; $i <= 8; $i++) {
@@ -63,12 +70,23 @@ class PaymentController extends Controller
         $token['invoice'] = Invoice::where('mahasantri_id', $siswa->id)->where('status', Invoice::Pending)->first();
         $token['url'] = env('MIDTRANS_URL');
         $token['clienKey'] = env('MIDTRANS_CLIENTKEY');
-        return view('payment.index', compact('data', 'token'));
+        return view('payment.mahasantri', compact('data', 'token'));
     }
 
-    public function PaymentSend(Request $request)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
-        // dd($request->all());
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $invoice_code = Invoice::generateTransactionNumberGroup();
         $currentDateTime = Carbon::now();
         $token = Invoice::where('mahasantri_id', Auth::user()->mahasantri->id)->where('status', Invoice::Pending)->first();
         if ($token != null) {
@@ -77,9 +95,8 @@ class PaymentController extends Controller
 
         DB::beginTransaction();
         try {
-
             $inv = Invoice::create([
-                "invoice_code" => Invoice::generateTransactionNumberGroup(),
+                "invoice_code" => $invoice_code,
                 "mahasantri_id" => Auth::user()->mahasantri->id,
                 "status" => Invoice::Pending,
                 "total" => array_sum($request->value),
@@ -88,7 +105,6 @@ class PaymentController extends Controller
             $item = [];
             foreach ($request->paymentJenis as $key => $j) {
                 $data = json_decode($j, true);
-                // dd($data);
                 $payment = PaymentType::findOrFail($data['payment_type']);
                 if ($request->value[$key] == 0 || $request->value[$key] == null) {
                     return back();
@@ -100,8 +116,8 @@ class PaymentController extends Controller
                     'name'          => $payment->name . '-' . $data['semester']
 
                 ));
+
                 $inv->details()->create([
-                    'invoice_id' => $inv->id,
                     'payment_type_id' => $payment->id,
                     'semester' => $data['semester'],
                     'nominal' => $request->value[$key],
@@ -114,29 +130,46 @@ class PaymentController extends Controller
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::warning($e->getMessage(), [
+                'action' => 'payment',
+                'user_id' => auth()->id(),
+                'actor' => Role::Mahasantri,
+            ]);
             return back()->with('error', 'Terjadi Kesalahan!');
         }
         DB::commit();
-        return back()->with('successe', 'Berhasil!');
+        return back()->with('success', 'Berhasil!');
     }
 
-    public function ListSiswa()
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        return view('ViewDefault.siswa.siswa');
+        //
     }
-    public function ListSiswaData()
-    {
-        $data = Mahasantri::with('class')->orderBy('created_at', 'desc')->get();
 
-        return DataTables::of($data)
-            ->addColumn('nama', function ($data) {
-                $types = $data->nama_depan . ' ' . $data->nama_belakang;
-                return $types;
-            })
-            ->addColumn('action', function ($data) {
-                return view('ViewDefault.siswa.button', compact('data'));
-            })
-            ->rawColumns(['action', 'nama'])
-            ->make(true);
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }
