@@ -27,8 +27,9 @@ class JsonData
     public static function PaymentStatus()
     {
         return [
-            '1' => 'Belum Lunas',
-            '2' => 'Lunas',
+            'Pending' => 'Belum Lunas',
+            'Waiting for Payment' => 'Belum Lunas',
+            'Paid' => 'Lunas',
             '3' => 'Kedaluwarsa'
         ];
     }

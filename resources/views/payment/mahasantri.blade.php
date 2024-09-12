@@ -107,7 +107,15 @@
                                     <p class="ms-auto">
                                         <a class="btn @if ($token['invoice'] != null) btn-danger @else btn-success @endif text-white rounded-0"
                                             id="pay-button"
-                                            @if ($token['invoice'] != null) href="{{ $token['invoice']->payment_url }}" target="_blank" @else disabled @endif>{{ $token['invoice'] != null ? 'Bayar Sekarang' : 'Tidak Ada Tagihan' }}</a>
+                                            @if ($token['invoice'] != null) href="{{ $token['invoice']->payment_url }}" target="_blank" @else disabled @endif>
+                                            {{ $token['invoice'] != null ? 'Bayar Sekarang' : 'Tidak Ada Tagihan' }}
+                                        </a>
+                                        {{-- @if ($token['invoice'] != null and $token['invoice']->transaction_status == 'pending') --}}
+                                        @if ($token['invoice'] != null)
+                                        <a class="btn btn-warning text-white rounded-0" href="{{ route('mahasantri.pembayaran.cancel', $token['invoice']) }}" onclick="return confirm('Apakah yakin ingin membatalkan transaksi ini?')">
+                                            Batalkan
+                                        </a>
+                                        @endif
                                     </p>
                                 @endif
 

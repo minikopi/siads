@@ -33,6 +33,12 @@ class Midtrans
             'item_details'           => $items,
             'customer_details'   => $customer_details
         );
+
+        Payload::create([
+            'user_id' => auth()->id(),
+            'payload_type' => 'request',
+            'payload' => json_encode($transaction_data)
+        ]);
         $snapToken = Snap::getSnapToken($transaction_data);
         return $snapToken;
     }
@@ -61,7 +67,7 @@ class Midtrans
 
         Payload::create([
             'user_id' => auth()->id(),
-            'payload_type' => 'response',
+            'payload_type' => 'request',
             'payload' => json_encode($transaction_data)
         ]);
         $paymentUrl = Snap::createTransaction($transaction_data)->redirect_url;

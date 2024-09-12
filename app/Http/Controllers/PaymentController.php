@@ -37,19 +37,19 @@ class PaymentController extends Controller
                 $code = str_replace(" ", "-", $t->name);
                 $id = $code . '-' . $i;
                 $TotalPayment = DetailInvoice::where('semester', $i)->where('payment_type_id', $t->id)->whereHas('invoice', function ($q) use ($siswa) {
-                    $q->where('status', 2);
+                    $q->where('status', Invoice::Paid);
                     $q->where('mahasantri_id', $siswa->id);
                 })->sum('nominal');
-                $statusLast = $TotalPayment >= $t->nominal ? 2 : 1;
+                $status_text = $TotalPayment >= $t->nominal ? 'Lunas' : 'Belum lunas';
+                $status_code = $TotalPayment >= $t->nominal ? 2 : 1;
                 $tx = [
                     'id' => $id,
                     'type' => $t->name,
                     'pyment_id' => $t->id,
                     'type_code' => $t->type,
                     'code' => $code,
-                    'status_text' =>
-                    JsonData::PaymentStatus()[$statusLast],
-                    'status_code' => $statusLast,
+                    'status_text' => $status_text,
+                    'status_code' => $status_code,
                     'total' => $t->nominal,
                     'sudah_dibayar' => $TotalPayment,
                 ];
@@ -60,7 +60,7 @@ class PaymentController extends Controller
         }
         $currentDateTime = Carbon::now();
 
-        $token['invoice'] = Invoice::where('mahasantri_id', $siswa->id)->where('status', 1)->where('expired_at', '>', $currentDateTime)->first();
+        $token['invoice'] = Invoice::where('mahasantri_id', $siswa->id)->where('status', Invoice::Pending)->first();
         $token['url'] = env('MIDTRANS_URL');
         $token['clienKey'] = env('MIDTRANS_CLIENTKEY');
         return view('payment.index', compact('data', 'token'));
@@ -70,20 +70,20 @@ class PaymentController extends Controller
     {
         // dd($request->all());
         $currentDateTime = Carbon::now();
-        $token = Invoice::where('mahasantri_id', Auth::user()->mahasantri->id)->where('status', 1)->where('expired_at', '>', $currentDateTime)->first();
+        $token = Invoice::where('mahasantri_id', Auth::user()->mahasantri->id)->where('status', Invoice::Pending)->first();
         if ($token != null) {
-            return back()->with('error', 'Ada tagihan yang belum di bayarkan!');
+            return back()->with('error', 'Ada tagihan yang belum dibayarkan!');
         }
 
         DB::beginTransaction();
         try {
 
-            $inv = Invoice::Create([
+            $inv = Invoice::create([
                 "invoice_code" => Invoice::generateTransactionNumberGroup(),
                 "mahasantri_id" => Auth::user()->mahasantri->id,
-                "status" => 1,
+                "status" => Invoice::Pending,
                 "total" => array_sum($request->value),
-                "expired_at" => $currentDateTime->addDays(2)
+                "expired_at" => $currentDateTime->addHour()
             ]);
             $item = [];
             foreach ($request->paymentJenis as $key => $j) {
@@ -100,7 +100,7 @@ class PaymentController extends Controller
                     'name'          => $payment->name . '-' . $data['semester']
 
                 ));
-                DetailInvoice::create([
+                $inv->details()->create([
                     'invoice_id' => $inv->id,
                     'payment_type_id' => $payment->id,
                     'semester' => $data['semester'],
@@ -108,9 +108,9 @@ class PaymentController extends Controller
                     'name_payment' => $payment->name,
                 ]);
             }
-            $set = Midtrans::GetSpapToken($inv, $item);
+            $set = Midtrans::GetPaymentUrl($inv, $item);
             $inv->update([
-                'snap_token' => $set
+                'payment_url' => $set
             ]);
         } catch (\Exception $e) {
             DB::rollBack();

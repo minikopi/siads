@@ -6,12 +6,28 @@ use App\Helpers\Generator as HelpersGenerator;
 use Generator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
 
 class Invoice extends Model
 {
     use HasFactory;
+
+    const Pending = 'Pending';
+    const Paid = 'Paid';
+    const Void = 'Void';
     protected $guarded = [];
+
+    public function mahasantri(): BelongsTo
+    {
+        return $this->belongsTo(Mahasantri::class, 'mahasantri_id', 'id');
+    }
+
+    public function details(): HasMany
+    {
+        return $this->hasMany(DetailInvoice::class, 'invoice_id', 'id');
+    }
 
     public static function generateTransactionNumberGroup()
     {

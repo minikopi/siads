@@ -37,7 +37,18 @@ class MidtransController extends Controller
         $order_id = $notif->order_id;
         $model = Invoice::where('invoice_code', $order_id)->first();
 
+        if ($model) {
+            $model->transaction_status = $transaction;
+            $model->fraud_status = $fraud;
+            $model->payment_type = $type;
+
+            $merchant = $this->parsePayment($notif);
+            $model->merchant_name = $merchant['name'];
+            $model->merchant_number = $merchant['number'];
+        }
+
         Payload::create([
+            'user_id' => $model->mahasantri->user->id,
             'payload_type' => 'response',
             'payload' => json_encode($notif)
         ]);
@@ -54,7 +65,7 @@ class MidtransController extends Controller
                     Log::info("Transaction order_id: " . $order_id . " successfully captured using " . $type);
 
                     if ($model) {
-                        $model->status = 2;
+                        $model->status = Invoice::Paid;
                         $model->save();
                     }
                 }
@@ -64,18 +75,23 @@ class MidtransController extends Controller
             Log::info("Transaction order_id: " . $order_id . " successfully transfered using " . $type);
 
             if ($model) {
-                $model->status = 2;
+                $model->status = Invoice::Paid;
                 $model->save();
             }
         } else if ($transaction == 'pending') {
             // set payment status in merchant's database to 'Pending'
             Log::info("Waiting customer to finish transaction order_id: " . $order_id . " using " . $type);
+
+            if ($model) {
+                $model->status = Invoice::Pending;
+                $model->save();
+            }
         } else if ($transaction == 'deny') {
             // set payment status in merchant's database to 'Denied'
             Log::info("Payment using " . $type . " for transaction order_id: " . $order_id . " is denied.");
 
             if ($model) {
-                $model->status = 3;
+                $model->status = Invoice::Void;
                 $model->save();
             }
         } else if ($transaction == 'expire') {
@@ -83,7 +99,7 @@ class MidtransController extends Controller
             Log::info("Payment using " . $type . " for transaction order_id: " . $order_id . " is expired.");
 
             if ($model) {
-                $model->status = 3;
+                $model->status = Invoice::Void;
                 $model->save();
             }
         } else if ($transaction == 'cancel') {
@@ -91,9 +107,47 @@ class MidtransController extends Controller
             Log::info("Payment using " . $type . " for transaction order_id: " . $order_id . " is canceled.");
 
             if ($model) {
-                $model->status = 3;
+                $model->status = Invoice::Void;
                 $model->save();
             }
         }
+    }
+
+    public function parsePayment($response)
+    {
+        $res = [];
+        $res['name'] = null;
+        $res['number'] = null;
+
+        // Bank Transfer
+        if ($response->payment_type == 'bank_transfer') {
+            // BCA, BNI, BRI, CIMB
+            if (isset($response->va_numbers)) {
+                $res['name'] = $response->va_numbers[0]->bank;
+                $res['number'] = $response->va_numbers[0]->va_number;
+            } elseif (isset($response->permata_va_number)) { // Permata
+                $res['name'] = 'permata';
+                $res['number'] = $response->permata_va_number;
+            }
+        }
+
+        // QRIS/GoPay/GoPay Later
+        if ($response->payment_type == 'qris') {
+            $res['name'] = $response->acquirer;
+        }
+
+        // Indomaret/Alfamart
+        if ($response->payment_type == 'cstore') {
+            $res['name'] = $response->store;
+            $res['number'] = $response->payment_code;
+        }
+
+        // Akulaku
+        if ($response->payment_type == 'akulaku') {
+            $res['name'] = $response->payment_type;
+            $res['number'] = $response->redirect_url;
+        }
+
+        return $res;
     }
 }

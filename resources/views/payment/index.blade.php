@@ -165,8 +165,8 @@
                                                                             </td>
 
                                                                         </tr>
-                                                                        <tr >
-                                                                           <td colspan="4" id="{{$pt['id']}}">
+                                                                        <tr>
+                                                                            <td colspan="4" id="{{$pt['id']}}">
                                                                                 <div class="row">
                                                                                     <label class="col-md-3 form-label" for="nama">Jumlah bayar :</label>
                                                                                     <div class="col-md-9">
