@@ -35,8 +35,8 @@ class Invoice extends Model
         $lastInvoiceGroup = \App\Models\Invoice::where('mahasantri_id', Auth::user()->mahasantri->id)->whereMonth('created_at', date('n'))->whereYear('created_at', date('Y'))->latest()->first();
         $roman = HelpersGenerator::numberToRoman(date('n'));
         $randomString = substr(str_shuffle('ABCDEFGHJKMNPQRSTUVWXYZ234567'), 0, 5);
-        $name = str(Auth::user()->mahasantri->nama_depan)->slug();
-        $nunmberGroup = 'INV/' . $randomString . '/' . $name . '/' . $roman . '/' . date('y');
+        $name = strtoupper(str(Auth::user()->mahasantri->nama_depan)->slug());
+        $nunmberGroup = 'INV/' . $name . '/' . $randomString . '/' .  $roman . '/' . date('y');
         $numberNow = '0001';
         if (isset($lastInvoiceGroup)) {
             $men = explode('-', $lastInvoiceGroup->invoice_code);

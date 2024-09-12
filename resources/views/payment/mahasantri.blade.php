@@ -107,7 +107,7 @@
                                     <p class="ms-auto">
                                         <a class="btn @if ($token['invoice'] != null) btn-danger @else btn-success @endif text-white rounded-0"
                                             id="pay-button"
-                                            @if ($token['invoice'] != null) href="{{ $token['invoice']->payment_url }}" target="_blank" @else disabled @endif>
+                                            @if ($token['invoice'] != null) href="{{ $token['invoice']->payment_url }}" @else disabled @endif>
                                             {{ $token['invoice'] != null ? 'Bayar Sekarang' : 'Tidak Ada Tagihan' }}
                                         </a>
                                         {{-- @if ($token['invoice'] != null and $token['invoice']->transaction_status == 'pending') --}}

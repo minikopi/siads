@@ -100,8 +100,18 @@
                                 <h3 class="card-title">Daftar Tagihan Semester</h3>
                                 @if (Auth::user()->role == 'Mahasantri')
                                     <p class="ms-auto">
-                                    <button type="submit" class="btn btn-danger rounded-0" id="pay-button" data-token="{{$token['invoice'] != null ? $token['invoice']->snap_token : ''}}" {{$token['invoice'] != null ? '' : 'disabled'}}>{{$token['invoice'] != null ? 'Bayar Sekarang' : 'Tidak Ada Tagihan'}}</button>
-                                </p>
+                                        <a class="btn @if ($token['invoice'] != null) btn-danger @else btn-success @endif text-white rounded-0"
+                                            id="pay-button"
+                                            @if ($token['invoice'] != null) href="{{ $token['invoice']->payment_url }}" @else disabled @endif>
+                                            {{ $token['invoice'] != null ? 'Bayar Sekarang' : 'Tidak Ada Tagihan' }}
+                                        </a>
+                                        {{-- @if ($token['invoice'] != null and $token['invoice']->transaction_status == 'pending') --}}
+                                        @if ($token['invoice'] != null)
+                                        <a class="btn btn-warning text-white rounded-0" href="{{ route('mahasantri.pembayaran.cancel', $token['invoice']) }}" onclick="return confirm('Apakah yakin ingin membatalkan transaksi ini?')">
+                                            Batalkan
+                                        </a>
+                                        @endif
+                                    </p>
                                 @endif
 
                             </div>

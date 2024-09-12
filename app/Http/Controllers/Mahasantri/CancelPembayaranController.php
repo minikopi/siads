@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Mahasantri;
 
+use App\Helpers\Midtrans;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\Mahasantri;
@@ -46,27 +47,27 @@ class CancelPembayaranController extends Controller
             'payload' => 'Cancel #' . $invoice->invoice_code
         ]);
 
-        try {
-            Config::$serverKey = config('midtrans.midtrans.serverKey');
-            Config::$isProduction = config('midtrans.midtrans.isProduction');
-            $cancel = \Midtrans\Transaction::cancel($invoice->invoice_code);
-            Payload::create([
-                'user_id' => $request->user()->id,
-                'payload_type' => 'response',
-                'payload' => json_encode($cancel)
-            ]);
-        } catch (\Throwable $th) {
-            Payload::create([
-                'user_id' => $request->user()->id,
-                'payload_type' => 'response',
-                'payload' => $th->getMessage()
-            ]);
-            Log::warning($th->getMessage(), [
-                'user' => $request->user(),
-                'action' => 'Cancel pembayaran #' . $invoice->invoice_code
-            ]);
-            return to_route('mahasantri.pembayaran.index')->with('error', $th->getMessage());
-        }
+        // try {
+        //     Config::$serverKey = config('midtrans.midtrans.serverKey');
+        //     Config::$isProduction = config('midtrans.midtrans.isProduction');
+        //     $cancel = \Midtrans\Transaction::cancel($invoice->invoice_code);
+        //     Payload::create([
+        //         'user_id' => $request->user()->id,
+        //         'payload_type' => 'response',
+        //         'payload' => json_encode($cancel)
+        //     ]);
+        // } catch (\Throwable $th) {
+        //     Payload::create([
+        //         'user_id' => $request->user()->id,
+        //         'payload_type' => 'response',
+        //         'payload' => $th->getMessage()
+        //     ]);
+        //     Log::warning($th->getMessage(), [
+        //         'user' => $request->user(),
+        //         'action' => 'Cancel pembayaran #' . $invoice->invoice_code
+        //     ]);
+        //     return to_route('mahasantri.pembayaran.index')->with('error', $th->getMessage());
+        // }
 
         $invoice->status = Invoice::Void;
         $invoice->save();
