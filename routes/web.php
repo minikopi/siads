@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AbsentController;
+use App\Http\Controllers\Administrator\AcademicYearController;
 use App\Http\Controllers\AkademikController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
@@ -72,6 +73,10 @@ Route::middleware(['auth'])->group(
                 Route::get('/mata-kuliah/{id}', [MataKuliahController::class, 'edit'])->name('mata-kuliah.edit');
                 Route::post('/mata-kuliah/update/{id}', [MataKuliahController::class, 'update'])->name('mata-kuliah.update');
                 Route::delete('/mata-kuliah/delete/{id}', [MataKuliahController::class, 'delete'])->name('mata-kuliah.delete');
+
+                // Tahun Ajaran
+                Route::get('/academic-year/dataGet', [AcademicYearController::class, 'dataGet'])->name('academic-year.dataGet');
+                Route::resource('academic-year', AcademicYearController::class);
 
                 //Schedule
                 Route::get('/jadwal-kuliah', [ScheduleController::class, 'index'])->name('schedule.index');
@@ -179,6 +184,10 @@ Route::middleware(['auth'])->group(
             // Route for updating status to "Ditolak" with a reason
             Route::post('/prestasi/reject/{id}', [PrestasiController::class, 'reject'])->name('prestasi.reject');
         });
+
+        Route::prefix('administrator')->as('administrator.')->middleware(['auth:sanctum'])->group(
+            base_path('routes/modules/administrator.php'),
+        );
 
         Route::prefix('mahasantri')->as('mahasantri.')->middleware(['auth:sanctum'])->group(
             base_path('routes/modules/mahasantri.php'),
