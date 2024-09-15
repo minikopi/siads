@@ -104,8 +104,6 @@ class MahasantriController extends Controller
             ])->first();
             if ($userCheck || $mahasantriCheck) throw new \Exception('Email sudah terdaftar');
 
-            $mahasantri->update($request->except(['foto']));
-
             if ($request->hasFile('foto') && !is_null($mahasantri->foto)) {
                 if (Storage::exists($mahasantri->foto)) {
                     Storage::delete($mahasantri->foto);
@@ -115,6 +113,8 @@ class MahasantriController extends Controller
                     'foto' => $request->file('foto')->store('mahasantri/foto')
                 ]);
             }
+
+            $mahasantri->update($request->except(['foto']));
 
             $mahasantri->user()->update([
                 'name' => $mahasantri->nama_lengkap,
