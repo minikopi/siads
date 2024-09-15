@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Master\MahasantriStore;
+use App\Http\Requests\Master\MahasantriUpdate;
+use App\Models\AcademicYear;
 use App\Models\Mahasantri;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class MahasantriController extends Controller
@@ -19,7 +24,7 @@ class MahasantriController extends Controller
 
     public function dataGet()
     {
-        $data = Mahasantri::get();
+        $data = Mahasantri::select(['nama_depan', 'nama_belakang', 'nama_lengkap', 'nim', 'email', 'id'])->latest();
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
@@ -29,78 +34,110 @@ class MahasantriController extends Controller
                 return $data->nama_depan . ' ' . $data->nama_belakang;
             })
             ->rawColumns(['action'])
+            ->addIndexColumn()
             ->make(true);
     }
 
     public function create()
     {
-        return view('mahasantri.create');
+        $academic_years = AcademicYear::visible()->urut()->get();
+        return view('mahasantri.create', compact('academic_years'));
     }
 
-    public function store(Request $request)
+    public function store(MahasantriStore $request)
     {
-
-
         DB::beginTransaction();
         try {
+            // check keunikan email
+            $userCheck = User::firstWhere('email', $request->email);
+            $mahasantriCheck = Mahasantri::firstWhere('email', $request->email);
+            if ($userCheck || $mahasantriCheck) throw new \Exception('Email sudah terdaftar');
+
             $user = User::create([
                 'name'      => $request->nama_depan . " " . $request->nama_belakang,
                 'email'     => $request->email,
                 'password'  => password_hash('password', PASSWORD_DEFAULT),
                 'role'      => 'Mahasantri',
             ]);
-            $req = $request->all();
-            $req['user_id'] = $user->id;
-            $req['nim'] = '139172931';
-            $req['nik'] = '139172931';
-            $req['whatsapp'] = '139172931';
-            $req['whatsapp_wali'] = '139172931';
-            $req['status'] = 'aktif';
-            Mahasantri::create($req);
-        } catch (Exception $e) {
+
+            $data = array_merge($request->except(['foto']), [
+                'whatsapp_wali' => $request->handphone_wali,
+                'foto' => $request->file('foto')->store('mahasantri/foto')
+            ]);
+
+            $user->mahasantri()->create($data);
+        } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Data Mata Kuliah Gagal Dibuat!');
+            Log::warning($e->getMessage(), [
+                'action' => 'store mahasantri',
+                'data' => $request->validated(),
+                'user' => $request->user(),
+            ]);
+            return back()->withInput()->with('error', 'Data Mata Kuliah Gagal Dibuat!');
         }
         DB::commit();
 
-        return redirect()->route('mahasantri.index')->with('success', 'Data Mahasantri Berhasil Dibuat!');
+        return redirect()->route('mahasantri.index')->with('success', 'Data Mahasantri berhasil ditambahkan.');
     }
 
     public function edit($id)
     {
         $data = Mahasantri::findOrFail($id);
-        return view('mahasantri.create', compact('data'));
+        $academic_years = AcademicYear::visible()->urut()->get();
+        return view('mahasantri.edit', compact('data', 'academic_years'));
     }
 
-    public function update(Request $request, $id)
+    public function update(MahasantriUpdate $request, $id)
     {
-
-        $data = Mahasantri::findOrFail($id);
-        DB::beginTransaction();
         try {
-            $input = $request->except(['jenis_kelamin', 'kelas_id', 'user_id']);
-            $data->update($input);
+            DB::beginTransaction();
+            $mahasantri = Mahasantri::findOrFail($id);
 
-            $user = User::findOrFail($data->user_id);
-            $user->name = $request->nama_depan . " " . $request->nama_belakang;
-            $user->email = $request->email;
-            $user->save();
+            // check keunikan email
+            $userCheck = User::where([
+                ['email', '=', $request->email],
+                ['id', '<>', $mahasantri->user_id]
+            ])->first();
+            $mahasantriCheck = Mahasantri::where([
+                ['email', '=', $request->email],
+                ['id', '<>', $id]
+            ])->first();
+            if ($userCheck || $mahasantriCheck) throw new \Exception('Email sudah terdaftar');
+
+            $mahasantri->update($request->except(['foto']));
+
+            if ($request->hasFile('foto')) {
+                if (Storage::exists($mahasantri->foto)) {
+                    Storage::delete($mahasantri->foto);
+                }
+
+                $mahasantri->update([
+                    'foto' => $request->file('foto')->store('mahasantri/foto')
+                ]);
+            }
+
+            $mahasantri->user()->update([
+                'name' => $mahasantri->nama_lengkap,
+                'email' => $mahasantri->email,
+            ]);
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', $e->getMessage());
+            Log::warning($e->getMessage(), [
+                'action' => 'update mahasantri',
+                'data' => $request->validated(),
+                'user' => $request->user(),
+            ]);
+            return back()->withInput()->with('error', $e->getMessage());
         }
         DB::commit();
-        return redirect()->route('mahasantri.index')->with('success', 'Data Mahasantri  Berhasil Di Update!');
+        return redirect()->route('mahasantri.index')->with('success', 'Data Mahasantri berhasil diubah.');
     }
 
     public function delete($id)
     {
-        try {
-            Mahasantri::findOrFail($id)->delete();
-        } catch (\Exception $e) {
-            DB::rollback();
-            return redirect()->back()->with('error', $e->getMessage());
-        }
-        return redirect()->route('mahasantri.index')->with('success', 'Data Mahasantri Berhasil Di Delete!');
+        return response()->json(
+            ['msg' => 'Maaf, Anda tidak dapat melakukan ini. Hubungi web administrator.'],
+            400
+        );
     }
 }

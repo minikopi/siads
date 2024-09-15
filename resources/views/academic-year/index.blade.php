@@ -141,7 +141,6 @@
                                 routeDelete = routeDelete.replace(':id', data.id);
                                 let tahun = String(data.full_year);
                                 let params = `'${routeDelete}','${tahun}'`;
-                                console.log(params)
                                 return `<a href="${route}" class="btn btn-warning">Edit</a> <button class="btn btn-danger" onclick="deleteRow(${params})">Delete</button>`;
                             },
                             name: 'action'
