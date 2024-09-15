@@ -160,13 +160,13 @@ Route::middleware(['auth'])->group(
             Route::get('/{test?}', [PaymentController::class, 'index'])->name('pembayaran.index');
             Route::post('/', [PaymentController::class, 'PaymentSend'])->name('pembayaran.store');
             //master
-            Route::group(['prefix' => 'master/type', 'middleware' => ['is_admin']], function () {
+            Route::group(['prefix' => 'master/type', 'middleware' => ['role:admin']], function () {
                 Route::get('/', [PaymentTypeController::class, 'index'])->name('paymentType.index');
                 Route::get('/dataGet', [PaymentTypeController::class, 'dataGet'])->name('paymentType.dataGet');
                 Route::get('/create', [PaymentTypeController::class, 'create'])->name('paymentType.create');
                 Route::post('/', [PaymentTypeController::class, 'store'])->name('paymentType.store');
                 Route::get('/edit/{id}', [PaymentTypeController::class, 'edit'])->name('paymentType.edit');
-                Route::post('/update/{id}', [PaymentTypeController::class, 'update'])->name('paymentType.update');
+                Route::put('/update/{id}', [PaymentTypeController::class, 'update'])->name('paymentType.update');
                 Route::delete('/delete/{id}', [PaymentTypeController::class, 'delete'])->name('paymentType.delete');
             });
         });

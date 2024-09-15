@@ -10,8 +10,8 @@ class JsonData
     {
         return [
             '1' => PaymentType::TIPE_PEMBAYARAN_AWAL_SEMESTER_LUNAS_TEXT,
-            '2' => PaymentType::TIPE_PEMBAYARAN_HARUS_SEBELUM_SEMESTER_BERAKHIR_LUNASCICIL_TEXT,
-            '3' => PaymentType::TIPE_PEMBAYARAN_SAMPAI_LULUS_LUNASCICIL_TEXT,
+            '2' => PaymentType::TIPE_PEMBAYARAN_HARUS_SEBELUM_SEMESTER_BERAKHIR_CICIL_TEXT,
+            '3' => PaymentType::TIPE_PEMBAYARAN_SAMPAI_LULUS_CICIL_TEXT,
         ];
     }
 

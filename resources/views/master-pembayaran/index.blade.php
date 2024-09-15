@@ -14,7 +14,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Master Pembayaran</h3>
                                 <p class="ms-auto"><a href="{{ route('paymentType.create') }}"
-                                        class="btn btn-primary btn-sm">Tambah</a></p>
+                                        class="btn btn-primary">Tambah</a></p>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -22,6 +22,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="wd-15p border-bottom-0">No</th>
+                                                <th class="wd-15p border-bottom-0">Tahun Ajaran</th>
                                                 <th class="wd-15p border-bottom-0">Nama</th>
                                                 <th class="wd-15p border-bottom-0">Tipe</th>
                                                 {{-- <th class="wd-15p border-bottom-0">Smester</th> --}}
@@ -30,15 +31,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Sahih al-Bukhary</td>
-
-                                                <td>
-                                                    <a href="" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                                                    <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                                                </td>
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -60,21 +52,79 @@
         <!-- SweetAlert2 JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         <script>
+            function deleteRow(url, text) {
+                let token = $("meta[name='csrf-token']").attr("content");
+
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: `Anda akan menghapus data ${String(text)}`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Hapus',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true,
+                    buttonsStyling: false,
+                    customClass: {
+                        cancelButton: 'btn btn-light waves-effect',
+                        confirmButton: 'btn btn-primary waves-effect waves-light'
+                    },
+                    preConfirm: (e) => {
+                        return new Promise((resolve) => {
+                            setTimeout(() => {
+                                resolve();
+                            }, 50);
+                        });
+                    }
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            type: 'POST',
+                            data: {
+                                "_method": "DELETE",
+                                "_token": token
+                            },
+                            url: url,
+                            success: function(response) {
+                                Swal.fire({
+                                    title: "Sukses",
+                                    text: response.msg,
+                                    icon: "success"
+                                });
+                                setTimeout(function() {
+                                    window.location = redirect;
+                                }, 1000)
+                            },
+                            error: function(response) {
+                                var err = JSON.parse(response.responseText);
+                                Swal.fire({
+                                    title: "Error",
+                                    text: err.msg,
+                                    icon: "error"
+                                });
+                            }
+                        })
+                    }
+                })
+            }
             $(document).ready(function() {
                 $('#datatables').DataTable({
                     "processing": true,
                     "serverSide": true,
                     "ajax": "{{ route('paymentType.dataGet') }}", // Sesuaikan dengan route yang Anda buat
                     "columns": [{
-                            data: null,
-                            render: function(data, type, row, meta) {
-                                return meta.row + 1; // Adding 1 to start the iteration from 1
-                            },
-                            name: 'iteration'
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex',
+                            orderable: false,
+                            searchable: false
+                        },
+                        {
+                            data: 'full_year',
+                            name: 'academic_years.full_year'
                         },
                         {
                             data: 'name',
-                            name: 'nama'
+                            name: 'name',
+                            searchable: true
                         },
                         {
                             data: 'tipe',

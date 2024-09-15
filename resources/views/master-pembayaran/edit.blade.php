@@ -12,13 +12,13 @@
                     <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Form Pembuatan Data Tipe Pembayaran</h4>
+                                <h4 class="card-title">Form Update Data Tipe Pembayaran</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                                        <form method="POST" action="{{ route('paymentType.store') }}" class="form-horizontal">
-                                            @csrf
+                                        <form method="POST" action="{{ route('paymentType.update', $data['model']->id) }}" class="form-horizontal">
+                                            @csrf @method('PUT')
 
                                             <div class="row mb-4">
                                                 <label class="col-md-3 form-label" for="academic_year_id">Tahun Ajaran</label>
@@ -26,7 +26,7 @@
                                                     <select class="form-control @error('academic_year_id') is-invalid @enderror" name="academic_year_id" id="academic_year_id">
                                                         <option value="">Pilih Salah Satu</option>
                                                         @foreach ($data['academic_years'] as $item)
-                                                            <option value="{{ $item->getKey() }}" @selected(old('academic_year_id') == $item->getKey())>{{ $item->full_year }}</option>
+                                                            <option value="{{ $item->getKey() }}" @selected(old('academic_year_id', $data['model']->academic_year_id) == $item->getKey())>{{ $item->full_year }}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('academic_year_id')
@@ -40,7 +40,7 @@
                                                 <div class="col-md-9">
                                                     <input class="form-control @error('name') is-invalid @enderror"
                                                         type="text" name="name" id="name" autocomplete="off"
-                                                        value="{{ old('name') }}">
+                                                        value="{{ old('name', $data['model']->name) }}">
                                                     @error('name')
                                                         <div class="invalid-feedback" style="color: red;">{{ $message }}
                                                         </div>
@@ -54,7 +54,7 @@
                                                     <select class="form-control @error('type') is-invalid @enderror" name="type" id="type">
                                                         <option value="">Pilih Salah Satu</option>
                                                         @foreach ($data['payment_type'] as $key => $item)
-                                                            <option value="{{$key}}" @selected(old('type') == $key)>{{$item}}</option>
+                                                            <option value="{{$key}}" @selected(old('type', $data['model']->type) == $key)>{{$item}}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('type')
@@ -67,7 +67,7 @@
                                             <div class="row mb-4">
                                                 <label class="col-md-3 form-label">Nominal</label>
                                                 <div class="col-md-9">
-                                                    <input type="text" class="form-control @error('nominal') is-invalid @enderror numericInput" name="nominal" value="{{ old('nominal') }}"
+                                                    <input type="text" class="form-control @error('nominal') is-invalid @enderror numericInput" name="nominal" value="{{ old('nominal', $data['model']->nominal) }}"
                                                         id="nominal">
                                                     @error('nominal')
                                                         <div class="invalid-feedback" style="color: red;">{{ $message }}

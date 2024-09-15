@@ -22,7 +22,7 @@ class AcademicYearController extends Controller
 
     public function dataGet()
     {
-        $data = AcademicYear::select(['id', 'full_year', 'visible', 'active', 'registration'])->latest('start_year');
+        $data = AcademicYear::select(['id', 'full_year', 'visible', 'active', 'registration'])->urut();
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
