@@ -37,19 +37,25 @@
                         <ul class="slide-menu">
                             <li class="side-menu-label1"><a href="javascript:void(0)">Data Master</a></li>
                             @if (Auth::user()->role != 'Mahasantri')
-                                <li><a href="{{ route('mahasantri.index') }}"
-                                        class="slide-item {{ request()->is('master/mahasantri') ? 'active' : '' }}">
+                                <li>
+                                    <a href="{{ route('mahasantri.index') }}" class="slide-item {{ request()->is('master/mahasantri') ? 'active' : '' }}">
                                         Mahasantri</a>
                                 </li>
-                                <li><a href="{{ route('dosen.index') }}"
-                                        class="slide-item {{ request()->is('master/dosen') ? 'active' : '' }}"> Dosen</a>
-                                </li>
-                                <li><a href="{{ route('mata-kuliah.index') }}"
-                                        class="slide-item {{ request()->is('master/mata-kuliah') ? 'active' : '' }}"> Mata
-                                        Kuliah</a>
+                                <li>
+                                    <a href="{{ route('dosen.index') }}"
+                                        class="slide-item {{ request()->is('master/dosen') ? 'active' : '' }}">
+                                        Dosen
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('academic-year.index') }}" class="slide-item {{ request()->is('master/academic-year*') ? 'active' : '' }}">
+                                    <a href="{{ route('mata-kuliah.index') }}"
+                                        class="slide-item {{ request()->is('master/mata-kuliah') ? 'active' : '' }}">
+                                        Mata Kuliah
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('academic-year.index') }}"
+                                        class="slide-item {{ request()->is('master/academic-year*') ? 'active' : '' }}">
                                         Tahun Ajaran
                                     </a>
                                 </li>
@@ -59,19 +65,27 @@
                                 {{-- <li><a href="#" class="slide-item"> Transkrip Akademik</a></li> --}}
                             @endif
                             @if (Auth::user()->role == 'Mahasantri')
-                                <li><a href="{{ route('ipk.index') }}"
-                                        class="slide-item {{ request()->is('master/akademik') ? 'active' : '' }}"> Riwayat
-                                        IP</a>
+                                <li>
+                                    <a href="{{ route('ipk.index') }}" class="slide-item {{ request()->is('master/akademik') ? 'active' : '' }}">
+                                        Riwayat IP
+                                    </a>
                                 </li>
                             @endif
-                            <li><a href="{{ Auth::user()->role == 'Mahasantri' ? route('schedule.detail', ['id' => Auth::user()->mahasantri->kelas_id]) : route('schedule.index') }}"
-                                    class="slide-item {{ request()->is('master/jadwal-kuliah') ? 'active' : '' }}"> Jadwal
-                                    Kuliah</a></li>
-                            <li><a href="{{ Auth::user()->role == 'Mahasantri' ? route('absent.mahasantri.index') : route('absent.index') }}"
-                                    class="slide-item {{ request()->is('master/persensi*') ? 'active' : '' }}"> Presensi
-                                    Kuliah</a></li>
-                            <li><a href="{{ Auth::user()->role == 'Mahasantri' ? route('score.mahasantri.index') : route('score.index') }}"
-                                    class="slide-item {{ request()->is('master/score*') ? 'active' : '' }}"> Penilaian</a>
+                            <li>
+                                <a href="{{ Auth::user()->role == 'Mahasantri' ? route('schedule.detail', ['id' => Auth::user()->mahasantri->kelas_id]) : route('schedule.index') }}"
+                                    class="slide-item {{ request()->is('master/jadwal-kuliah') ? 'active' : '' }}">
+                                    Jadwal Kuliah
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ Auth::user()->role == 'Mahasantri' ? route('absent.mahasantri.index') : route('absent.index') }}" class="slide-item {{ request()->is('master/persensi*') ? 'active' : '' }}">
+                                    Presensi Kuliah
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ Auth::user()->role == 'Mahasantri' ? route('score.mahasantri.index') : route('score.index') }}" class="slide-item {{ request()->is('master/score*') ? 'active' : '' }}">
+                                    Penilaian
+                                </a>
                             </li>
                         </ul>
                     </li>
@@ -97,7 +111,7 @@
                         <ul class="slide-menu">
                             <li>
                                 <a href="{{ route('paymentType.index') }}"
-                                    class="slide-item {{ request()->is('pembayaran/master') ? 'active' : '' }}">
+                                    class="slide-item {{ request()->is('pembayaran/master/type*') ? 'active' : '' }}">
                                     Master Pembayaran
                                 </a>
                             </li>

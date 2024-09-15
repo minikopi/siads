@@ -192,7 +192,7 @@ return [
         /**
          * Define if the laratrust middleware are registered automatically in the service provider.
          */
-        'register' => true,
+        'register' => false,
 
         /**
          * Method to be called in the middleware return case.
@@ -209,8 +209,10 @@ return [
              * Aborts the execution with a 403 code and allows you to provide the response text.
              */
             'abort' => [
-                'code' => 403,
-                'message' => 'User does not have any of the necessary access rights.',
+                // 'code' => 403,
+                // 'message' => 'User does not have any of the necessary access rights.',
+                'code' => 404,
+                'message' => 'Not found.',
             ],
 
             /**
