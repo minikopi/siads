@@ -106,7 +106,7 @@ class MahasantriController extends Controller
 
             $mahasantri->update($request->except(['foto']));
 
-            if ($request->hasFile('foto')) {
+            if ($request->hasFile('foto') && !is_null($mahasantri->foto)) {
                 if (Storage::exists($mahasantri->foto)) {
                     Storage::delete($mahasantri->foto);
                 }
