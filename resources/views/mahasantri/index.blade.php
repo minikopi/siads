@@ -108,33 +108,67 @@
         <!-- SweetAlert2 JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         <script>
+            function deleteRow(url, text) {
+                let token = $("meta[name='csrf-token']").attr("content");
 
-            function deleteRow(test){
-                let token   = $("meta[name='csrf-token']").attr("content");
-                    $.ajax({
-                        url: test,
-                        type: "DELETE",
-                        cache: false,
-                        data: {
-                            "_token": token
-                        },
-                        success: function(response) {
-                             window.location.reload();
-                        }
-                    });
-                }
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: `Anda akan menghapus data ${String(text)}`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Hapus',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true,
+                    buttonsStyling: false,
+                    customClass: {
+                        cancelButton: 'btn btn-light waves-effect',
+                        confirmButton: 'btn btn-primary waves-effect waves-light'
+                    },
+                    preConfirm: (e) => {
+                        return new Promise((resolve) => {
+                            setTimeout(() => {
+                                resolve();
+                            }, 50);
+                        });
+                    }
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            type: 'POST',
+                            data: {
+                                "_method": "DELETE",
+                                "_token": token
+                            },
+                            url: url,
+                            success: function(response) {
+                                Swal.fire({
+                                    title: "Sukses",
+                                    text: response.msg,
+                                    icon: "success"
+                                });
+                                setTimeout(function() {
+                                    window.location = redirect;
+                                }, 1000)
+                            },
+                            error: function(response) {
+                                var err = JSON.parse(response.responseText);
+                                Swal.fire({
+                                    title: "Error",
+                                    text: err.msg,
+                                    icon: "error"
+                                });
+                            }
+                        })
+                    }
+                })
+            }
             $(document).ready(function() {
                 $('#datatables').DataTable({
                     "processing": true,
                     "serverSide": true,
                     "ajax": "{{ route('mahasantri.dataGet') }}", // Sesuaikan dengan route yang Anda buat
-                    "columns": [{
-                            data: null,
-                            render: function(data, type, row, meta) {
-                                return meta.row + 1; // Adding 1 to start the iteration from 1
-                            },
-                            name: 'iteration'
-                        },
+                    "columns": [
+                        { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                         {
                             data: 'nama',
                             name: 'nama'
@@ -149,14 +183,13 @@
                         {
                             data: null,
                             render: function(data, type, row) {
-                                var route = '{{ route("mahasantri.edit", ["id" =>":id" ])}}'
-                                var routeDelete = '{{ route("mahasantri.delete", ["id" =>":id" ])}}'
+                                var route = '{{ route('mahasantri.edit', ['id' => ':id']) }}'
+                                var routeDelete = '{{ route('mahasantri.delete', ['id' => ':id']) }}'
                                 route = route.replace(':id', data.id);
                                 routeDelete = routeDelete.replace(':id', data.id);
-                                return '<a href="'+route+'" class="btn btn-warning">Edit</a> ' +
-                                    '<button class="btn btn-danger" onclick="deleteRow(`' +
-                                    routeDelete +
-                                    '`)">Delete</button>';
+                                let nama = String(data.nama_lengkap);
+                                let params = `'${routeDelete}','${nama}'`;
+                                return `<a href="${route}" class="btn btn-warning">Edit</a>  <button class="btn btn-danger" onclick="deleteRow(${params})">Delete</button>`;
                             },
                             name: 'action'
                         }
@@ -185,8 +218,6 @@
                 });
 
             });
-
-
         </script>
         @if (session('success'))
             <script>

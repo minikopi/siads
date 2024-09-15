@@ -38,7 +38,7 @@
                             <li class="side-menu-label1"><a href="javascript:void(0)">Data Master</a></li>
                             @if (Auth::user()->role != 'Mahasantri')
                                 <li>
-                                    <a href="{{ route('mahasantri.index') }}" class="slide-item {{ request()->is('master/mahasantri') ? 'active' : '' }}">
+                                    <a href="{{ route('mahasantri.index') }}" class="slide-item {{ request()->is('master/mahasantri/*', 'master/mahasantri') ? 'active' : '' }}">
                                         Mahasantri</a>
                                 </li>
                                 <li>

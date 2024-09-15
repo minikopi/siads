@@ -13,6 +13,8 @@ class Mahasantri extends Model
     public $fillable = [
         'user_id',
         'nim',
+        'wakaf',
+        'academic_year_id',
         'nama_depan',
         'nama_belakang',
         'email',
@@ -56,7 +58,13 @@ class Mahasantri extends Model
         'penyakit',
         'jenis_kelamin',
         'status',
-        'kelas_id'
+        'kelas_id',
+        'created_by',
+        'updated_by'
+    ];
+
+    protected $attributes = [
+        'status' => 'aktif'
     ];
 
     public function class()
