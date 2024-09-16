@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Carbon;
 
 class PublishPaymentType implements ShouldQueue
 {
@@ -48,6 +49,8 @@ class PublishPaymentType implements ShouldQueue
     public function tipe_satu($paymentType, $mahasantri)
     {
         // Hanya di semester AWAL (NOL) dan harus LUNAS
+        $namaPembayaran = strtolower($paymentType->name);
+
         $payment = new Payment();
         $payment->semester = 1;
         $payment->mahasantri_id = $mahasantri->getKey();
@@ -55,7 +58,7 @@ class PublishPaymentType implements ShouldQueue
         $payment->payment_type_id = $paymentType->id;
         $payment->installment = false;
         $payment->due_date = $paymentType->due_date;
-        $payment->total = $paymentType->nominal;
+        $payment->total = ($namaPembayaran == 'wakaf') ? $mahasantri->wakaf : $paymentType->nominal;
         $payment->created_by = $this->user;
         $payment->updated_by = $this->user;
         $payment->save();
@@ -64,15 +67,18 @@ class PublishPaymentType implements ShouldQueue
     public function tipe_dua($paymentType, $mahasantri)
     {
         // Ada di setiap semester dan bisa DICICIL
-        for ($i=1; $i <= 8; $i++) {
+        $namaPembayaran = strtolower($paymentType->name);
+        $due_date = Carbon::parse($paymentType->due_date);
+
+        for ($i = 1; $i <= 8; $i++) {
             $payment = new Payment();
             $payment->semester = $i;
             $payment->mahasantri_id = $mahasantri->getKey();
             $payment->academic_year_id = $paymentType->academic_year_id;
             $payment->payment_type_id = $paymentType->id;
             $payment->installment = true;
-            $payment->due_date = $paymentType->due_date;
-            $payment->total = $paymentType->nominal;
+            $payment->due_date = ($i == 1) ? $paymentType->due_date : $due_date->addMonths(6);
+            $payment->total = ($namaPembayaran == 'wakaf') ? $mahasantri->wakaf : $paymentType->nominal;
             $payment->created_by = $this->user;
             $payment->updated_by = $this->user;
             $payment->save();
@@ -82,14 +88,16 @@ class PublishPaymentType implements ShouldQueue
     public function tipe_tiga($paymentType, $mahasantri)
     {
         // Berlaku SEKALI bayar dan bisa DICICIL
+        $namaPembayaran = strtolower($paymentType->name);
+
         $payment = new Payment();
         $payment->semester = 0;
         $payment->mahasantri_id = $mahasantri->getKey();
         $payment->academic_year_id = $paymentType->academic_year_id;
         $payment->payment_type_id = $paymentType->id;
-        $payment->installment = false;
+        $payment->installment = true;
         $payment->due_date = $paymentType->due_date;
-        $payment->total = $paymentType->nominal;
+        $payment->total = ($namaPembayaran == 'wakaf') ? $mahasantri->wakaf : $paymentType->nominal;
         $payment->created_by = $this->user;
         $payment->updated_by = $this->user;
         $payment->save();
