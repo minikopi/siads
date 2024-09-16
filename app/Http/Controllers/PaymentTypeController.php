@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Formater;
 use App\Helpers\JsonData;
+use App\Http\Requests\Master\PaymentTypePublish;
 use App\Http\Requests\Master\PaymentTypeStore;
 use App\Http\Requests\Master\PaymentTypeUpdate;
+use App\Jobs\PublishPaymentType;
+use App\Jobs\RepublishPaymentType;
 use App\Models\AcademicYear;
+use App\Models\Mahasantri;
 use App\Models\PaymentType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +38,13 @@ class PaymentTypeController extends Controller
             ->addColumn('nomial_format', function ($data) {
                 $s = Formater::RupiahCurrency($data->nominal);
                 return $s;
+            })
+            ->editColumn('published', function ($data) {
+                $s = $data->published ? 'Ya' : 'Belum';
+                return $s;
+            })
+            ->editColumn('due_date', function ($data) {
+                return $data->due_date->format('d F Y');
             })
             ->addColumn('action', function ($data) {
                 return view('master-pembayaran.button', compact('data'));
@@ -69,9 +80,6 @@ class PaymentTypeController extends Controller
         try {
             DB::beginTransaction();
             $data = PaymentType::findOrFail($id);
-            // TODO: jika sudah di-consume oleh mahasantri, maka harus ada konfirmasi lagi
-            //       karena perubahan nominal akan berefek kepada data yang sudah ada
-            //       atau tidak.
             $data->update($request->validated());
         } catch (\Exception $e) {
             DB::rollback();
@@ -95,8 +103,38 @@ class PaymentTypeController extends Controller
             ['msg' => 'Maaf, Anda tidak dapat melakukan ini. Hubungi web administrator.'],
             400
         );
-        // $data = PaymentType::findOrFail($id);
-        // $data->delete();
-        // return redirect()->route('paymentType.index')->with('success', 'Berhasil!');
+    }
+
+    public function publish($id)
+    {
+        $data = PaymentType::with('academic_year')->find($id);
+        $count = Mahasantri::where([
+            'academic_year_id' => $data->academic_year_id
+        ])->count();
+
+        return view('master-pembayaran.publish', compact('data', 'count'));
+    }
+
+    public function publishing(PaymentTypePublish $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            $paymentType = PaymentType::with('academic_year')->where('published', false)->where('id', $id)->first();
+            if (!$paymentType && $request->replace == 1) {
+                $paymentType = PaymentType::with('academic_year')->find($id);
+                RepublishPaymentType::dispatch($paymentType, auth()->user()->name)->afterResponse();
+            } else {
+                PublishPaymentType::dispatch($paymentType, auth()->user()->name)->afterResponse();
+                $paymentType->update([
+                    'published' => true
+                ]);
+            }
+        } catch (\Throwable $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+        DB::commit();
+        return redirect()->route('paymentType.index')->with('success', 'Berhasil menerbitkan pembayaran!');
     }
 }

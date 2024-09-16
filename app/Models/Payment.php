@@ -16,6 +16,11 @@ class Payment extends Model
         'paid'
     ];
 
+    protected $casts = [
+        'installment' => 'boolean',
+        'due_date' => 'date'
+    ];
+
     public function mahasantri(): BelongsTo
     {
         return $this->belongsTo(Mahasantri::class);

@@ -1,3 +1,4 @@
+<a href="{{ route("paymentType.publish", ["id" =>$data->id ])}}" class="btn btn-primary">Publish</a>
 <a href="{{ route("paymentType.edit", ["id" =>$data->id ])}}" class="btn btn-warning">Edit</a>
 <button class="btn btn-danger" onclick="deleteRow('{{route('paymentType.delete', $data->id)}}','{{$data->full_year}}')">Delete</button>
 {{-- <form action="{{route('paymentType.delete', $data->id)}}"

@@ -27,7 +27,8 @@ class PaymentTypeUpdate extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'type' => ['required', 'numeric', 'in:1,2,3'],
             'nominal' => ['required', 'numeric', 'min:1'],
-            'academic_year_id' => ['required', 'numeric', 'exists:academic_years,id']
+            'academic_year_id' => ['required', 'numeric', 'exists:academic_years,id'],
+            'due_date' => ['required', 'date'],
         ];
     }
 
@@ -36,7 +37,8 @@ class PaymentTypeUpdate extends FormRequest
         return [
             'name' => 'nama',
             'type' => 'tipe pembayaran',
-            'academic_year_id' => 'tahun ajaran'
+            'academic_year_id' => 'tahun ajaran',
+            'due_date' => 'jatuh tempo'
         ];
     }
 }
