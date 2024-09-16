@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DetailInvoice;
 use App\Models\Invoice;
 use App\Models\Mahasantri;
+use App\Models\Payment;
 use App\Models\PaymentType;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -70,7 +71,22 @@ class PembayaranController extends Controller
         $token['invoice'] = Invoice::where('mahasantri_id', $siswa->id)->where('status', Invoice::Pending)->first();
         $token['url'] = env('MIDTRANS_URL');
         $token['clienKey'] = env('MIDTRANS_CLIENTKEY');
-        return view('payment.mahasantri', compact('data', 'token'));
+
+        $total = DB::table('payments')
+            ->select(DB::raw("sum(`total`) as invoice, sum(`paid`) as paid, sum(`outstanding`) as unpaid"))
+            ->where('mahasantri_id', auth()->user()->mahasantri->id)
+            ->where('semester', '<=', $siswa->class->current_semaster)
+            ->first();
+
+        $payments = Payment::query()
+            ->with('payment_type')
+            ->where('mahasantri_id', auth()->user()->mahasantri->id)
+            ->where('semester', '<=', $siswa->class->current_semaster)
+            ->orderBy('semester')
+            ->orderByDesc('total')
+            ->get();
+
+        return view('payment.mahasantri', compact('payments', 'total'));
     }
 
     /**
@@ -86,6 +102,7 @@ class PembayaranController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $invoice_code = Invoice::generateTransactionNumberGroup();
         $currentDateTime = Carbon::now();
         $token = Invoice::where('mahasantri_id', Auth::user()->mahasantri->id)->where('status', Invoice::Pending)->first();
