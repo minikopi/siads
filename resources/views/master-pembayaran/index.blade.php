@@ -148,19 +148,6 @@
                             name: 'action'
                         }
                     ],
-                    "columnDefs": [{
-                            "width": "3%",
-                            "targets": 0
-                        }, // No
-                        {
-                            "width": "25%",
-                            "targets": 1
-                        }, // Nama Dosen
-                        {
-                            "width": "10%",
-                            "targets": 2
-                        } // Action
-                    ]
                 });
             });
         </script>
