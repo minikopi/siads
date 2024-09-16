@@ -168,6 +168,8 @@ Route::middleware(['auth'])->group(
                 Route::get('/edit/{id}', [PaymentTypeController::class, 'edit'])->name('paymentType.edit');
                 Route::put('/update/{id}', [PaymentTypeController::class, 'update'])->name('paymentType.update');
                 Route::delete('/delete/{id}', [PaymentTypeController::class, 'delete'])->name('paymentType.delete');
+                Route::get('/publish/{id}', [PaymentTypeController::class, 'publish'])->name('paymentType.publish');
+                Route::put('/publish/{id}', [PaymentTypeController::class, 'publishing'])->name('paymentType.publishing');
             });
         });
         Route::group(['prefix' => 'wisuda'], function () {

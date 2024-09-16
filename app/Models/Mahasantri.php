@@ -77,6 +77,11 @@ class Mahasantri extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function academic_year(): BelongsTo
+    {
+        return $this->belongsTo(AcademicYear::class);
+    }
+
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);

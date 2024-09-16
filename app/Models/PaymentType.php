@@ -19,6 +19,11 @@ class PaymentType extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'published' => 'boolean',
+        'due_date' => 'date'
+    ];
+
     public function academic_year(): BelongsTo
     {
         return $this->belongsTo(AcademicYear::class);

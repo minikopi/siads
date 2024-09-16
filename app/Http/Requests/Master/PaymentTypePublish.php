@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests\Master;
 
-use App\Traits\CreatedBy;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PaymentTypeStore extends FormRequest
+class PaymentTypePublish extends FormRequest
 {
-    use CreatedBy;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -24,21 +22,16 @@ class PaymentTypeStore extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'type' => ['required', 'numeric', 'in:1,2,3'],
-            'nominal' => ['required', 'numeric', 'min:1'],
-            'academic_year_id' => ['required', 'numeric', 'exists:academic_years,id'],
-            'due_date' => ['required', 'date'],
+            'agree' => ['required', 'boolean'],
+            'replace' => ['required', 'boolean'],
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'name' => 'nama',
-            'type' => 'tipe pembayaran',
-            'academic_year_id' => 'tahun ajaran',
-            'due_date' => 'jatuh tempo'
+            'agree' => 'pertanyaan yakin untuk melakukan perubahan',
+            'replace' => 'pertanyaan sadar tentang data mahasantri terdampak',
         ];
     }
 }

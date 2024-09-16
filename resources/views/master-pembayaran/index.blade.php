@@ -25,8 +25,9 @@
                                                 <th class="wd-15p border-bottom-0">Tahun Ajaran</th>
                                                 <th class="wd-15p border-bottom-0">Nama</th>
                                                 <th class="wd-15p border-bottom-0">Tipe</th>
-                                                {{-- <th class="wd-15p border-bottom-0">Smester</th> --}}
                                                 <th class="wd-15p border-bottom-0">Nominal</th>
+                                                <th class="wd-15p border-bottom-0">Jatuh Tempo</th>
+                                                <th class="wd-15p border-bottom-0">Publish</th>
                                                 <th class="wd-10p border-bottom-0">Action</th>
                                             </tr>
                                         </thead>
@@ -133,6 +134,14 @@
                         {
                             data: 'nomial_format',
                             name: 'nominal'
+                        },
+                        {
+                            data: 'due_date',
+                            name: 'due_date'
+                        },
+                        {
+                            data: 'published',
+                            name: 'published'
                         },
                         {
                             data: 'action',
