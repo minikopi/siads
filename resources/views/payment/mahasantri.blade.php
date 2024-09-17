@@ -153,85 +153,95 @@
 
                             </div>
                             <div class="card-body">
-                                <div>
-                                    <form action="{{ route('mahasantri.pembayaran.store') }}" method="POST">
-                                        @csrf
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">
-                                                            {{-- <input type="checkbox" id="checkAll"> Pilih --}}
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    id="checkAll" />
-                                                                <label class="form-check-label" for="checkAll"> Pilih
-                                                                    semua</label>
-                                                            </div>
-                                                        </th>
-                                                        <th scope="col">Jenis Tagihan</th>
-                                                        <th scope="col">Nominal</th>
-                                                        <th scope="col">Terbayar</th>
-                                                        <th scope="col">Jatuh Tempo</th>
-                                                        <th scope="col">Keterangan</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($payments as $payment)
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <form action="{{ route('mahasantri.pembayaran.store') }}" id="pembayaran"
+                                            method="POST">
+                                            @csrf
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
                                                         <tr>
-                                                            <td scope="row">
+                                                            <th scope="col">
                                                                 <div class="form-check">
-                                                                    <input class="form-check-input rowCheckbox"
-                                                                        type="checkbox" value="{{ $payment->id }}"
-                                                                        id="payment-{{ $payment->id }}" />
-                                                                    <label class="form-check-label"
-                                                                        for="payment-{{ $payment->id }}"> Pilih </label>
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        id="checkAll" />
                                                                 </div>
-
-                                                                {{-- <input type="checkbox" name="payment_id[]"
-                                                                    id="payment-{{ $payment->id }}"> --}}
-                                                            </td>
-                                                            <td>
-                                                                {{ $payment->payment_type->name }}
-                                                                @if ($payment->semester > 0)
-                                                                    (Semester {{ $payment->semester }})
-                                                                @endif
-                                                            </td>
-                                                            <td>{{ number_format($payment->total, 0, ',', '.') }}</td>
-                                                            <td>{{ number_format($payment->paid, 0, ',', '.') }}</td>
-                                                            <td>{{ $payment->due_date->format('d F Y') }}</td>
-                                                            <td style="width: 20%">
-                                                                @if ($payment->outstanding == 0)
-                                                                    <a class="btn btn-success btn-sm text-white"
-                                                                        style="width: 100%">Lunas</a>
-                                                                @else
-                                                                    <a class="btn btn-danger btn-sm text-white"
-                                                                        style="width: 100%">Belum Lunas</a>
-                                                                @endif
-                                                            </td>
+                                                            </th>
+                                                            <th scope="col">Jenis Tagihan</th>
+                                                            <th scope="col">Nominal</th>
+                                                            <th scope="col">Terbayar</th>
+                                                            <th scope="col">Jatuh Tempo</th>
+                                                            <th scope="col">Keterangan</th>
                                                         </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-
-                                            <!-- Tabel untuk menampilkan hasil -->
-                                            <table id="summaryTable" class="summary-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Nama</th>
-                                                        <th>Nilai Tambahan</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="summaryBody"></tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <td><strong>Total</strong></td>
-                                                        <td id="totalValue"></td>
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </form>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($payments as $payment)
+                                                            <tr class="clickable-row"
+                                                                data-installment="{{ $payment->installment == 1 ? 'cicil' : 'lunas' }}"
+                                                                data-nominal="{{ $payment->outstanding }}">
+                                                                <td scope="row">
+                                                                    @if ($payment->outstanding > 0)
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input rowCheckbox"
+                                                                                type="checkbox" value="{{ $payment->id }}"
+                                                                                id="payment-{{ $payment->id }}"
+                                                                                name="payment_id[]" />
+                                                                        </div>
+                                                                    @else
+                                                                        <span class="text-success"><i
+                                                                                class="fa fa-check text-success"
+                                                                                aria-hidden="true"></i></span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    {{ $payment->payment_type->name }}
+                                                                    @if ($payment->semester > 0)
+                                                                        (Semester {{ $payment->semester }})
+                                                                    @endif
+                                                                </td>
+                                                                <td>{{ number_format($payment->total, 0, ',', '.') }}</td>
+                                                                <td>{{ number_format($payment->paid, 0, ',', '.') }}</td>
+                                                                <td>{{ $payment->due_date->format('d F Y') }}</td>
+                                                                <td style="width: 20%">
+                                                                    @if ($payment->outstanding == 0)
+                                                                        <a class="btn btn-success btn-sm text-white"
+                                                                            style="width: 100%">Lunas</a>
+                                                                    @else
+                                                                        <a class="btn btn-danger btn-sm text-white"
+                                                                            style="width: 100%">Belum Lunas</a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <table id="summaryTable" class="table summary-table">
+                                            <thead>
+                                                <tr class="bg-primary">
+                                                    <th colspan="2" class="text-white">Ringkasan Pembayaran</th>
+                                                    {{-- <th class="text-white">Nominal Bayaran</th> --}}
+                                                </tr>
+                                            </thead>
+                                            <tbody id="summaryBody"></tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td class="text-success"><strong>Total</strong></td>
+                                                    <td class="text-success" id="totalValue"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                        <button type="submit" class="btn btn-success btn-block"
+                                            form="pembayaran">Bayar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -268,6 +278,18 @@
                 });
             });
 
+            // Tambahkan event listener ke setiap baris untuk klik checkbox
+            document.querySelectorAll('.clickable-row').forEach(row => {
+                row.addEventListener('click', function(e) {
+                    // Cegah checkbox berulang kali diklik
+                    if (e.target.type !== 'checkbox') {
+                        const checkbox = this.querySelector('.rowCheckbox');
+                        checkbox.checked = !checkbox.checked;
+                        toggleAdditionalRow(checkbox);
+                    }
+                });
+            });
+
             // Fungsi untuk meng-update checkbox 'checkAll' jika ada perubahan di checkbox baris
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function() {
@@ -284,17 +306,34 @@
             // Fungsi untuk menambah atau menghapus baris tambahan
             function toggleAdditionalRow(checkbox) {
                 const currentRow = checkbox.closest('tr');
+                const installment = currentRow.getAttribute('data-installment');
+                const outstanding = currentRow.getAttribute('data-nominal');
+                const inputField = currentRow.querySelector('input');
 
                 // Jika checkbox dicentang, tambahkan baris baru
                 if (checkbox.checked) {
                     const newRow = document.createElement('tr');
                     newRow.classList.add('new-row');
-                    newRow.innerHTML = `
+                    if (installment == 'cicil') {
+                        newRow.innerHTML = `
                 <td colspan="2">&nbsp;</td>
                 <td colspan="3">
-                    <input type="number" class="form-control is-valid extra-input" name="extra_input[]" placeholder="Masukkan nominal pembayaran untuk ${currentRow.children[1].innerText}" data-name="${currentRow.children[1].innerText}" oninput="updateSummary(this)">
+                    <input type="number" class="form-control is-valid extra-input" name="nominal[]" placeholder="Masukkan nominal pembayaran untuk ${currentRow.children[1].innerText}" data-name="${currentRow.children[1].innerText}" oninput="updateSummary(this)" form="pembayaran">
                 </td>
             `;
+                    } else {
+                        newRow.innerHTML = `
+                <td colspan="2">&nbsp;</td>
+                <td colspan="3">
+                    <input type="number" class="form-control is-valid extra-input" name="nominal[]" placeholder="Masukkan nominal pembayaran untuk ${currentRow.children[1].innerText}" data-name="${currentRow.children[1].innerText}" oninput="updateSummary(this)" onclick="updateSummary(this)" value="${outstanding}" readonly form="pembayaran">
+                </td>
+            `;
+                    var mi = document.createElement("input");
+                    mi.setAttribute('value', outstanding);
+                    mi.setAttribute('data-name', currentRow.children[1].innerText);
+                    updateSummary(mi)
+                    }
+
                     currentRow.after(newRow);
                 } else {
                     // Jika checkbox tidak dicentang, hapus baris tambahan di bawahnya
@@ -303,26 +342,22 @@
                         removeSummaryEntry(currentRow.children[1].innerText); // Hapus dari summary
                     }
                 }
-
-                updateSummaryTableDisplay();
             }
 
             // Fungsi untuk memperbarui tabel summary ketika ada input
             function updateSummary(input) {
-                console.log(input);
                 const name = input.getAttribute('data-name');
                 const value = parseFloat(input.value) || 0;
-                console.log(value);
                 let summaryRow = document.querySelector(`#summaryBody tr[data-name="${name}"]`);
 
                 if (summaryRow) {
-                    summaryRow.children[1].innerText = value;
+                    summaryRow.children[1].innerText = value.toLocaleString();
                 } else {
                     summaryRow = document.createElement('tr');
                     summaryRow.setAttribute('data-name', name);
                     summaryRow.innerHTML = `
                 <td>${name}</td>
-                <td>${value}</td>
+                <td>${value.toLocaleString()}</td>
             `;
                     summaryBody.appendChild(summaryRow);
                 }
@@ -332,8 +367,8 @@
             // Fungsi untuk menghitung total nilai tambahan
             function calculateTotal() {
                 total = Array.from(document.querySelectorAll('#summaryBody tr td:nth-child(2)')).reduce((sum, td) => sum +
-                    parseFloat(td.innerText || 0), 0);
-                totalValue.innerText = total;
+                    parseFloat(td.innerText.replace(/,/g, '') || 0), 0);
+                totalValue.innerText = total.toLocaleString();
             }
 
             // Fungsi untuk menghapus baris summary saat checkbox dinonaktifkan
@@ -343,17 +378,6 @@
                     summaryRow.remove();
                     calculateTotal();
                 }
-            }
-
-            // Fungsi untuk menampilkan/menyembunyikan tabel summary
-            function updateSummaryTableDisplay() {
-                // if (summaryBody.children.length > 0) {
-                //     console.log('update summary table')
-                //     summaryTable.style.display = 'table';
-                // } else {
-                //     console.log('update summary table none')
-                //     summaryTable.style.display = 'none';
-                // }
             }
         </script>
 
