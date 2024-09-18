@@ -130,8 +130,14 @@ class PembayaranController extends Controller
                 $payment_name .= " ";
                 $payment_name .= ($payment->semester > 0) ? "(Semester " . $payment->semester . ")" : '';
 
+                // pembayaran melebihi tagihan
                 if ($request->nominal[$key] > $payment->outstanding) {
                     throw new \Exception('Pembayaran ' . $payment_name . ' melebihi batas yang harus dibayar.');
+                }
+
+                // error jika mencoba menyicil tagihan yang harus sekali bayar
+                if ($payment->installment && $request->nominal[$key] != $payment->outstanding) {
+                    throw new \Exception('Pembayaran ' . $payment_name . ' tidak bisa dicicil atau melebihi tagihan.');
                 }
 
                 array_push($item, array(
