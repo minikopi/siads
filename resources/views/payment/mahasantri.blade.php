@@ -134,7 +134,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Daftar Tagihan</h3>
-                                {{-- @if (Auth::user()->role == 'Mahasantri')
+                                @if (Auth::user()->role == 'Mahasantri')
                                     <p class="ms-auto">
                                         <a class="btn @if ($token['invoice'] != null) btn-danger @else btn-success @endif text-white rounded-0"
                                             id="pay-button"
@@ -149,7 +149,7 @@
                                             </a>
                                         @endif
                                     </p>
-                                @endif --}}
+                                @endif
 
                             </div>
                             <div class="card-body">
