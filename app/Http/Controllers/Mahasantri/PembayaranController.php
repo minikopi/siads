@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DetailInvoice;
 use App\Models\Invoice;
 use App\Models\Mahasantri;
+use App\Models\Payment;
 use App\Models\PaymentType;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -67,10 +68,25 @@ class PembayaranController extends Controller
         }
         $currentDateTime = Carbon::now();
 
-        $token['invoice'] = Invoice::where('mahasantri_id', $siswa->id)->where('status', Invoice::Pending)->first();
-        $token['url'] = env('MIDTRANS_URL');
-        $token['clienKey'] = env('MIDTRANS_CLIENTKEY');
-        return view('payment.mahasantri', compact('data', 'token'));
+        $token['invoice'] = Invoice::with('details')->where('mahasantri_id', $siswa->id)->where('status', Invoice::Pending)->first();
+        // $token['url'] = env('MIDTRANS_URL');
+        // $token['clienKey'] = env('MIDTRANS_CLIENTKEY');
+
+        $total = DB::table('payments')
+            ->select(DB::raw("sum(`total`) as invoice, sum(`paid`) as paid, sum(`outstanding`) as unpaid"))
+            ->where('mahasantri_id', auth()->user()->mahasantri->id)
+            ->where('semester', '<=', $siswa->class->current_semaster)
+            ->first();
+
+        $payments = Payment::query()
+            ->with('payment_type')
+            ->where('mahasantri_id', auth()->user()->mahasantri->id)
+            ->where('semester', '<=', $siswa->class->current_semaster)
+            ->orderBy('semester')
+            ->orderByDesc('total')
+            ->get();
+
+        return view('payment.mahasantri', compact('payments', 'total', 'token'));
     }
 
     /**
@@ -99,31 +115,51 @@ class PembayaranController extends Controller
                 "invoice_code" => $invoice_code,
                 "mahasantri_id" => Auth::user()->mahasantri->id,
                 "status" => Invoice::Pending,
-                "total" => array_sum($request->value),
+                "total" => array_sum($request->nominal),
                 "expired_at" => $currentDateTime->addHour()
             ]);
             $item = [];
-            foreach ($request->paymentJenis as $key => $j) {
+            foreach ($request->payment_id as $key => $j) {
                 $data = json_decode($j, true);
-                $payment = PaymentType::findOrFail($data['payment_type']);
-                if ($request->value[$key] == 0 || $request->value[$key] == null) {
-                    return back();
+                $payment = Payment::with('payment_type')->findOrFail($j);
+                if ($request->nominal[$key] == 0 || $request->nominal[$key] == null) {
+                    continue;
                 }
+
+                $payment_name  = $payment->payment_type->name;
+                $payment_name .= " ";
+                $payment_name .= ($payment->semester > 0) ? "(Semester " . $payment->semester . ")" : '';
+
+                // pembayaran melebihi tagihan
+                if ($request->nominal[$key] > $payment->outstanding) {
+                    throw new \Exception('Pembayaran ' . $payment_name . ' melebihi batas yang harus dibayar.');
+                }
+
+                // error jika mencoba menyicil tagihan yang harus sekali bayar
+                if ($payment->installment && $request->nominal[$key] != $payment->outstanding) {
+                    throw new \Exception('Pembayaran ' . $payment_name . ' tidak bisa dicicil atau melebihi tagihan.');
+                }
+
                 array_push($item, array(
-                    'id'                => $payment->id,
-                    'price'         => $request->value[$key],
+                    'id'        => $payment->payment_type_id,
+                    'price'     => $request->nominal[$key],
                     'quantity'  => 1,
-                    'name'          => $payment->name . '-' . $data['semester']
+                    'name'      => $payment_name
 
                 ));
 
                 $inv->details()->create([
-                    'payment_type_id' => $payment->id,
-                    'semester' => $data['semester'],
-                    'nominal' => $request->value[$key],
-                    'name_payment' => $payment->name,
+                    'payment_type_id' => $payment->payment_type_id,
+                    'semester' => $payment->semester,
+                    'nominal' => $request->nominal[$key],
+                    'name_payment' => $payment_name,
                 ]);
             }
+
+            if (count($item) < 1) {
+                throw new \Exception('Tidak ada tagihan yang harus dibayar.');
+            }
+
             $set = Midtrans::GetPaymentUrl($inv, $item);
             $inv->update([
                 'payment_url' => $set
@@ -135,7 +171,7 @@ class PembayaranController extends Controller
                 'user_id' => auth()->id(),
                 'actor' => Role::Mahasantri,
             ]);
-            return back()->with('error', 'Terjadi Kesalahan!');
+            return back()->with('error', 'Terjadi Kesalahan! ' . $e->getMessage());
         }
         DB::commit();
         return back()->with('success', 'Berhasil!');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\Payload;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
@@ -35,7 +36,12 @@ class MidtransController extends Controller
         $code = $notif->status_code;
         $type = $notif->payment_type;
         $order_id = $notif->order_id;
-        $model = Invoice::where('invoice_code', $order_id)->first();
+        $model = Invoice::with('details')->where('invoice_code', $order_id)->first();
+
+        if (!$model) {
+            Log::warning("webhook tak menemukan invoice-nya: " . $order_id);
+            return true;
+        }
 
         if ($model) {
             $model->transaction_status = $transaction;
@@ -75,6 +81,19 @@ class MidtransController extends Controller
                         $model->merchant_name = $merchant['name'];
                         $model->merchant_number = $merchant['number'];
                         $model->save();
+
+                        // update tabel payments
+                        $mahasantri_id = $model->mahasantri_id;
+                        foreach ($model->details as $detail) {
+                            $payment = Payment::where([
+                                'mahasantri_id' => $mahasantri_id,
+                                'payment_type_id' => $detail->payment_type_id
+                            ])->first();
+                            // $payment->increment('paid', $detail->nominal);
+                            $payment->paid = $payment->paid + $detail->nominal;
+                            $payment->updated_by = 'Midtrans Webhook';
+                            $payment->save();
+                        }
                     }
                 }
             }
@@ -87,6 +106,19 @@ class MidtransController extends Controller
                 $merchant = $this->parsePayment($notif);
                 $model->merchant_amount = $merchant['amount'];
                 $model->save();
+
+                // update tabel payments
+                $mahasantri_id = $model->mahasantri_id;
+                foreach ($model->details as $detail) {
+                    $payment = Payment::where([
+                        'mahasantri_id' => $mahasantri_id,
+                        'payment_type_id' => $detail->payment_type_id
+                    ])->first();
+                    // $payment->increment('paid', $detail->nominal);
+                    $payment->paid = $payment->paid + $detail->nominal;
+                    $payment->updated_by = 'Midtrans Webhook';
+                    $payment->save();
+                }
             }
         } else if ($transaction == 'pending') {
             // set payment status in merchant's database to 'Pending'

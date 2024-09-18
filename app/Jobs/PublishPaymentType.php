@@ -29,7 +29,7 @@ class PublishPaymentType implements ShouldQueue
      */
     public function handle(): void
     {
-        $mahasantriData = Mahasantri::where('academic_year_id', $this->paymentType->academic_year_id)->get();
+        $mahasantriData = Mahasantri::where('academic_year_id', $this->paymentType->academic_year_id)->where('status', 'aktif')->get();
 
         foreach ($mahasantriData as $mahasantri) {
             info($this->paymentType->type);
