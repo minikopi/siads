@@ -11,7 +11,7 @@
                 <!-- PAGE-HEADER -->
                 <div class="page-header">
                     <div>
-                        <h1 class="page-title">Data Pembayaran</h1>
+                        <h1 class="page-title">Tagihan Pembayaran - {{ $siswa->nama_lengkap }}</h1>
                     </div>
                 </div>
                 <!-- PAGE-HEADER END -->
@@ -25,18 +25,35 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col">
-                                                    <h6 class="">Total Siswa Lunas</h6>
-                                                    <h3 class="mb-2 number-font">1.252</h3>
+                                                    <h6 class="">Belum dibayar</h6>
+                                                    <h3 class="mb-2 number-font">
+                                                        Rp {{ number_format($total->unpaid, 0, ',', '.') }}
+                                                    </h3>
+                                                    @php
+                                                        $belum_dibayar = number_format(
+                                                            ($total->unpaid / $total->invoice) * 100,
+                                                            0,
+                                                            ',',
+                                                            '.',
+                                                        );
+
+                                                        if ($belum_dibayar > 70) {
+                                                            $belum_dibayar_text = 'danger';
+                                                        } elseif ($belum_dibayar > 20) {
+                                                            $belum_dibayar_text = 'warning';
+                                                        } else {
+                                                            $belum_dibayar_text = 'success';
+                                                        }
+                                                    @endphp
                                                     <p class="text-muted mb-0">
-                                                        <span class="text-primary"><i
-                                                                class="fa fa-chevron-circle-up text-primary me-1"></i>
-                                                            90%</span> siswa telah melunasi.
+                                                        <span class="text-{{ $belum_dibayar_text }}">
+                                                            {{ $belum_dibayar }}%</span> tagihan belum dibayar.
                                                     </p>
                                                 </div>
                                                 <div class="col col-auto">
                                                     <div
-                                                        class="counter-icon bg-primary-gradient box-shadow-primary brround ms-auto">
-                                                        <i class="fe fe-trending-up text-white mb-5 "></i>
+                                                        class="counter-icon bg-{{ $belum_dibayar_text }}-gradient box-shadow-{{ $belum_dibayar_text }} brround ms-auto">
+                                                        <i class="fe fe-alert-triangle text-white mb-5 "></i>
                                                     </div>
                                                 </div>
                                             </div>
@@ -48,18 +65,35 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col">
-                                                    <h6 class="">Total Siswa Belum Lunas</h6>
-                                                    <h3 class="mb-2 number-font">113</h3>
+                                                    <h6 class="">Sudah dibayar</h6>
+                                                    <h3 class="mb-2 number-font">
+                                                        Rp {{ number_format($total->paid, 0, ',', '.') }}
+                                                    </h3>
+                                                    @php
+                                                        $sudah_dibayar = number_format(
+                                                            ($total->paid / $total->invoice) * 100,
+                                                            0,
+                                                            ',',
+                                                            '.',
+                                                        );
+
+                                                        if ($sudah_dibayar > 80) {
+                                                            $sudah_dibayar_text = 'success';
+                                                        } elseif ($sudah_dibayar > 40) {
+                                                            $sudah_dibayar_text = 'warning';
+                                                        } else {
+                                                            $sudah_dibayar_text = 'danger';
+                                                        }
+                                                    @endphp
                                                     <p class="text-muted mb-0">
-                                                        <span class="text-secondary"><i
-                                                                class="fa fa-chevron-circle-up text-secondary me-1"></i>
-                                                            10%</span> siswa belum melakukan pembayaran.
+                                                        <span class="text-{{ $sudah_dibayar_text }}">
+                                                            {{ $sudah_dibayar }}%</span> tagihan sudah dibayar.
                                                     </p>
                                                 </div>
                                                 <div class="col col-auto">
                                                     <div
-                                                        class="counter-icon bg-danger-gradient box-shadow-danger brround  ms-auto">
-                                                        <i class="icon icon-rocket text-white mb-5 "></i>
+                                                        class="counter-icon bg-{{ $sudah_dibayar_text }}-gradient box-shadow-{{ $sudah_dibayar_text }} brround  ms-auto">
+                                                        <i class="fe fe-check text-white mb-5 "></i>
                                                     </div>
                                                 </div>
                                             </div>
@@ -71,13 +105,15 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col">
-                                                    <h6 class="">Total Pembayaran</h6>
-                                                    <h3 class="mb-2 number-font">Rp 863.521.220</h3>
-                                                    <p class="text-muted mb-0">
+                                                    <h6 class="">Total Tagihan</h6>
+                                                    <h3 class="mb-2 number-font">
+                                                        {{ number_format($total->invoice, 0, ',', '.') }}
+                                                    </h3>
+                                                    {{-- <p class="text-muted mb-0">
                                                         <span class="text-success"><i
                                                                 class="fa fa-chevron-circle-down text-success me-1"></i>
                                                             5%</span> dari nilai sebelumnya
-                                                    </p>
+                                                    </p> --}}
                                                 </div>
                                                 <div class="col col-auto">
                                                     <div
@@ -97,7 +133,7 @@
                     <div class="">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Daftar Tagihan Semester</h3>
+                                <h3 class="card-title">Daftar Tagihan</h3>
                                 @if (Auth::user()->role == 'Mahasantri')
                                     <p class="ms-auto">
                                         <a class="btn @if ($token['invoice'] != null) btn-danger @else btn-success @endif text-white rounded-0"
@@ -105,121 +141,108 @@
                                             @if ($token['invoice'] != null) href="{{ $token['invoice']->payment_url }}" @else disabled @endif>
                                             {{ $token['invoice'] != null ? 'Bayar Sekarang' : 'Tidak Ada Tagihan' }}
                                         </a>
-                                        {{-- @if ($token['invoice'] != null and $token['invoice']->transaction_status == 'pending') --}}
                                         @if ($token['invoice'] != null)
-                                        <a class="btn btn-warning text-white rounded-0" href="{{ route('mahasantri.pembayaran.cancel', $token['invoice']) }}" onclick="return confirm('Apakah yakin ingin membatalkan transaksi ini?')">
-                                            Batalkan
-                                        </a>
+                                            <a class="btn btn-warning text-white rounded-0"
+                                                href="{{ route('mahasantri.pembayaran.cancel', $token['invoice']) }}"
+                                                onclick="return confirm('Apakah yakin ingin membatalkan transaksi ini?')">
+                                                Batalkan
+                                            </a>
                                         @endif
                                     </p>
                                 @endif
 
                             </div>
                             <div class="card-body">
-                                <form action="{{route("pembayaran.store")}}" method="POST">
-                                    @csrf
-                                <div class="panel-group1" id="accordion1">
-                                    @foreach ($data as $i => $item)
-                                        <div class="panel panel-default mb-4">
-                                            <div class="panel-heading1 ">
-                                                <h4 class="panel-title1">
-                                                    <a class="accordion-toggle collapsed" data-bs-toggle="collapse" data-bs-parent="#accordion" href="#collapse{{$i+1}}" aria-expanded="false" disabled>Semester {{$item['semester']}}  ({{$item['status']}})</a>
-                                                </h4>
-
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <form action="{{ route('pembayaran.store') }}" id="pembayaran"
+                                            method="POST">
+                                            @csrf
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        id="checkAll" />
+                                                                </div>
+                                                            </th>
+                                                            <th scope="col">Jenis Tagihan</th>
+                                                            <th scope="col">Nominal</th>
+                                                            <th scope="col">Terbayar</th>
+                                                            <th scope="col">Jatuh Tempo</th>
+                                                            <th scope="col">Keterangan</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($payments as $payment)
+                                                            <tr class="clickable-row"
+                                                                data-installment="{{ $payment->installment == 1 ? 'cicil' : 'lunas' }}"
+                                                                data-nominal="{{ $payment->outstanding }}">
+                                                                <td scope="row">
+                                                                    @if ($payment->outstanding > 0)
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input rowCheckbox"
+                                                                                type="checkbox" value="{{ $payment->id }}"
+                                                                                id="payment-{{ $payment->id }}"
+                                                                                name="payment_id[]" />
+                                                                        </div>
+                                                                    @else
+                                                                        <span class="text-success"><i
+                                                                                class="fa fa-check text-success"
+                                                                                aria-hidden="true"></i></span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    {{ $payment->payment_type->name }}
+                                                                    @if ($payment->semester > 0)
+                                                                        (Semester {{ $payment->semester }})
+                                                                    @endif
+                                                                </td>
+                                                                <td>{{ number_format($payment->total, 0, ',', '.') }}</td>
+                                                                <td>{{ number_format($payment->paid, 0, ',', '.') }}</td>
+                                                                <td>{{ $payment->due_date->format('d F Y') }}</td>
+                                                                <td style="width: 20%">
+                                                                    @if ($payment->outstanding == 0)
+                                                                        <a class="btn btn-success btn-sm text-white"
+                                                                            style="width: 100%">Lunas</a>
+                                                                    @else
+                                                                        <a class="btn btn-danger btn-sm text-white"
+                                                                            style="width: 100%">Belum Lunas</a>
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                            <div id="collapse{{$i+1}}" class="panel-collapse collapse" role="tabpanel" aria-expanded="false">
-                                                <div class="panel-body">
-                                                    @if ($item['status'] == 'Belum Berjalan')
-                                                        <h1>Semester Belum Di mulai</h1>
-                                                    @else
-                                                        <div class="form-group m-0">
-														<div class="custom-controls-stacked ">
-                                                            <table class="table">
-                                                                <thead>
-                                                                    <tr>
-                                                                        @if (Auth::user()->role == "Mahasantri")
-                                                                            <th></th>
-                                                                        @endif
-
-                                                                        <th>jenis pembayaran</th>
-                                                                        <th>Jatuh Tempo</th>
-                                                                        <th>Nominal</th>
-                                                                        <th>Sudah Dibayar</th>
-                                                                        <th>Status</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-
-                                                                    @foreach ($item['payment_type'] as $pt)
-                                                                        <tr>
-                                                                            @if (Auth::user()->role == "Mahasantri")
-                                                                            <td class="text-center">
-                                                                                <input class="form-check-input toggleColspan {{$pt['status_code'] == 2 ? 'bg-dark' : ''}}" type="checkbox" name="paymentJenis[]" value="{{ json_encode(['semester' => $i+1, 'payment_type' => $pt['pyment_id']]) }}" id="#toggleColspan" data-payment="{{$pt['id']}}" aria-expanded="false" {{$pt['status_code'] == 2 ? 'disabled' : ''}}>
-                                                                            </td>
-                                                                            @endif
-
-                                                                            <td>
-                                                                                {{$pt['type']}}
-                                                                            </td>
-                                                                            <td>
-                                                                                {{-- {{$pt['type']}} --}}
-                                                                            </td>
-                                                                            <td>
-                                                                                {{App\Helpers\Formater::RupiahCurrency($pt['total'])}}
-                                                                            </td>
-                                                                            <td>
-                                                                                {{App\Helpers\Formater::RupiahCurrency($pt['sudah_dibayar'])}}
-                                                                            </td>
-                                                                            <td>
-                                                                                <h5 class="{{$pt['status_code'] == 1 ? 'text-danger' : 'text-success'}}">{{$pt['status_text']}}</h5>
-                                                                            </td>
-
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td colspan="4" id="{{$pt['id']}}">
-                                                                                <div class="row">
-                                                                                    <label class="col-md-3 form-label" for="nama">Jumlah bayar :</label>
-                                                                                    <div class="col-md-9">
-                                                                                        <input class="form-control numericInput inputNominal"
-                                                                                            type="input" id="{{$pt['id']}}" autocomplete="off"
-                                                                                            value="{{$pt['total']}}" {{$pt['type_code'] != 1 ? '': 'readonly'}} data-target="{{$pt['id']}}">
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                </tbody>
-                                                            </table>
-														</div>
-													</div>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                    @if (Auth::user()->role == "Mahasantri")
-                                        <div class="summary border border-solid p-4">
-                                        <h3 class="underline">Summary Pembayaran</h3>
-                                        <table class="table">
-                                            <thead >
-                                                <tr>
-                                                    <th>Jenis Pembayaran</th>
-                                                    <th>Nominal</th>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <table id="summaryTable" class="table summary-table">
+                                            <thead>
+                                                <tr class="bg-primary">
+                                                    <th colspan="2" class="text-white">Ringkasan Pembayaran</th>
+                                                    {{-- <th class="text-white">Nominal Bayaran</th> --}}
                                                 </tr>
                                             </thead>
-                                            <tbody class="summary-body">
-                                            </tbody>
-                                            <tr class="table-success">
-                                                <td><strong>Total</strong></td>
-                                                <td class="totals">0</td>
-                                            </tr>
+                                            <tbody id="summaryBody"></tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td class="text-success"><strong>Total</strong></td>
+                                                    <td class="text-success" id="totalValue"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
                                         </table>
-                                        <button type="submit" class="btn btn-success" id="submit">SEND</button>
+                                        <button type="submit" class="btn btn-success btn-block"
+                                            form="pembayaran">Bayar</button>
                                     </div>
-                                    @endif
-
                                 </div>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -238,98 +261,125 @@
         <!-- SweetAlert2 JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         <script>
-            $(document).ready(function () {
+            // Ambil elemen checkbox 'checkAll' dan semua checkbox baris
+            const checkAll = document.getElementById('checkAll');
+            const checkboxes = document.querySelectorAll('.rowCheckbox');
+            const tableBody = document.getElementById('tableBody');
+            const summaryTable = document.getElementById('summaryTable');
+            const summaryBody = document.getElementById('summaryBody');
+            const totalValue = document.getElementById('totalValue');
+            let total = 0;
 
-                // Hide the initially colspanned row
-                $('td[colspan]').hide();
+            // Fungsi untuk mengatur semua checkbox sesuai dengan checkbox 'checkAll'
+            checkAll.addEventListener('change', function() {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = checkAll.checked;
+                    toggleAdditionalRow(checkbox);
+                });
+            });
 
-                // Handle checkbox change event
-                $('.toggleColspan').change(function () {
-                    var inputValue = $(this).attr('data-payment');
-                        var detec = '#'+inputValue
-                    if ($(this).is(':checked')) {
-                        var inputDetect = detec+ ' input'
-                        var specificChildElements = $(inputDetect).val();
-                        var neWElement = '<tr class="input-'+inputValue+'"><td>'+inputValue+'</td><td class="perUnit perunit-'+inputValue+'">'+specificChildElements+'</td></tr>'
-                        $(inputDetect).attr('name', 'value[]');
-                        $('.summary-body').append(neWElement)
-                        $(detec).show();
-                    } else {
-                        var checkElementRemove = '.input-'+inputValue
-
-                        $(checkElementRemove).remove()
-                        $(detec).hide();
+            // Tambahkan event listener ke setiap baris untuk klik checkbox
+            document.querySelectorAll('.clickable-row').forEach(row => {
+                row.addEventListener('click', function(e) {
+                    // Cegah checkbox berulang kali diklik
+                    if (e.target.type !== 'checkbox') {
+                        const checkbox = this.querySelector('.rowCheckbox');
+                        checkbox.checked = !checkbox.checked;
+                        toggleAdditionalRow(checkbox);
                     }
-                    GetTotal()
                 });
-                $('.inputNominal').on('keyup', function() {
-                    var getValueAttr = $(this).attr('data-target')
-                    var detec = '.perunit-'+getValueAttr
-                    $(detec).html($(this).val())
-                    GetTotal()
-                });
-                function GetTotal(){
-                    var sum = 0;
-                    $('.perUnit').each(function() {
-                        sum += parseFloat($(this).html());
-                    });
-                    $('.totals').html(sum)
-                }
-
             });
 
+            // Fungsi untuk meng-update checkbox 'checkAll' jika ada perubahan di checkbox baris
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    toggleAdditionalRow(this);
 
+                    if (!this.checked) {
+                        checkAll.checked = false; // Uncheck 'checkAll' jika ada salah satu yang tidak dicentang
+                    } else if (Array.from(checkboxes).every(chk => chk.checked)) {
+                        checkAll.checked = true; // Centang 'checkAll' jika semua checkbox dicentang
+                    }
+                });
+            });
+
+            // Fungsi untuk menambah atau menghapus baris tambahan
+            function toggleAdditionalRow(checkbox) {
+                const currentRow = checkbox.closest('tr');
+                const installment = currentRow.getAttribute('data-installment');
+                const outstanding = currentRow.getAttribute('data-nominal');
+                const inputField = currentRow.querySelector('input');
+
+                // Jika checkbox dicentang, tambahkan baris baru
+                if (checkbox.checked) {
+                    const newRow = document.createElement('tr');
+                    newRow.classList.add('new-row');
+                    if (installment == 'cicil') {
+                        newRow.innerHTML = `
+                <td colspan="2">&nbsp;</td>
+                <td colspan="3">
+                    <input type="number" class="form-control is-valid extra-input" name="nominal[]" placeholder="Masukkan nominal pembayaran untuk ${currentRow.children[1].innerText}" data-name="${currentRow.children[1].innerText}" oninput="updateSummary(this)" form="pembayaran">
+                </td>
+            `;
+                    } else {
+                        newRow.innerHTML = `
+                <td colspan="2">&nbsp;</td>
+                <td colspan="3">
+                    <input type="number" class="form-control is-valid extra-input" name="nominal[]" placeholder="Masukkan nominal pembayaran untuk ${currentRow.children[1].innerText}" data-name="${currentRow.children[1].innerText}" oninput="updateSummary(this)" onclick="updateSummary(this)" value="${outstanding}" readonly form="pembayaran">
+                </td>
+            `;
+                    var mi = document.createElement("input");
+                    mi.setAttribute('value', outstanding);
+                    mi.setAttribute('data-name', currentRow.children[1].innerText);
+                    updateSummary(mi)
+                    }
+
+                    currentRow.after(newRow);
+                } else {
+                    // Jika checkbox tidak dicentang, hapus baris tambahan di bawahnya
+                    if (currentRow.nextElementSibling && currentRow.nextElementSibling.classList.contains('new-row')) {
+                        currentRow.nextElementSibling.remove();
+                        removeSummaryEntry(currentRow.children[1].innerText); // Hapus dari summary
+                    }
+                }
+            }
+
+            // Fungsi untuk memperbarui tabel summary ketika ada input
+            function updateSummary(input) {
+                const name = input.getAttribute('data-name');
+                const value = parseFloat(input.value) || 0;
+                let summaryRow = document.querySelector(`#summaryBody tr[data-name="${name}"]`);
+
+                if (summaryRow) {
+                    summaryRow.children[1].innerText = value.toLocaleString();
+                } else {
+                    summaryRow = document.createElement('tr');
+                    summaryRow.setAttribute('data-name', name);
+                    summaryRow.innerHTML = `
+                <td>${name}</td>
+                <td>${value.toLocaleString()}</td>
+            `;
+                    summaryBody.appendChild(summaryRow);
+                }
+                calculateTotal();
+            }
+
+            // Fungsi untuk menghitung total nilai tambahan
+            function calculateTotal() {
+                total = Array.from(document.querySelectorAll('#summaryBody tr td:nth-child(2)')).reduce((sum, td) => sum +
+                    parseFloat(td.innerText.replace(/,/g, '') || 0), 0);
+                totalValue.innerText = total.toLocaleString();
+            }
+
+            // Fungsi untuk menghapus baris summary saat checkbox dinonaktifkan
+            function removeSummaryEntry(name) {
+                const summaryRow = document.querySelector(`#summaryBody tr[data-name="${name}"]`);
+                if (summaryRow) {
+                    summaryRow.remove();
+                    calculateTotal();
+                }
+            }
         </script>
-        <script src="{{$token['url']}}" data-client-key="{{$token['clienKey']}}"></script>
-        <script type="text/javascript">
-            $('#pay-button').on('click', function(){
-                let a = $('#pay-button').attr('data-token');
-                mid(a);
-            });
-
-            @if(Session::has('successe'))
-            $(window).load(function(){
-                let a = $('#pay-button').attr('data-token');
-                mid(a);
-            });
-            @endif
-
-
-
-            let mid = (a) => {
-                        snap.pay(a, {
-                        uiMode: "qr",
-                        // Optional
-                        onSuccess: function(result){
-                            // /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                            // toastr.info("Silahikan Tunggu Konfirmasi", "Info!");
-                        },
-                        // Optional
-                        onPending: function(result){
-                            // /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                            // toastr.success("Berhasil Melakukan Pembayaran", "Success!");
-                            // console.log('Pending');
-                            // toastr.info("Silahikan Tunggu Konfirmasi", "Info!");
-                            @if(Session::has('successe'))
-                            const swalWithBootstrapButtons = Swal.mixin({
-                            customClass: {
-                                confirmButton: 'btn btn-danger rounded-0 w-100',
-                            },
-                            buttonsStyling: false
-                            })
-                            @endif
-                        },
-                        // Optional
-                        onError: function(result){
-                            // /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                            // toastr.error("Gagal Melakukan Pembayarn!", "Success!");
-                            // console.log('err');
-                            // toastr.info("Silahikan Tunggu Konfirmasi", "Info!");
-                        }
-                    })
-                }
-
-            </script>
 
         @if (session('success'))
             <script>
@@ -349,7 +399,6 @@
                     text: '{{ session('error') }}',
                 });
             </script>
-
         @endif
     @endpush
 @endsection

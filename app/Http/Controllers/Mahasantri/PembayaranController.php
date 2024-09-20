@@ -145,7 +145,6 @@ class PembayaranController extends Controller
                     'price'     => $request->nominal[$key],
                     'quantity'  => 1,
                     'name'      => $payment_name
-
                 ));
 
                 $inv->details()->create([

@@ -194,5 +194,9 @@ Route::middleware(['auth'])->group(
         Route::prefix('mahasantri')->as('mahasantri.')->middleware(['auth:sanctum'])->group(
             base_path('routes/modules/mahasantri.php'),
         );
+
+        Route::prefix('bendahara')->as('bendahara.')->middleware(['auth:sanctum'])->group(
+            base_path('routes/modules/bendahara.php'),
+        );
     }
 );
