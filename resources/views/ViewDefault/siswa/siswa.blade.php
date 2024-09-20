@@ -12,7 +12,7 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Daftar Siswa</h3>
+                                <h3 class="card-title">Daftar Mahasantri</h3>
                                 <p class="ms-auto"><a href="{{ route('paymentType.create') }}"
                                         class="btn btn-primary btn-sm">Tambah</a></p>
                             </div>

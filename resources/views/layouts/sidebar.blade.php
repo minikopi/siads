@@ -103,8 +103,8 @@
                 </li> --}}
 
                 @role('admin')
-                    <li class="slide {{ request()->is('pembayaran*') ? 'is-expanded' : '' }}">
-                        <a class="side-menu__item {{ request()->is('pembayaran*') ? 'active is-expanded' : '' }}"
+                    <li class="slide {{ request()->is('pembayaran*', 'bendahara/payment-history*') ? 'is-expanded' : '' }}">
+                        <a class="side-menu__item {{ request()->is('pembayaran*', 'bendahara/payment-history*') ? 'active is-expanded' : '' }}"
                             data-bs-toggle="slide" href="javascript:void(0);"><i
                                 class="side-menu__icon fe fe-grid"></i><span class="side-menu__label">Pembayaran</span><i
                                 class="angle fa fa-angle-right"></i></a>
@@ -116,9 +116,15 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ Auth::user()->role == 'Mahasantri' ? route('pembayaran.index') : route('pembayaran.ListSiswa') }}"
-                                    class="slide-item {{ request()->is('pembayaran/mahasiswa') ? 'active' : '' }}">
-                                    Pembayaran Mahasiswa
+                                <a href="{{ route('pembayaran.ListSiswa') }}"
+                                    class="slide-item {{ request()->is('pembayaran', 'pembayaran/*') ? 'active' : '' }}">
+                                    Pembayaran Mahasantri
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('bendahara.payment-history.index') }}"
+                                    class="slide-item {{ request()->is('bendahara/payment-history*') ? 'active' : '' }}">
+                                    Riwayat Pembayaran
                                 </a>
                             </li>
                         </ul>
