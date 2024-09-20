@@ -23,6 +23,7 @@ class PaymentHistoryController extends Controller
         $data = Invoice::with('mahasantri', 'details.payment_type')
             ->select('invoices.*', 'mahasantris.nama_lengkap')
             ->join('mahasantris', 'mahasantris.id', '=', 'invoices.mahasantri_id')
+            ->orderBy('invoices.status')
             ->latest();
 
         return DataTables::of($data)
@@ -30,16 +31,13 @@ class PaymentHistoryController extends Controller
                 $s = Formater::RupiahCurrency($data->total);
                 return $s;
             })
-            ->editColumn('merchant_amount', function ($data) {
-                $s = Formater::RupiahCurrency($data->merchant_amount);
-                return $s;
-            })
-            ->editColumn('nett_amount', function ($data) {
-                $s = Formater::RupiahCurrency($data->nett_amount);
-                return $s;
-            })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->format('d F Y - H:i');
+            })
+            ->addColumn('via', function ($data) {
+                $metode = $data->payment_type ?  $data->payment_type : '';
+                $oleh = $data->merchant_name ? $data->merchant_name : '';
+                return $metode . ' ' . $oleh;
             })
             ->addColumn('action', function ($data) {
                 return view('bendahara.payment-history.button', compact('data'));

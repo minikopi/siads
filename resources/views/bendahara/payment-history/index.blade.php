@@ -22,9 +22,9 @@
                                                 <th class="wd-15p border-bottom-0">Invoice</th>
                                                 <th class="wd-15p border-bottom-0">Nama Mahasantri</th>
                                                 <th class="wd-15p border-bottom-0">Nominal</th>
-                                                <th class="wd-15p border-bottom-0">Biaya</th>
-                                                <th class="wd-15p border-bottom-0">Total</th>
+                                                <th class="wd-15p border-bottom-0">Metode Pembayaran</th>
                                                 <th class="wd-15p border-bottom-0">Tanggal</th>
+                                                <th class="wd-15p border-bottom-0">Status</th>
                                                 <th class="wd-10p border-bottom-0">Action</th>
                                             </tr>
                                         </thead>
@@ -78,18 +78,19 @@
                             orderable: false,
                         },
                         {
-                            data: 'merchant_amount',
-                            name: 'merchant_amount',
+                            data: 'via',
+                            name: 'via',
                             orderable: false,
-                        },
-                        {
-                            data: 'nett_amount',
-                            name: 'nett_amount',
-                            orderable: false,
+                            searchable: true
                         },
                         {
                             data: 'created_at',
                             name: 'created_at',
+                            orderable: false,
+                        },
+                        {
+                            data: 'status',
+                            name: 'status',
                             orderable: false,
                         },
                         {

@@ -27,6 +27,18 @@
                             <td>{{ App\Helpers\Formater::RupiahCurrency($detail->nominal) }}</td>
                         </tr>
                         @endforeach
+                        <tr>
+                            <td class="fw-bold">Total</td>
+                            <td>{{ App\Helpers\Formater::RupiahCurrency($data->total) }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Biaya</td>
+                            <td>{{ App\Helpers\Formater::RupiahCurrency($data->merchant_amount) }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Nett</td>
+                            <td>{{ App\Helpers\Formater::RupiahCurrency($data->nett_amount) }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
