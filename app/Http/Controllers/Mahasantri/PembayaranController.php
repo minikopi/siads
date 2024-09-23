@@ -25,6 +25,23 @@ class PembayaranController extends Controller
      */
     public function index()
     {
+        if (request()->has('order_id') && !request()->has('status_code') && !request()->has('transaction_status')) {
+            // ini void
+            $this->destroy(base64_encode(request('order_id')));
+        }
+        if (request()->has('order_id') && request()->has('status_code') && request()->has('transaction_status')) {
+            // ini void
+            if (request('status_code') === '407' && request('transaction_status') === 'expire') {
+                $this->destroy(base64_encode(request('order_id')));
+            }
+        }
+        // if (request()->has('order_id') && request()->has('status_code') && request()->has('transaction_status')) {
+        //     // ini paid
+        //     if (request('status_code') === '200' && request('transaction_status') === 'settlement') {
+        //         $this->paid(base64_encode(request('order_id'))); # belum ada method-nya
+        //     }
+        // }
+
         $user = Auth::user();
         $data = [];
 
@@ -69,8 +86,6 @@ class PembayaranController extends Controller
         $currentDateTime = Carbon::now();
 
         $token['invoice'] = Invoice::with('details')->where('mahasantri_id', $siswa->id)->where('status', Invoice::Pending)->first();
-        // $token['url'] = env('MIDTRANS_URL');
-        // $token['clienKey'] = env('MIDTRANS_CLIENTKEY');
 
         $total = DB::table('payments')
             ->select(DB::raw("sum(`total`) as invoice, sum(`paid`) as paid, sum(`outstanding`) as unpaid"))
@@ -136,7 +151,7 @@ class PembayaranController extends Controller
                 }
 
                 // error jika mencoba menyicil tagihan yang harus sekali bayar
-                if ($payment->installment && $request->nominal[$key] != $payment->outstanding) {
+                if (!$payment->installment && $request->nominal[$key] != $payment->outstanding) {
                     throw new \Exception('Pembayaran ' . $payment_name . ' tidak bisa dicicil atau melebihi tagihan.');
                 }
 
@@ -200,11 +215,24 @@ class PembayaranController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        $user = Auth::user();
+        $data = [];
+
+        if (! $user->hasRole(Role::Mahasantri)) {
+            return to_route('dashboard.index');
+        }
+
+        $invoice = Invoice::firstWhere([
+            'invoice_code' => base64_decode($id),
+            'status' => Invoice::Pending,
+            'mahasantri_id' => $user->mahasantri->id,
+        ]);
+
+        if ($invoice) {
+            $invoice->status = Invoice::Void;
+            $invoice->save();
+        }
     }
 }

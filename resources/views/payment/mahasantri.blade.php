@@ -154,7 +154,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-9">
+                                    <div class="col-md-12">
                                         <form action="{{ route('mahasantri.pembayaran.store') }}" id="pembayaran"
                                             method="POST">
                                             @csrf
@@ -219,7 +219,9 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <div class="col-md-3">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
                                         <table id="summaryTable" class="table summary-table">
                                             <thead>
                                                 <tr class="bg-primary">
@@ -230,8 +232,8 @@
                                             <tbody id="summaryBody"></tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td class="text-success"><strong>Total</strong></td>
-                                                    <td class="text-success" id="totalValue"></td>
+                                                    <td class="fw-bolder"><strong>Total Harga</strong></td>
+                                                    <td class="fw-bolder" id="totalValue"></td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2">
@@ -242,6 +244,42 @@
                                         <button type="submit" class="btn btn-success btn-block"
                                             form="pembayaran">Bayar</button>
                                     </div>
+                                    @if ($token['invoice'] != null)
+                                        <div class="col-md-4">
+                                            <table class="table summary-table">
+                                                <thead>
+                                                    <tr class="bg-warning">
+                                                        <th colspan="2" class="text-white">
+                                                            Tagihan Aktif - {{ $token['invoice']->invoice_code }}
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @php
+                                                        $nominal_total = 0;
+                                                    @endphp
+                                                    @foreach ($token['invoice']->details as $inv)
+                                                        <tr>
+                                                            <td>{{ $inv->name_payment }}</td>
+                                                            <td>{{ number_format($inv->nominal, 0, ',', '.') }}</td>
+                                                        </tr>
+                                                        @php
+                                                            $nominal_total += $inv->nominal;
+                                                        @endphp
+                                                    @endforeach
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td class="fw-bolder"><strong>Total Harga</strong></td>
+                                                        <td class="fw-bolder">{{ number_format($nominal_total, 0, ',', '.') }}</td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                            <a href="{{ $token['invoice']->payment_url }}"
+                                                class="btn btn-warning btn-block fw-bold"
+                                                form="pembayaran">Bayar Sekarang</a>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -328,10 +366,10 @@
                     <input type="number" class="form-control is-valid extra-input" name="nominal[]" placeholder="Masukkan nominal pembayaran untuk ${currentRow.children[1].innerText}" data-name="${currentRow.children[1].innerText}" oninput="updateSummary(this)" onclick="updateSummary(this)" value="${outstanding}" readonly form="pembayaran">
                 </td>
             `;
-                    var mi = document.createElement("input");
-                    mi.setAttribute('value', outstanding);
-                    mi.setAttribute('data-name', currentRow.children[1].innerText);
-                    updateSummary(mi)
+                        var mi = document.createElement("input");
+                        mi.setAttribute('value', outstanding);
+                        mi.setAttribute('data-name', currentRow.children[1].innerText);
+                        updateSummary(mi)
                     }
 
                     currentRow.after(newRow);

@@ -23,6 +23,23 @@ class PaymentController extends Controller
 {
     public function index(?string $id = null)
     {
+        if (request()->has('order_id') && !request()->has('status_code') && !request()->has('transaction_status')) {
+            // ini void
+            $this->destroy(base64_encode(request('order_id')), $id);
+        }
+        if (request()->has('order_id') && request()->has('status_code') && request()->has('transaction_status')) {
+            // ini void
+            if (request('status_code') === '407' && request('transaction_status') === 'expire') {
+                $this->destroy(base64_encode(request('order_id')), $id);
+            }
+        }
+        // if (request()->has('order_id') && request()->has('status_code') && request()->has('transaction_status')) {
+        //     // ini paid
+        //     if (request('status_code') === '200' && request('transaction_status') === 'settlement') {
+        //         $this->paid(base64_encode(request('order_id')), $id); # belum ada method-nya
+        //     }
+        // }
+
         $data = [];
         $siswa = Mahasantri::with('class')->findOrFail($id);
 
@@ -156,5 +173,20 @@ class PaymentController extends Controller
             })
             ->rawColumns(['action', 'nama'])
             ->make(true);
+    }
+
+    public function destroy(string $id, string $mahasantri_id)
+    {
+
+        $invoice = Invoice::firstWhere([
+            'invoice_code' => base64_decode($id),
+            'status' => Invoice::Pending,
+            'mahasantri_id' => $mahasantri_id,
+        ]);
+
+        if ($invoice) {
+            $invoice->status = Invoice::Void;
+            $invoice->save();
+        }
     }
 }
