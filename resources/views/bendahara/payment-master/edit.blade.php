@@ -13,7 +13,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title">
-                                    Form Pembuatan Poin Pembayaran Mahasantri -
+                                    Form Pengubahan Poin Pembayaran Mahasantri -
                                     {{ $mahasantri->nama_lengkap }}
                                 </h4>
                             </div>
