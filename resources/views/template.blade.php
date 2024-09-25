@@ -37,10 +37,11 @@
 
     <!-- JQUERY JS -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
-     <style>
+    <style>
         /* Custom CSS to remove position: relative from Bootstrap col */
         .custom-col {
-        position: static !important; /* Override Bootstrap styles */
+            position: static !important;
+            /* Override Bootstrap styles */
         }
     </style>
 </head>
@@ -140,7 +141,7 @@
         <script src="{{ asset('js/custom.js') }}"></script>
 
         <script src="{{ asset('plugins/multipleselect/multiple-select.js') }}"></script>
-		<script src="{{ asset('plugins/multipleselect/multi-select.js') }}"></script>
+        <script src="{{ asset('plugins/multipleselect/multi-select.js') }}"></script>
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
         <!-- SweetAlert2 JavaScript -->
@@ -154,7 +155,7 @@
                 });
             });
         </script>
-         @if (session('success'))
+        @if (session('success'))
             <script>
                 Swal.fire({
                     icon: 'success',

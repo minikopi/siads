@@ -103,8 +103,8 @@
                 </li> --}}
 
                 @role('admin')
-                    <li class="slide {{ request()->is('pembayaran*', 'bendahara/payment-history*') ? 'is-expanded' : '' }}">
-                        <a class="side-menu__item {{ request()->is('pembayaran*', 'bendahara/payment-history*') ? 'active is-expanded' : '' }}"
+                    <li class="slide {{ request()->is('pembayaran*', 'bendahara/payment-history*', 'bendahara/master-payment*') ? 'is-expanded' : '' }}">
+                        <a class="side-menu__item {{ request()->is('pembayaran*', 'bendahara/payment-history*', 'bendahara/master-payment*') ? 'active is-expanded' : '' }}"
                             data-bs-toggle="slide" href="javascript:void(0);"><i
                                 class="side-menu__icon fe fe-grid"></i><span class="side-menu__label">Pembayaran</span><i
                                 class="angle fa fa-angle-right"></i></a>
@@ -117,7 +117,7 @@
                             </li>
                             <li>
                                 <a href="{{ route('pembayaran.ListSiswa') }}"
-                                    class="slide-item {{ request()->is('pembayaran', 'pembayaran/*') ? 'active' : '' }}">
+                                    class="slide-item {{ request()->is('pembayaran', 'pembayaran/*', 'bendahara/master-payment*') ? 'active' : '' }}">
                                     Pembayaran Mahasantri
                                 </a>
                             </li>

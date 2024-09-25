@@ -142,7 +142,7 @@
                                     </a>
                                     @if ($token['invoice'] != null)
                                         <a class="btn btn-warning text-white rounded-0"
-                                            href="{{ route('mahasantri.pembayaran.cancel', $token['invoice']) }}"
+                                            href="{{ route('bendahara.pembayaran.cancel', $token['invoice']) }}"
                                             onclick="return confirm('Apakah yakin ingin membatalkan transaksi ini?')">
                                             Batalkan
                                         </a>

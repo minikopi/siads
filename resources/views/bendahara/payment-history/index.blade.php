@@ -100,23 +100,6 @@
                         }
                     ],
                 });
-
-                $('#datatables').on('click', '.toggle-invoice', function() {
-                    var tr = $(this).closest('tr');
-                    var row = table.row(tr);
-                    var pdfSrc = $(this).data('pdf');
-
-                    if (row.child.isShown()) {
-                        // If the PDF viewer is already open, close it
-                        row.child.hide();
-                        tr.removeClass('shown');
-                    } else {
-                        // Open the PDF viewer for the row
-                        row.child('<iframe src="' + pdfSrc +
-                            '" style="width:100%; height:500px;" frameborder="0"></iframe>').show();
-                        tr.addClass('shown');
-                    }
-                });
             });
         </script>
     @endpush

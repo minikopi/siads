@@ -12,22 +12,24 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Master Pembayaran</h3>
-                                <p class="ms-auto"><a href="{{ route('paymentType.create') }}"
-                                        class="btn btn-primary">Tambah</a></p>
+                                <h3 class="card-title">Poin Pembayaran Mahasantri - {{ $mahasantri->nama_lengkap }}</h3>
+                                <p class="ms-auto">
+                                    <a href="{{ route('bendahara.master-payment.payment.create', $mahasantri->id) }}" class="btn btn-primary">
+                                        Tambah
+                                    </a>
+                                </p>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered text-nowrap border-bottom" id="datatables">
                                         <thead>
                                             <tr>
-                                                <th class="wd-15p border-bottom-0">No</th>
-                                                <th class="wd-15p border-bottom-0">Tahun Ajaran</th>
-                                                <th class="wd-15p border-bottom-0">Nama</th>
-                                                <th class="wd-15p border-bottom-0">Tipe</th>
+                                                <th class="wd-15p border-bottom-0">Nama Tagihan</th>
+                                                <th class="wd-15p border-bottom-0">Semester</th>
+                                                <th class="wd-15p border-bottom-0">Dicicil</th>
                                                 <th class="wd-15p border-bottom-0">Nominal</th>
+                                                <th class="wd-15p border-bottom-0">Potongan</th>
                                                 <th class="wd-15p border-bottom-0">Jatuh Tempo</th>
-                                                <th class="wd-15p border-bottom-0">Publish</th>
                                                 <th class="wd-10p border-bottom-0">Action</th>
                                             </tr>
                                         </thead>
@@ -57,8 +59,8 @@
                 let token = $("meta[name='csrf-token']").attr("content");
 
                 Swal.fire({
-                    title: 'Apakah anda yakin?',
-                    text: `Anda akan menghapus data ${String(text)}`,
+                    title: `Hapus data pembayaran ${String(text)}?`,
+                    text: `Tindakan ini tidak dapat dibatalkan`,
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Hapus',
@@ -92,7 +94,7 @@
                                     icon: "success"
                                 });
                                 setTimeout(function() {
-                                    window.location = redirect;
+                                    window.location = response.redirect;
                                 }, 1000)
                             },
                             error: function(response) {
@@ -111,41 +113,51 @@
                 $('#datatables').DataTable({
                     "processing": true,
                     "serverSide": true,
-                    "ajax": "{{ route('paymentType.dataGet') }}", // Sesuaikan dengan route yang Anda buat
-                    "columns": [{
-                            data: 'DT_RowIndex',
-                            name: 'DT_RowIndex',
-                            orderable: false,
-                            searchable: false
-                        },
-                        {
-                            data: 'full_year',
-                            name: 'academic_years.full_year'
-                        },
+                    "ajax": "{{ route('bendahara.master-payment.data', $mahasantri->id) }}", // Sesuaikan dengan route yang Anda buat
+                    "columns": [
+                        // {
+                        //     data: 'DT_RowIndex',
+                        //     name: 'DT_RowIndex',
+                        //     orderable: false,
+                        //     searchable: false
+                        // },
                         {
                             data: 'name',
-                            name: 'name',
+                            name: 'payment_types.name',
+                            orderable: false,
+                        },
+                        {
+                            data: 'semester',
+                            name: 'semester',
+                            orderable: false,
+                        },
+                        {
+                            data: 'installment',
+                            name: 'installment',
+                            orderable: false,
+                        },
+                        {
+                            data: 'total',
+                            name: 'total',
+                            orderable: false,
                             searchable: true
                         },
                         {
-                            data: 'tipe',
-                            name: 'type'
-                        },
-                        {
-                            data: 'nomial_format',
-                            name: 'nominal'
+                            data: 'discount',
+                            name: 'discount',
+                            orderable: false,
+                            searchable: true
                         },
                         {
                             data: 'due_date',
-                            name: 'due_date'
-                        },
-                        {
-                            data: 'published',
-                            name: 'published'
+                            name: 'due_date',
+                            orderable: false,
+                            searchable: true
                         },
                         {
                             data: 'action',
-                            name: 'action'
+                            name: 'action',
+                            orderable: false,
                         }
                     ],
                 });

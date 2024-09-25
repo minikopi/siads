@@ -29,15 +29,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Sahih al-Bukhary</td>
-
-                                                <td>
-                                                    <a href="" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                                                    <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                                                </td>
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>

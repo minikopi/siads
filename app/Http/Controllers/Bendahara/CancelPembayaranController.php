@@ -1,17 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Mahasantri;
+namespace App\Http\Controllers\Bendahara;
 
-use App\Helpers\Midtrans;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
-use App\Models\Mahasantri;
 use App\Models\Payload;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Midtrans\Config;
 
 class CancelPembayaranController extends Controller
 {
@@ -27,17 +24,8 @@ class CancelPembayaranController extends Controller
             'user' => $request->user(),
         ]);
 
-        if (! $user->hasRole(Role::Mahasantri)) {
-            return to_route('mahasantri.pembayaran.index')->with('error', 'Hanya bisa diakses oleh Mahasantri.');
-        }
-
-
-        if ($invoice->mahasantri()->isNot($request->user()->mahasantri)) {
-            Log::warning('Percobaan membatalkan pembayaran milik orang lain', [
-                'user' => $request->user(),
-                'action' => 'Cancel pembayaran #' . $invoice->invoice_code
-            ]);
-            return to_route('mahasantri.pembayaran.index')->with('error', 'Anda tidak memiliki akses untuk melakukan hal tersebut.');
+        if (!$user->hasRole(Role::Admin)) {
+            return back()->with('error', 'Hanya bisa diakses oleh Mahasantri.');
         }
 
         Payload::create([
@@ -49,6 +37,6 @@ class CancelPembayaranController extends Controller
         $invoice->status = Invoice::Void;
         $invoice->save();
 
-        return to_route('mahasantri.pembayaran.index')->with('success', 'Transaksi Anda berhasil dibatalkan.');
+        return to_route('pembayaran.index', $invoice->mahasantri_id)->with('success', 'Transaksi Anda berhasil dibatalkan.');
     }
 }
