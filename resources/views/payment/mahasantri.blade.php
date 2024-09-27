@@ -136,13 +136,13 @@
                                 <h3 class="card-title">Daftar Tagihan</h3>
                                 @if (Auth::user()->role == 'Mahasantri')
                                     <p class="ms-auto">
-                                        <a class="btn @if ($token['invoice'] != null) btn-danger @else btn-success @endif text-white rounded-0"
+                                        <a class="btn @if ($token['invoice'] != null) btn-warning @else btn-success @endif text-white rounded-0"
                                             id="pay-button"
                                             @if ($token['invoice'] != null) href="{{ $token['invoice']->payment_url }}" @else disabled @endif>
                                             {{ $token['invoice'] != null ? 'Bayar Sekarang' : 'Tidak Ada Tagihan' }}
                                         </a>
                                         @if ($token['invoice'] != null)
-                                            <a class="btn btn-warning text-white rounded-0"
+                                            <a class="btn btn-danger text-white rounded-0"
                                                 href="{{ route('mahasantri.pembayaran.cancel', $token['invoice']) }}"
                                                 onclick="return confirm('Apakah yakin ingin membatalkan transaksi ini?')">
                                                 Batalkan
@@ -153,6 +153,15 @@
 
                             </div>
                             <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @if ($errors->any())
+                                            <div class="alert alert-danger">
+                                                <p>Anda belum memilih tagihan yang akan dibayar.</p>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <form action="{{ route('mahasantri.pembayaran.store') }}" id="pembayaran"

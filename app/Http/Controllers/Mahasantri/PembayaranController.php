@@ -6,6 +6,7 @@ use App\Helpers\Condition;
 use App\Helpers\JsonData;
 use App\Helpers\Midtrans;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Bendahara\PaymentSendRequest;
 use App\Models\DetailInvoice;
 use App\Models\Invoice;
 use App\Models\Mahasantri;
@@ -115,7 +116,7 @@ class PembayaranController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PaymentSendRequest $request)
     {
         $invoice_code = Invoice::generateTransactionNumberGroup();
         $currentDateTime = Carbon::now();
@@ -131,7 +132,9 @@ class PembayaranController extends Controller
                 "mahasantri_id" => Auth::user()->mahasantri->id,
                 "status" => Invoice::Pending,
                 "total" => array_sum($request->nominal),
-                "expired_at" => $currentDateTime->addHour()
+                "expired_at" => $currentDateTime->addHour(),
+                'created_by' => auth()->user()->name,
+                'updated_by' => auth()->user()->name,
             ]);
             $item = [];
             foreach ($request->payment_id as $key => $j) {

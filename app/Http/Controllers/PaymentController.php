@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 use App\Helpers\Generator as HelpersGenerator;
+use App\Http\Requests\Bendahara\PaymentSendRequest;
 
 class PaymentController extends Controller
 {
@@ -60,8 +61,9 @@ class PaymentController extends Controller
         return view('payment.index', compact('payments', 'total', 'token', 'siswa'));
     }
 
-    public function PaymentSend(Request $request)
+    public function PaymentSend(PaymentSendRequest $request)
     {
+        // dd($request->all());
         $payment = Payment::with('mahasantri.class')->findOrFail($request->payment_id[0]);
 
         // dd($payment->mahasantri_id);
@@ -96,7 +98,9 @@ class PaymentController extends Controller
                 'merchant_name' => Auth::user()->name,
                 'merchant_number' => Auth::id(),
                 'transaction_status' => 'settlement',
-                'fraud_status' => 'accept'
+                'fraud_status' => 'accept',
+                'created_by' => auth()->user()->name,
+                'updated_by' => auth()->user()->name,
             ]);
             $item = [];
             foreach ($request->payment_id as $key => $j) {

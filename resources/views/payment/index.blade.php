@@ -153,6 +153,15 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
+                                        @if ($errors->any())
+                                            <div class="alert alert-danger">
+                                                <p>Anda belum memilih tagihan yang akan dibayar.</p>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
                                         <form action="{{ route('pembayaran.store') }}" id="pembayaran" method="POST">
                                             @csrf
                                             <div class="table-responsive">

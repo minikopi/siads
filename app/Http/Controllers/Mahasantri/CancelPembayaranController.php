@@ -46,6 +46,7 @@ class CancelPembayaranController extends Controller
             'payload' => 'Cancel #' . $invoice->invoice_code
         ]);
 
+        $invoice->notes = 'Dibatalkan oleh ' . $invoice->mahasantri->nama_lengkap;
         $invoice->status = Invoice::Void;
         $invoice->save();
 
