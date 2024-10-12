@@ -124,7 +124,7 @@
                             <li>
                                 <a href="{{ route('bendahara.payment-history.index') }}"
                                     class="slide-item {{ request()->is('bendahara/payment-history*') ? 'active' : '' }}">
-                                    Riwayat Pembayaran
+                                    Data Transaksi
                                 </a>
                             </li>
                         </ul>

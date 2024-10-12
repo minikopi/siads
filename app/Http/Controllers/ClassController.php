@@ -115,8 +115,8 @@ class ClassController extends Controller
         return DataTables::of($data)
             ->addColumn('jadwal', function ($data) {
                 if ($data->mata_kuliah->sks != 0) {
-                    $start = Carbon::parse($data->start_date)->format('H:i');
-                    $end = Carbon::parse($data->end_date)->format('H:i');
+                    $start = Carbon::parse($data->start_date)->translatedFormat('H:i');
+                    $end = Carbon::parse($data->end_date)->translatedFormat('H:i');
                     return $data->day . " " . $start . "-" . $end . " " . $data->place;
                 } else {
                     return "Pelaksanaan Dilaksanakan Diakhir Semester";

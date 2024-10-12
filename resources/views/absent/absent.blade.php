@@ -42,7 +42,7 @@
                                             @foreach ($data['absen'] as $key => $item)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('l, d - F - Y') }}
+                                                    <td>{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('l, d - F - Y') }}
                                                     </td>
                                                     <td>{{ $item->jumlah_hadir }}</td>
                                                     <td>{{ $item->jumlah_sakit }}</td>

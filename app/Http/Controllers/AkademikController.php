@@ -24,10 +24,10 @@ class AkademikController extends Controller
                 //
             })
             ->editColumn('tanggal_mulai', function ($data) {
-                return Carbon::parse($data->tanggal_mulai)->format('d F Y');
+                return Carbon::parse($data->tanggal_mulai)->translatedFormat('d F Y');
             })
             ->editColumn('tanggal_akhir', function ($data) {
-                return Carbon::parse($data->tanggal_akhir)->format('d F Y');
+                return Carbon::parse($data->tanggal_akhir)->translatedFormat('d F Y');
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -45,7 +45,7 @@ class AkademikController extends Controller
                 return asset('storage/' . $data->file);
             })
             ->editColumn('tanggal', function ($data) {
-                return Carbon::parse($data->tanggal)->format('d F Y');
+                return Carbon::parse($data->tanggal)->translatedFormat('d F Y');
             })
             ->rawColumns(['action', 'file'])
             ->make(true);

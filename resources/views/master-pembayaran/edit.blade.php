@@ -79,7 +79,7 @@
                                             <div class="row mb-4">
                                                 <label class="col-md-3 form-label">Jatuh Tempo</label>
                                                 <div class="col-md-9">
-                                                    <input type="date" class="form-control @error('due_date') is-invalid @enderror" name="due_date" value="{{ old('due_date', $data['model']->due_date->format('Y-m-d')) }}"
+                                                    <input type="date" class="form-control @error('due_date') is-invalid @enderror" name="due_date" value="{{ old('due_date', $data['model']->due_date->translatedFormat('Y-m-d')) }}"
                                                         id="due_date">
                                                     @error('due_date')
                                                         <div class="invalid-feedback" style="color: red;">{{ $message }}

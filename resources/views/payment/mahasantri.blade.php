@@ -211,7 +211,7 @@
                                                                 </td>
                                                                 <td>{{ number_format($payment->total, 0, ',', '.') }}</td>
                                                                 <td>{{ number_format($payment->paid, 0, ',', '.') }}</td>
-                                                                <td>{{ $payment->due_date->format('d F Y') }}</td>
+                                                                <td>{{ $payment->due_date->translatedFormat('d F Y') }}</td>
                                                                 <td style="width: 20%">
                                                                     @if ($payment->outstanding == 0)
                                                                         <a class="btn btn-success btn-sm text-white"

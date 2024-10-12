@@ -34,10 +34,17 @@ class CancelPembayaranController extends Controller
             'payload' => 'Cancel #' . $invoice->invoice_code
         ]);
 
-        $invoice->notes = 'Dibatalkan oleh ' . auth()->user()->name;
+        $alasan_pembatalan = 'Dibatalkan oleh ' . auth()->user()->name;
+
+        if ($request->has('alasan_pembatalan')) {
+            $alasan_pembatalan .= ".\r\n" . $request->alasan_pembatalan;
+        }
+
+        $invoice->notes = $alasan_pembatalan;
         $invoice->status = Invoice::Void;
         $invoice->save();
 
-        return to_route('pembayaran.index', $invoice->mahasantri_id)->with('success', 'Transaksi Anda berhasil dibatalkan.');
+        // return to_route('pembayaran.index', $invoice->mahasantri_id)->with('success', 'Transaksi Anda berhasil dibatalkan.');
+        return back()->with('success', 'Transaksi Anda berhasil dibatalkan.');
     }
 }

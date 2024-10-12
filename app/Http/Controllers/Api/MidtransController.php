@@ -159,6 +159,7 @@ class MidtransController extends Controller
                 $merchant = $this->parsePayment($notif);
                 $model->merchant_name = $merchant['name'];
                 $model->merchant_number = $merchant['number'];
+                $model->notes = 'Dibatalkan via Midtrans';
                 $model->save();
             }
         }
@@ -189,6 +190,12 @@ class MidtransController extends Controller
                 $res['name'] = 'permata';
                 $res['number'] = $response->permata_va_number;
             }
+            $res['amount'] = 4000;
+        }
+        if ($response->payment_type == 'echannel') {
+            // Mandiri
+            $res['name'] = $response->payment_type;
+            $res['number'] = $response->biller_code . "#" . $response->bill_key;
             $res['amount'] = 4000;
         }
 

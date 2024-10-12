@@ -12,20 +12,21 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Riwayat Pembayaran Mahasantri</h3>
+                                <h3 class="card-title">Data Transaksi</h3>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered text-nowrap border-bottom" id="datatables">
                                         <thead>
                                             <tr>
-                                                <th class="wd-15p border-bottom-0">Invoice</th>
-                                                <th class="wd-15p border-bottom-0">Nama Mahasantri</th>
-                                                <th class="wd-15p border-bottom-0">Nominal</th>
-                                                <th class="wd-15p border-bottom-0">Metode Pembayaran</th>
-                                                <th class="wd-15p border-bottom-0">Tanggal</th>
-                                                <th class="wd-15p border-bottom-0">Status</th>
-                                                <th class="wd-10p border-bottom-0">Action</th>
+                                                <th class="wd-15p border-bottom-0">NIM</th>
+                                                <th class="wd-15p border-bottom-0">NAMA</th>
+                                                <th class="wd-15p border-bottom-0">ANGKATAN</th>
+                                                <th class="wd-15p border-bottom-0">METODE PEMBAYARAN</th>
+                                                <th class="wd-15p border-bottom-0">TANGGAL</th>
+                                                <th class="wd-15p border-bottom-0">NOMINAL</th>
+                                                <th class="wd-15p border-bottom-0">KETERANGAN</th>
+                                                <th class="wd-10p border-bottom-0"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -63,8 +64,8 @@
                         //     searchable: false
                         // },
                         {
-                            data: 'invoice_code',
-                            name: 'invoice_code',
+                            data: 'mahasantri.nim',
+                            name: 'mahasantri.nim',
                             orderable: false,
                         },
                         {
@@ -73,19 +74,24 @@
                             orderable: false,
                         },
                         {
-                            data: 'total',
-                            name: 'total',
+                            data: 'nama_angkatan',
+                            name: 'nama_angkatan',
                             orderable: false,
                         },
                         {
                             data: 'via',
-                            name: 'via',
+                            name: 'payment_type',
                             orderable: false,
                             searchable: true
                         },
                         {
                             data: 'created_at',
                             name: 'created_at',
+                            orderable: false,
+                        },
+                        {
+                            data: 'total',
+                            name: 'total',
                             orderable: false,
                         },
                         {

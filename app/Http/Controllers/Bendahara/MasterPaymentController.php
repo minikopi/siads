@@ -51,7 +51,7 @@ class MasterPaymentController extends Controller
                 return $data->installment ? 'Ya' : 'Tidak';
             })
             ->editColumn('due_date', function ($data) {
-                return $data->due_date->format('d F Y');
+                return $data->due_date->translatedFormat('d F Y');
             })
             ->addColumn('action', function ($data) use ($mahasantri) {
                 return view('bendahara.payment-master.button', compact('data', 'mahasantri'));

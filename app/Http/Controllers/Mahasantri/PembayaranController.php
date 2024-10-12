@@ -121,9 +121,21 @@ class PembayaranController extends Controller
         $invoice_code = Invoice::generateTransactionNumberGroup();
         $currentDateTime = Carbon::now();
         $token = Invoice::where('mahasantri_id', Auth::user()->mahasantri->id)->where('status', Invoice::Pending)->first();
+
         if ($token != null) {
             return back()->with('error', 'Ada tagihan yang belum dibayarkan!');
         }
+
+        // if ($request->missing('store')) {
+        //     $payments = Payment::query()
+        //         ->with('payment_type')
+        //         ->whereIn('id', $request->payment_id)
+        //         ->get()->toArray();
+        //     return view('payment.review', [
+        //         'data' => collect($request->validated())->toArray(),
+        //         'payments' => $payments
+        //     ]);
+        // }
 
         DB::beginTransaction();
         try {

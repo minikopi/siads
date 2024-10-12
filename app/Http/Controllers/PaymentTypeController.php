@@ -44,7 +44,7 @@ class PaymentTypeController extends Controller
                 return $s;
             })
             ->editColumn('due_date', function ($data) {
-                return $data->due_date->format('d F Y');
+                return $data->due_date->translatedFormat('d F Y');
             })
             ->addColumn('action', function ($data) {
                 return view('master-pembayaran.button', compact('data'));

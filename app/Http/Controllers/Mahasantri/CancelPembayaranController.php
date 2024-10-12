@@ -48,8 +48,9 @@ class CancelPembayaranController extends Controller
 
         $invoice->notes = 'Dibatalkan oleh ' . $invoice->mahasantri->nama_lengkap;
         $invoice->status = Invoice::Void;
+        $invoice->transaction_status = 'cancel';
         $invoice->save();
 
-        return to_route('mahasantri.pembayaran.index')->with('success', 'Transaksi Anda berhasil dibatalkan.');
+        return back()->with('success', 'Transaksi Anda berhasil dibatalkan.');
     }
 }

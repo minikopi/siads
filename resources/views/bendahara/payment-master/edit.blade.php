@@ -111,7 +111,7 @@
                                                 <div class="col-md-9">
                                                     <input class="form-control @error('due_date') is-invalid @enderror"
                                                         type="date" name="due_date" id="due_date" autocomplete="off"
-                                                        value="{{ old('due_date', $payment->due_date->format('Y-m-d')) }}">
+                                                        value="{{ old('due_date', $payment->due_date->translatedFormat('Y-m-d')) }}">
                                                     @error('due_date')
                                                         <div class="invalid-feedback" style="color: red;">{{ $message }}
                                                         </div>

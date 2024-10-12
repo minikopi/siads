@@ -24,6 +24,7 @@ class PaymentSendRequest extends FormRequest
         return [
             'payment_id' => ['required', 'array'],
             'nominal' => ['required', 'array'],
+            'store' => ['nullable'],
         ];
     }
 }
