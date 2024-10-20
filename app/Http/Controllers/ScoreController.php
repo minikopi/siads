@@ -12,9 +12,9 @@ use App\Models\Score;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\Facades\DataTables;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Yajra\DataTables\DataTables;
 
 class ScoreController extends Controller
 {
@@ -53,32 +53,40 @@ class ScoreController extends Controller
 
     public function dataGetScheduleMahasiswa(Request $request)
     {
-        $data = Schedule::with("score", "mata_kuliah", "dosen.user", 'class')->where("class_id", Auth::user()->mahasantri->kelas_id)
+        $data = Schedule::with("score", "mata_kuliah", "dosen.user", 'class')
+            ->where("class_id", Auth::user()->mahasantri->kelas_id)
             ->when($request->smester, function ($q) use ($request) {
                 return $q->whereHas("mata_kuliah", function ($b) use ($request) {
                     $b->where("smester", $request->smester);
                 });
             })
-            ->orderBy('created_at', 'desc')->get();
+            ->orderBy('created_at', 'desc');
 
         return DataTables::of($data)
             ->editColumn('score', function ($data) {
-                return $data->score[0]->akademik;
+                if (count($data->score) > 1) {
+                    return $data->score[0]->akademik;
+                }
+                return "-";
             })
             ->editColumn('huruf', function ($data) {
-                $nilai = $data->score[0]->akademik;
-                if ($nilai > 80) {
-                    return "A";
-                } elseif ($nilai > 70) {
-                    return "B";
-                } elseif ($nilai > 60) {
-                    return "C";
-                } elseif ($nilai > 50) {
-                    return "D";
-                } else {
-                    return "E";
+                if (count($data->score) > 1) {
+                    $nilai = $data->score[0]->akademik;
+                    if ($nilai > 80) {
+                        return "A";
+                    } elseif ($nilai > 70) {
+                        return "B";
+                    } elseif ($nilai > 60) {
+                        return "C";
+                    } elseif ($nilai > 50) {
+                        return "D";
+                    } else {
+                        return "E";
+                    }
                 }
+                return "-";
             })
+            ->addIndexColumn()
             ->make(true);
     }
 

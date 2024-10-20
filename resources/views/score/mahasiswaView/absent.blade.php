@@ -81,12 +81,12 @@
                     "processing": true,
                     "serverSide": true,
                     "ajax": route, // Sesuaikan dengan route yang Anda buat
-                    "columns": [{
-                            data: null,
-                            render: function(data, type, row, meta) {
-                                return meta.row + 1; // Adding 1 to start the iteration from 1
-                            },
-                            name: 'iteration'
+                    "columns": [
+                        {
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex',
+                            orderable: false,
+                            searchable: false
                         },
                         {
                             data: 'mata_kuliah.kode',
@@ -109,23 +109,6 @@
                             name: 'huruf'
                         },
                     ],
-                    "columnDefs": [{
-                            "width": "3%",
-                            "targets": 0
-                        }, // No
-                        {
-                            "width": "25%",
-                            "targets": 1
-                        }, // Nama Dosen
-                        {
-                            "width": "10%",
-                            "targets": 2
-                        }, // Action
-                        {
-                            "width": "10%",
-                            "targets": 3
-                        }, // Action
-                    ]
                 });
 
                 $('.smester').change(function() {
