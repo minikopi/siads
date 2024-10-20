@@ -38,7 +38,8 @@
                             <li class="side-menu-label1"><a href="javascript:void(0)">Data Master</a></li>
                             @if (Auth::user()->role != 'Mahasantri')
                                 <li>
-                                    <a href="{{ route('mahasantri.index') }}" class="slide-item {{ request()->is('master/mahasantri/*', 'master/mahasantri') ? 'active' : '' }}">
+                                    <a href="{{ route('mahasantri.index') }}"
+                                        class="slide-item {{ request()->is('master/mahasantri/*', 'master/mahasantri') ? 'active' : '' }}">
                                         Mahasantri</a>
                                 </li>
                                 <li>
@@ -66,7 +67,8 @@
                             @endif
                             @if (Auth::user()->role == 'Mahasantri')
                                 <li>
-                                    <a href="{{ route('ipk.index') }}" class="slide-item {{ request()->is('master/akademik') ? 'active' : '' }}">
+                                    <a href="{{ route('ipk.index') }}"
+                                        class="slide-item {{ request()->is('master/akademik') ? 'active' : '' }}">
                                         Riwayat IP
                                     </a>
                                 </li>
@@ -78,12 +80,58 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ Auth::user()->role == 'Mahasantri' ? route('absent.mahasantri.index') : route('absent.index') }}" class="slide-item {{ request()->is('master/persensi*') ? 'active' : '' }}">
+                                <a href="{{ Auth::user()->role == 'Mahasantri' ? route('absent.mahasantri.index') : route('absent.index') }}"
+                                    class="slide-item {{ request()->is('master/persensi*') ? 'active' : '' }}">
                                     Presensi Kuliah
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ Auth::user()->role == 'Mahasantri' ? route('score.mahasantri.index') : route('score.index') }}" class="slide-item {{ request()->is('master/score*') ? 'active' : '' }}">
+                                <a href="{{ Auth::user()->role == 'Mahasantri' ? route('score.mahasantri.index') : route('score.index') }}"
+                                    class="slide-item {{ request()->is('master/score*') ? 'active' : '' }}">
+                                    Penilaian
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="slide">
+                        <a class="side-menu__item  {{ request()->is('akademik') ? 'active' : '' }}" data-bs-toggle="slide"
+                            href="{{ route('akademik.index') }}">
+                            <i class="side-menu__icon fe fe-grid"></i>
+                            <span class="side-menu__label">Akademik</span>
+                        </a>
+                    </li>
+                @endrole
+
+                @role('mahasantri')
+                    @php
+                        $menuMahasantri = request()->is('mahasantri/dosen*', 'mahasantri/nilai*', 'mahasantri/musyrif*');
+                    @endphp
+                    <li
+                        class="slide {{ $menuMahasantri ? 'is-expanded' : '' }}">
+                        <a class="side-menu__item {{ $menuMahasantri ? 'active is-expanded' : '' }}"
+                            data-bs-toggle="slide" href="javascript:void(0);">
+                            <i class="side-menu__icon fe fe-grid"></i>
+                            <span class="side-menu__label">Perkuliahan</span>
+                            <i class="angle fa fa-angle-right"></i>
+                        </a>
+                        <ul class="slide-menu">
+                            <li>
+                                <a href="{{ route('mahasantri.dosen.index') }}"
+                                    class="slide-item {{ request()->is('mahasantri/dosen*') ? 'active' : '' }}">
+                                    Nama Dosen
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('ipk.index') }}"
+                                    class="slide-item {{ request()->is('master/akademik') ? 'active' : '' }}">
+                                    Riwayat IP
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('mahasantri.nilai.index') }}"
+                                    class="slide-item {{ request()->is('mahasantri/nilai*') ? 'active' : '' }}">
                                     Penilaian
                                 </a>
                             </li>
@@ -91,11 +139,6 @@
                     </li>
                 @endrole
 
-                <li class="slide">
-                    <a class="side-menu__item  {{ request()->is('akademik') ? 'active' : '' }}" data-bs-toggle="slide"
-                        href="{{ route('akademik.index') }}"><i class="side-menu__icon fe fe-grid"></i><span
-                            class="side-menu__label">Akademik</span></a>
-                </li>
                 {{-- <li>
                     <a class="side-menu__item  {{ request()->is('pembayaran') ? 'active' : '' }}"
                         href="{{ route('pembayaran.index') }}"><i class="side-menu__icon fe fe-grid"></i><span
@@ -103,7 +146,8 @@
                 </li> --}}
 
                 @role('admin')
-                    <li class="slide {{ request()->is('pembayaran*', 'bendahara/payment-history*', 'bendahara/master-payment*') ? 'is-expanded' : '' }}">
+                    <li
+                        class="slide {{ request()->is('pembayaran*', 'bendahara/payment-history*', 'bendahara/master-payment*') ? 'is-expanded' : '' }}">
                         <a class="side-menu__item {{ request()->is('pembayaran*', 'bendahara/payment-history*', 'bendahara/master-payment*') ? 'active is-expanded' : '' }}"
                             data-bs-toggle="slide" href="javascript:void(0);"><i
                                 class="side-menu__icon fe fe-grid"></i><span class="side-menu__label">Pembayaran</span><i
