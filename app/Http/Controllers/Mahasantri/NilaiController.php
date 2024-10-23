@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Mahasantri;
 
 use App\Http\Controllers\Controller;
+use App\Models\Classes;
+use App\Models\Dosen;
 use App\Models\MataKuliah;
 use App\Models\Schedule;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
@@ -18,7 +21,7 @@ class NilaiController extends Controller
     {
         $data['smester'] = MataKuliah::distinct('smester')->pluck('smester');
 
-        return view('score.mahasiswaView.absent', compact('data'));
+        return view('mahasantri-section.nilai.index', compact('data'));
     }
 
     public function data(Request $request)
@@ -60,51 +63,47 @@ class NilaiController extends Controller
             ->make(true);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function print(Request $request)
     {
-        //
+        $score = Schedule::with("score", "mata_kuliah", "dosen.user", 'class')->where("class_id", Auth::user()->mahasantri->kelas_id)
+            ->when($request->id, function ($q) use ($request) {
+                return $q->whereHas("mata_kuliah", function ($b) use ($request) {
+                    $b->where("smester", $request->semester);
+                });
+            })
+            ->orderBy('created_at', 'desc')->get();
+
+        $kelas = Classes::where("id", Auth::user()->mahasantri->kelas_id)->first();
+
+        $tahun_ajaran = $kelas->tahun_ajaran;
+        $current_semester = $kelas->current_semaster;
+        $tahun_akademik = $this->get_tahun_akademik($tahun_ajaran, $current_semester);
+        $data_musyrif = Dosen::with('user')->where('id', $kelas->musyrif_id)->first();
+
+        $data = [
+            'nama' => Auth::user()->name,
+            'nim' => Auth::user()->mahasantri->nim,
+            'angkatan' => $kelas->nama,
+            'semester' => $request->semester,
+            'tahun_akademik' => $tahun_akademik,
+            'musyrif_pa' => $data_musyrif,
+            'score' => $score,
+            'total_sks' => $score->sum('sks')
+        ];
+        // dd($score);
+        $pdf = Pdf::loadView('mahasantri-section.nilai.print', $data);
+        return $pdf->download('KHS - ' . Auth::user()->name . '.pdf');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    function get_tahun_akademik($tahun_ajaran, $current_semester)
     {
-        //
-    }
+        $offset = intdiv($current_semester - 1, 2);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $start_year = $tahun_ajaran + $offset;
+        $end_year = $start_year + 1;
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        $tahun_akademik = $start_year . '/' . $end_year;
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return $tahun_akademik;
     }
 }

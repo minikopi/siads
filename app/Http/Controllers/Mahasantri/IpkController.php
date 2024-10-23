@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Mahasantri;
 
+use App\Http\Controllers\Controller;
 use App\Models\Classes;
 use App\Models\Mahasantri;
 use App\Models\Score;
@@ -14,7 +15,7 @@ class IpkController extends Controller
 {
     public function index()
     {
-        return view('ipk.index');
+        return view('mahasantri-section.ipk.index');
     }
 
     public function data()
