@@ -50,7 +50,7 @@ class AbsentController extends Controller
         return $pdf->download('document.pdf');
     }
 
-    public function dataGetScheduleMahasiswa(Request $request)
+   public function dataGetScheduleMahasiswa(Request $request)
     {
         $data = Schedule::with("mata_kuliah", "dosen.user", 'class')->where("class_id", Auth::user()->mahasantri->kelas_id)
             ->when($request->smester, function ($q) use ($request) {

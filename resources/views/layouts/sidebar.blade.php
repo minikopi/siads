@@ -104,7 +104,7 @@
 
                 @role('mahasantri')
                     @php
-                        $menuMahasantri = request()->is('mahasantri/dosen*', 'mahasantri/nilai*', 'mahasantri/musyrif*');
+                        $menuMahasantri = request()->is('mahasantri/dosen*', 'mahasantri/nilai*', 'mahasantri/musyrif*', 'mahasantri/jadwal-kuliah*', 'mahasantri/presensi*', 'mahasantri/ipk*');
                     @endphp
                     <li
                         class="slide {{ $menuMahasantri ? 'is-expanded' : '' }}">
@@ -123,8 +123,8 @@
                             </li>
 
                             <li>
-                                <a href="{{ route('ipk.index') }}"
-                                    class="slide-item {{ request()->is('master/akademik') ? 'active' : '' }}">
+                                <a href="{{ route('mahasantri.ipk.index') }}"
+                                    class="slide-item {{ request()->is('mahasantri/ipk*') ? 'active' : '' }}">
                                     Riwayat IP
                                 </a>
                             </li>
@@ -133,6 +133,20 @@
                                 <a href="{{ route('mahasantri.nilai.index') }}"
                                     class="slide-item {{ request()->is('mahasantri/nilai*') ? 'active' : '' }}">
                                     Penilaian
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('mahasantri.jadwal.index') }}"
+                                    class="slide-item {{ request()->is('mahasantri/jadwal-kuliah*') ? 'active' : '' }}">
+                                    Jadwal Kuliah
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('mahasantri.presensi.index') }}"
+                                    class="slide-item {{ request()->is('mahasantri/presensi*') ? 'active' : '' }}">
+                                    Presensi Kuliah
                                 </a>
                             </li>
                         </ul>
