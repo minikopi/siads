@@ -117,14 +117,15 @@ class ScoreController extends Controller
             $val['hadir'] = Absent::Where('mahasiswa_id', $val->id)->where('status', 'HADIR')->where('schedule_id', $schedule_id)->count();
             $val['persent'] = ($val['total'] !== 0) ? ($val['hadir'] / $val['total']) * 100 : 0;
         }
-        // dd($request->all());
+
         foreach ($data['siswa'] as $key => $s) {
             try {
-                $scheckScore = Score::Where('mahasiswa_id', $val->id)->where('schedule_id', $schedule_id)->first();
+                $scheckScore = Score::where('mahasiswa_id', $s->id)->where('schedule_id', $schedule_id)->first();
                 if (isset($scheckScore)) {
                     $scheckScore->update([
                         'akademik' => $request->akademik[$s->id]
                     ]);
+                    $text = 'Diubah';
                 } else {
                     Score::create([
                         'schedule_id' => $schedule_id,
@@ -133,6 +134,7 @@ class ScoreController extends Controller
                         'persentasi_kehadiran' => round($s->persent),
                         'akademik' => $request->akademik[$s->id]
                     ]);
+                    $text = 'Dibuat';
                 }
             } catch (\Exception $e) {
                 DB::rollback();
@@ -140,7 +142,7 @@ class ScoreController extends Controller
             }
         }
         DB::commit();
-        return redirect()->route('score.AbsentAdmin', ['id' => $schedule_id])->with('success', 'Penilaian Berhasil Dibuat!');
+        return redirect()->route('score.AbsentAdmin', ['id' => $schedule_id])->with('success', "Penilaian Berhasil $text!");
     }
 
     public function generatePDF(Request $request)

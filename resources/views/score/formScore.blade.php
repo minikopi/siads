@@ -19,7 +19,8 @@
                                         class="btn btn-primary btn-sm">Tambah Absen</a></p> --}}
                             </div>
 
-                            <form action="{{ route('score.store', ['schedule_id' => $data['schedule']->id]) }}">
+                            <form method="POST" action="{{ route('score.store', ['schedule_id' => $data['schedule']->id]) }}">
+                                @csrf
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table class="table  text-nowrap" id="datatables">

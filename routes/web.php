@@ -105,7 +105,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/score/{id}', [ScoreController::class, 'detail'])->name('score.detail');
                 Route::get('/score/admin/{id}', [ScoreController::class, 'AbsentAdmin'])->name('score.AbsentAdmin');
                 Route::get('/score/admin/form/{id}', [ScoreController::class, 'scoreForm'])->name('score.scoreForm');
-                Route::get('/score/admin/store/{schedule_id}', [ScoreController::class, 'store'])->name('score.store');
+                Route::post('/score/admin/store/{schedule_id}', [ScoreController::class, 'store'])->name('score.store');
                 Route::get('/score/data-get/{id}', [ScoreController::class, 'dataGet'])->name('score.matkulPerKelas.dataGet');
 
 
