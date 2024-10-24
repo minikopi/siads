@@ -6,7 +6,7 @@ use App\Models\Akademik;
 use App\Models\Edaran;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
+use Yajra\DataTables\DataTables;
 
 class AkademikController extends Controller
 {
@@ -21,7 +21,7 @@ class AkademikController extends Controller
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
-                //
+                return view('akademik.button-akademik', compact('data'));
             })
             ->editColumn('tanggal_mulai', function ($data) {
                 return Carbon::parse($data->tanggal_mulai)->translatedFormat('d F Y');
@@ -29,6 +29,7 @@ class AkademikController extends Controller
             ->editColumn('tanggal_akhir', function ($data) {
                 return Carbon::parse($data->tanggal_akhir)->translatedFormat('d F Y');
             })
+            ->addIndexColumn()
             ->rawColumns(['action'])
             ->make(true);
     }
@@ -48,6 +49,7 @@ class AkademikController extends Controller
                 return Carbon::parse($data->tanggal)->translatedFormat('d F Y');
             })
             ->rawColumns(['action', 'file'])
+            ->addIndexColumn()
             ->make(true);
     }
 
