@@ -13,7 +13,7 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h3 class="card-title">Kalander Akademik</h3>
-                                <a href="{{ route('akademik.createKalender') }}" class="btn btn-primary">Tambah</a>
+                                <a href="{{ route('administrator.akademik.create') }}" class="btn btn-primary">Tambah</a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -37,7 +37,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Surat Edaran</h3>
-                                <p class="ms-auto"><a href="{{ route('akademik.createEdaran') }}"
+                                <p class="ms-auto"><a href="{{ route('administrator.edaran.create') }}"
                                         class="btn btn-primary">Tambah</a></p>
                             </div>
                             <div class="card-body">
@@ -76,13 +76,12 @@
                 $('#datatables').DataTable({
                     "processing": true,
                     "serverSide": true,
-                    "ajax": "{{ route('akademik.dataGet') }}", // Sesuaikan dengan route yang Anda buat
+                    "ajax": "{{ route('administrator.akademik.data') }}",
                     "columns": [{
-                            data: null,
-                            render: function(data, type, row, meta) {
-                                return meta.row + 1; // Adding 1 to start the iteration from 1
-                            },
-                            name: 'iteration'
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex',
+                            orderable: false,
+                            searchable: false
                         },
                         {
                             data: 'nama',
@@ -138,7 +137,7 @@
                 var table = $('#datatables2').DataTable({
                     "processing": true,
                     "serverSide": true,
-                    "ajax": "{{ route('akademik.dataGet2') }}", // Adjust this to match your route
+                    "ajax": "{{ route('administrator.edaran.data') }}",
                     "columns": [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex',
@@ -158,15 +157,7 @@
                             name: 'tanggal'
                         },
                         {
-                            data: null,
-                            render: function(data, type, row) {
-                                return '<button class="btn btn-info toggle-pdf" data-pdf="' + row.file +
-                                    '">PDF</button> <button class="btn btn-warning" onclick="deleteRow(' +
-                                    row.id +
-                                    ')">Edit</button> <button class="btn btn-danger" onclick="deleteRow(' +
-                                    row.id +
-                                    ')">Delete</button>';;
-                            },
+                            data: 'action',
                             name: 'action'
                         }
                     ],
@@ -214,7 +205,61 @@
                 let token = $("meta[name='csrf-token']").attr("content");
 
                 Swal.fire({
-                    title: `Hapus data pembayaran ${String(text)}?`,
+                    title: `Hapus data agenda ${String(text)}?`,
+                    text: `Tindakan ini tidak dapat dibatalkan`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Hapus',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true,
+                    buttonsStyling: false,
+                    customClass: {
+                        cancelButton: 'btn btn-light waves-effect',
+                        confirmButton: 'btn btn-primary waves-effect waves-light'
+                    },
+                    preConfirm: (e) => {
+                        return new Promise((resolve) => {
+                            setTimeout(() => {
+                                resolve();
+                            }, 50);
+                        });
+                    }
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            type: 'POST',
+                            data: {
+                                "_method": "DELETE",
+                                "_token": token
+                            },
+                            url: url,
+                            success: function(response) {
+                                Swal.fire({
+                                    title: "Sukses",
+                                    text: response.msg,
+                                    icon: "success"
+                                });
+                                setTimeout(function() {
+                                    window.location = response.redirect;
+                                }, 1000)
+                            },
+                            error: function(response) {
+                                var err = JSON.parse(response.responseText);
+                                Swal.fire({
+                                    title: "Error",
+                                    text: err.msg,
+                                    icon: "error"
+                                });
+                            }
+                        })
+                    }
+                })
+            }
+            function deleteEdaranRow(url, text) {
+                let token = $("meta[name='csrf-token']").attr("content");
+
+                Swal.fire({
+                    title: `Hapus data edaran ${String(text)}?`,
                     text: `Tindakan ini tidak dapat dibatalkan`,
                     icon: 'warning',
                     showCancelButton: true,

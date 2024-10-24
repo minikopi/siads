@@ -94,8 +94,8 @@
                         </ul>
                     </li>
                     <li class="slide">
-                        <a class="side-menu__item  {{ request()->is('akademik') ? 'active' : '' }}" data-bs-toggle="slide"
-                            href="{{ route('akademik.index') }}">
+                        <a class="side-menu__item  {{ request()->is('administrator/akademik*', 'administrator/edaran*') ? 'active' : '' }}" data-bs-toggle="slide"
+                            href="{{ route('administrator.akademik.index') }}">
                             <i class="side-menu__icon fe fe-grid"></i>
                             <span class="side-menu__label">Akademik</span>
                         </a>

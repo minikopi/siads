@@ -10,4 +10,8 @@ class Edaran extends Model
     use HasFactory;
 
     public $fillable = ['nama', 'no', 'tanggal', 'status', 'file'];
+
+    protected $casts = [
+        'tanggal' => 'date'
+    ];
 }

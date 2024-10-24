@@ -39,12 +39,10 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
 
-Route::middleware(['auth'])->group(
-    function () {
+Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-        Route::prefix('master')->group(
-            function () {
+        Route::prefix('master')->group(function () {
                 Route::get('/dosen', [DosenController::class, 'index'])->name('dosen.index');
                 Route::get('/data_dosen', [DosenController::class, 'dataGet'])->name('dosen.dataGet');
                 Route::get('/data_dosen2', [DosenController::class, 'dataGet2'])->name('dosen.dataGet2');

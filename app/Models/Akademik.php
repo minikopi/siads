@@ -10,4 +10,9 @@ class Akademik extends Model
     use HasFactory;
 
     public $fillable = ['nama', 'tanggal_mulai', 'tanggal_akhir', 'semester', 'tahun_ajaran', 'keterangan'];
+
+    protected $casts = [
+        'tanggal_mulai' => 'date',
+        'tanggal_akhir' => 'date',
+    ];
 }
