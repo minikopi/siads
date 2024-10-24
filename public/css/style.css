@@ -5,7 +5,7 @@
 Project        :   Zanex – Bootstrap  Admin & Dashboard Template
 Version        :   V.6
 Create Date    :   24-Mar-2022
-Copyright      :   Spruko Technologies Private Limited 
+Copyright      :   Spruko Technologies Private Limited
 Author         :   Spruko
 Author URL     :   https://themeforest.net/user/spruko
 Support	       :   support@spruko.com
@@ -43026,6 +43026,7 @@ body.rtl {
 .slide-item:focus {
     text-decoration: none;
     color: #b5c1d2;
+    font-weight: bold;
 }
 
 .slide-menu a.active {
