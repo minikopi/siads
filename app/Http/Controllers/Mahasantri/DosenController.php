@@ -29,6 +29,7 @@ class DosenController extends Controller
             ->make(true);
         return $data;
     }
+
     public function data2()
     {
         $data = Dosen::with('user')

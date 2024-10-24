@@ -104,7 +104,7 @@
 
                 @role('mahasantri')
                     @php
-                        $menuMahasantri = request()->is('mahasantri/dosen*', 'mahasantri/nilai*', 'mahasantri/musyrif*', 'mahasantri/jadwal-kuliah*', 'mahasantri/presensi*', 'mahasantri/ipk*');
+                        $menuMahasantri = request()->is('mahasantri/dosen*', 'mahasantri/nilai*', 'mahasantri/musyrif*', 'mahasantri/jadwal-kuliah*', 'mahasantri/presensi*', 'mahasantri/ipk*', 'mahasantri/mata-kuliah*', 'mahasantri/transkrip-nilai*');
                     @endphp
                     <li
                         class="slide {{ $menuMahasantri ? 'is-expanded' : '' }}">
@@ -123,6 +123,13 @@
                             </li>
 
                             <li>
+                                <a href="{{ route('mahasantri.mata-kuliah.index') }}"
+                                    class="slide-item {{ request()->is('mahasantri/mata-kuliah*') ? 'active' : '' }}">
+                                    Mata Kuliah
+                                </a>
+                            </li>
+
+                            <li>
                                 <a href="{{ route('mahasantri.ipk.index') }}"
                                     class="slide-item {{ request()->is('mahasantri/ipk*') ? 'active' : '' }}">
                                     Riwayat IP
@@ -133,6 +140,13 @@
                                 <a href="{{ route('mahasantri.nilai.index') }}"
                                     class="slide-item {{ request()->is('mahasantri/nilai*') ? 'active' : '' }}">
                                     Penilaian
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('mahasantri.transkrip-nilai.index') }}"
+                                    class="slide-item {{ request()->is('mahasantri/transkrip-nilai*') ? 'active' : '' }}">
+                                    Transkrip Nilai
                                 </a>
                             </li>
 

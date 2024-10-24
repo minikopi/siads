@@ -4,11 +4,13 @@ use App\Http\Controllers\Mahasantri\CancelPembayaranController;
 use App\Http\Controllers\Mahasantri\DosenController;
 use App\Http\Controllers\Mahasantri\IpkController;
 use App\Http\Controllers\Mahasantri\JadwalKuliahController;
+use App\Http\Controllers\Mahasantri\MataKuliahController;
 use App\Http\Controllers\Mahasantri\MusyrifController;
 use App\Http\Controllers\Mahasantri\NilaiController;
 use App\Http\Controllers\Mahasantri\PembayaranController;
 use App\Http\Controllers\Mahasantri\PresensiController;
 use App\Http\Controllers\Mahasantri\RiwayatPembayaranController;
+use App\Http\Controllers\Mahasantri\TranskripNilaiController;
 use Illuminate\Support\Facades\Route;
 
 Route::resource('pembayaran', PembayaranController::class)->only('index', 'store');
@@ -33,3 +35,8 @@ Route::get('presensi-data', [PresensiController::class, 'data'])->name('presensi
 
 Route::get('ipk', [IpkController::class, 'index'])->name('ipk.index');
 Route::get('ipk-data', [IpkController::class, 'data'])->name('ipk.data');
+
+Route::get('mata-kuliah', [MataKuliahController::class, 'index'])->name('mata-kuliah.index');
+Route::get('mata-kuliah-data', [MataKuliahController::class, 'data'])->name('mata-kuliah.data');
+
+Route::get('transkrip-nilai', [TranskripNilaiController::class, 'index'])->name('transkrip-nilai.index');
