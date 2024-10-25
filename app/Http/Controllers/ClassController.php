@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Administrator\KelasStore;
 use App\Models\Classes;
 use App\Models\Dosen;
 use App\Models\Mahasantri;
@@ -9,7 +10,8 @@ use App\Models\MataKuliah;
 use App\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class ClassController extends Controller
 {
@@ -20,13 +22,14 @@ class ClassController extends Controller
 
     public function dataGet()
     {
-        $data = Classes::orderBy('created_at', 'desc')->get();
+        $data = Classes::with('dosen.user')->orderBy('created_at', 'desc')->get();
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
                 //
             })
             ->rawColumns(['action'])
+            ->addIndexColumn()
             ->make(true);
     }
 
@@ -43,23 +46,21 @@ class ClassController extends Controller
     public function create()
     {
         $musyrif = Dosen::with('user')->where('tipe', 'Musyrif')->get();
-        // dd($musyrif);
+
         return view('kelas.create', compact('musyrif'));
     }
 
-    public function store(Request $request)
+    public function store(KelasStore $request)
     {
-        $request->validate([
-            'nama'          => 'required',
-            'tahun_ajaran'          => 'required',
-            'gender'          => 'required',
-        ], [
-            'nama.required'     => 'Nama Kelas Kuliah diperlukan',
-            'tahun_ajaran.required'     => 'Nama Kelas Kuliah diperlukan',
-            'gender.required'     => 'Nama Kelas Kuliah diperlukan',
-        ]);
+        try {
+            DB::beginTransaction();
+            Classes::create($request->validated());
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
 
-        Classes::create($request->all());
+            return back()->with('error', $th->getMessage());
+        }
 
         return redirect()->route('kelas.index')->with('success', 'Data Kelas Berhasil Dibuat!');
     }
@@ -67,7 +68,7 @@ class ClassController extends Controller
     public function detail($id)
     {
         $data['class'] = Classes::findOrFail($id);
-        // dd($data['class']);
+
         return view("kelas.detail", compact('data'));
     }
 
@@ -80,7 +81,7 @@ class ClassController extends Controller
         $data['days'] = array('Senin', 'Selasa', 'Rabu', 'Kamis', "Jum'at", 'Sabtu', 'Minggu');
         $data['smester'] = MataKuliah::distinct('smester')->pluck('smester');
         $data['type'] = $data['class']->gender == 'Perempuan' ? array('Banat', 'Banin/Banat') : array('Banin', 'Banin/Banat');
-        // dd($data["matkul"]);
+
         return view("kelas.matkulPerKelas.create", compact('data'));
     }
 

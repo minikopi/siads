@@ -69,10 +69,10 @@
                                             <div class="row mb-4">
                                                 <label class="col-md-3 form-label">Musyrif</label>
                                                 <div class="col-md-9">
-                                                    <select class="form-control required" name="gender" id="gender">
+                                                    <select class="form-control required" name="dosen_id" id="dosen_id">
                                                         <option value="">Pilih Salah Satu</option>
                                                         @foreach ($musyrif as $data)
-                                                            <option value="{{ $data->user_id }}">{{ $data->user->name }}
+                                                            <option value="{{ $data->id }}">{{ $data->user->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>

@@ -97,8 +97,8 @@
                             name: 'gender'
                         },
                         {
-                            data: 'musyrif_id',
-                            name: 'musyrif_id'
+                            data: 'dosen.user.name',
+                            name: 'dosen.user.name'
                         },
                         {
                             data: null,
