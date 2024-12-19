@@ -173,6 +173,21 @@ class SetoranController extends Controller
         $msg = 'Terjadi kesalahan ';
         try {
             DB::beginTransaction();
+
+            $dosen = Dosen::where([
+                'user_id' => $request->user()->id
+            ])->first();
+
+            if (!$dosen) {
+                throw new \Exception("{$msg}: (004 - Hanya dosen tahfidz yang dapat melakukan ini).");
+            }
+
+            $mahasantri = Mahasantri::find($mahasantri_id);
+
+            if (!$mahasantri) {
+                throw new \Exception("{$msg}: (005 - Data mahasantri tidak ditemukan).");
+            }
+
             $session = "mahasantri-{$mahasantri_id}-{$request->juz_number}";
             if ($request->session()->has('setoran') === false) {
                 // ndak ada session
@@ -194,12 +209,6 @@ class SetoranController extends Controller
             if ($data->status === QuranMemorization::SAH) {
                 throw new \Exception("{$msg} (003 - sudah tuntas).");
             }
-
-            $dosen = Dosen::firstWhere([
-                'user_id' => $request->user()->id
-            ]);
-
-            $mahasantri = Mahasantri::findOrFail($mahasantri_id);
 
             // simpan data hafalan
             $data->dosen_id = $dosen->id;
