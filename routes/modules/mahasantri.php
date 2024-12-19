@@ -5,11 +5,11 @@ use App\Http\Controllers\Mahasantri\DosenController;
 use App\Http\Controllers\Mahasantri\IpkController;
 use App\Http\Controllers\Mahasantri\JadwalKuliahController;
 use App\Http\Controllers\Mahasantri\MataKuliahController;
-use App\Http\Controllers\Mahasantri\MusyrifController;
 use App\Http\Controllers\Mahasantri\NilaiController;
 use App\Http\Controllers\Mahasantri\PembayaranController;
 use App\Http\Controllers\Mahasantri\PresensiController;
 use App\Http\Controllers\Mahasantri\RiwayatPembayaranController;
+use App\Http\Controllers\Mahasantri\TahfidzController;
 use App\Http\Controllers\Mahasantri\TranskripNilaiController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,3 +40,6 @@ Route::get('mata-kuliah', [MataKuliahController::class, 'index'])->name('mata-ku
 Route::get('mata-kuliah-data', [MataKuliahController::class, 'data'])->name('mata-kuliah.data');
 
 Route::get('transkrip-nilai', [TranskripNilaiController::class, 'index'])->name('transkrip-nilai.index');
+
+Route::get('tahfidz', [TahfidzController::class, 'index'])->name('tahfidz.index');
+Route::get('tahfidz-data', [TahfidzController::class, 'data'])->name('tahfidz.data');

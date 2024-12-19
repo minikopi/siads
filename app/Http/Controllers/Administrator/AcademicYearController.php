@@ -7,6 +7,7 @@ use App\Http\Requests\Master\AcademicYearStore;
 use App\Http\Requests\Master\AcademicYearUpdate;
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -73,6 +74,7 @@ class AcademicYearController extends Controller
     public function store(AcademicYearStore $request)
     {
         try {
+            DB::beginTransaction();
             $check = AcademicYear::firstWhere('start_year', $request->start_year);
             if ($check) throw new \Exception('Data sudah ada.');
 
@@ -90,7 +92,10 @@ class AcademicYearController extends Controller
             }
 
             AcademicYear::create($request->validated());
+
+            DB::commit();
         } catch (\Throwable $th) {
+            DB::rollBack();
             Log::warning($th->getMessage(), [
                 'action' => 'store academic year',
                 'user' => $request->user(),

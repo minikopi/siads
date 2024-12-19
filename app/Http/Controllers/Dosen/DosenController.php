@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Mahasantri;
+namespace App\Http\Controllers\Dosen;
 
 use App\Http\Controllers\Controller;
 use App\Models\Dosen;
@@ -11,7 +11,7 @@ class DosenController extends Controller
 {
     public function index(Request $request)
     {
-        return view('mahasantri-section.dosen.index');
+        return view('dosen-section.dosen.index');
     }
 
     public function data()

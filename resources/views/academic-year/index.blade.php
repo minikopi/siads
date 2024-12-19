@@ -87,7 +87,7 @@
                                     icon: "success"
                                 });
                                 setTimeout(function() {
-                                    window.location = redirect;
+                                    window.location.reload();
                                 }, 1000)
                             },
                             error: function(response) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Administrator\KelasStore;
+use App\Models\AcademicYear;
 use App\Models\Classes;
 use App\Models\Dosen;
 use App\Models\Mahasantri;
@@ -54,7 +55,21 @@ class ClassController extends Controller
     {
         try {
             DB::beginTransaction();
-            Classes::create($request->validated());
+            $class = Classes::create($request->validated());
+
+            // ambil academic_years
+            $academic_year = AcademicYear::where([
+                'start_year' => $request->tahun_ajaran
+            ])->first();
+            if (!$academic_year) {
+                $academic_year = AcademicYear::create([
+                    'start_year' => $request->tahun_ajaran,
+                    'end_year' => $request->tahun_ajaran + 1
+                ]);
+            }
+            $class->academic_year_id = $academic_year->getKey();
+            $class->save();
+
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -70,6 +85,13 @@ class ClassController extends Controller
         $data['class'] = Classes::findOrFail($id);
 
         return view("kelas.detail", compact('data'));
+    }
+
+    public function destroy($id)
+    {
+        $updt = Classes::findOrFail($id);
+        $updt->delete();
+        return redirect()->back()->with('success', 'Kelas Berhasil Dihapus!');
     }
 
     public function createSchedule($id)
@@ -169,7 +191,7 @@ class ClassController extends Controller
     {
         $updt = Schedule::findOrFail($id);
         $updt->delete();
-        return redirect()->route('kelas.detail', ['id' => $updt->class_id])->with('success', 'Jadwal Matkul Berhasil Di Delete!');
+        return redirect()->route('kelas.detail', ['id' => $updt->class_id])->with('success', 'Jadwal Matkul Berhasil Dihapus!');
     }
 
     public function updateCurrentSmester()

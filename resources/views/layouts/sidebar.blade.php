@@ -94,22 +94,76 @@
                         </ul>
                     </li>
                     <li class="slide">
-                        <a class="side-menu__item  {{ request()->is('administrator/akademik*', 'administrator/edaran*') ? 'active' : '' }}" data-bs-toggle="slide"
-                            href="{{ route('administrator.akademik.index') }}">
+                        <a class="side-menu__item  {{ request()->is('administrator/akademik*', 'administrator/edaran*') ? 'active' : '' }}"
+                            data-bs-toggle="slide" href="{{ route('administrator.akademik.index') }}">
                             <i class="side-menu__icon fe fe-grid"></i>
                             <span class="side-menu__label">Akademik</span>
                         </a>
                     </li>
                 @endrole
 
+                @role('dosen')
+                    @php
+                        $menuDosen = request()->is(
+                            'dosen/dosen*',
+                            'dosen/nilai*',
+                            'dosen/musyrif*',
+                            'dosen/jadwal-kuliah*',
+                            'dosen/presensi*',
+                            'dosen/ipk*',
+                            'dosen/mata-kuliah*',
+                            'dosen/transkrip-nilai*',
+                        );
+                    @endphp
+                    <li class="slide {{ $menuDosen ? 'is-expanded' : '' }}">
+                        <a class="side-menu__item {{ $menuDosen ? 'active is-expanded' : '' }}" data-bs-toggle="slide"
+                            href="javascript:void(0);">
+                            <i class="side-menu__icon fe fe-grid"></i>
+                            <span class="side-menu__label">Perkuliahan Dosen</span>
+                            <i class="angle fa fa-angle-right"></i>
+                        </a>
+                        <ul class="slide-menu">
+                            <li>
+                                <a href="{{ route('dosen.dosen.index') }}"
+                                    class="slide-item {{ request()->is('dosen/dosen*') ? 'active' : '' }}">
+                                    Nama Dosen
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('dosen.mata-kuliah.index') }}"
+                                    class="slide-item {{ request()->is('dosen/mata-kuliah*') ? 'active' : '' }}">
+                                    Mata Kuliah
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('dosen.jadwal-kuliah.index') }}"
+                                    class="slide-item {{ request()->is('dosen/jadwal-kuliah*') ? 'active' : '' }}">
+                                    Jadwal Kuliah
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endrole
+
                 @role('mahasantri')
                     @php
-                        $menuMahasantri = request()->is('mahasantri/dosen*', 'mahasantri/nilai*', 'mahasantri/musyrif*', 'mahasantri/jadwal-kuliah*', 'mahasantri/presensi*', 'mahasantri/ipk*', 'mahasantri/mata-kuliah*', 'mahasantri/transkrip-nilai*');
+                        $menuMahasantri = request()->is(
+                            'mahasantri/dosen*',
+                            'mahasantri/nilai*',
+                            'mahasantri/musyrif*',
+                            'mahasantri/jadwal-kuliah*',
+                            'mahasantri/presensi*',
+                            'mahasantri/ipk*',
+                            'mahasantri/mata-kuliah*',
+                            'mahasantri/transkrip-nilai*',
+                            'mahasantri/tahfidz*',
+                        );
                     @endphp
-                    <li
-                        class="slide {{ $menuMahasantri ? 'is-expanded' : '' }}">
-                        <a class="side-menu__item {{ $menuMahasantri ? 'active is-expanded' : '' }}"
-                            data-bs-toggle="slide" href="javascript:void(0);">
+                    <li class="slide {{ $menuMahasantri ? 'is-expanded' : '' }}">
+                        <a class="side-menu__item {{ $menuMahasantri ? 'active is-expanded' : '' }}" data-bs-toggle="slide"
+                            href="javascript:void(0);">
                             <i class="side-menu__icon fe fe-grid"></i>
                             <span class="side-menu__label">Perkuliahan</span>
                             <i class="angle fa fa-angle-right"></i>
@@ -161,6 +215,13 @@
                                 <a href="{{ route('mahasantri.presensi.index') }}"
                                     class="slide-item {{ request()->is('mahasantri/presensi*') ? 'active' : '' }}">
                                     Presensi Kuliah
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('mahasantri.tahfidz.index') }}"
+                                    class="slide-item {{ request()->is('mahasantri/tahfidz*') ? 'active' : '' }}">
+                                    Data Tahfidz
                                 </a>
                             </li>
                         </ul>
@@ -245,6 +306,66 @@
                         </li>
                     </ul>
                 </li>
+
+                @role('tahfidz')
+                    @php
+                        $menuUserSetting = request()->is('tahfidz/setoran*', 'tahfidz/data*');
+                    @endphp
+                    <li
+                        class="slide {{ $menuUserSetting ? 'is-expanded' : '' }}">
+                        <a class="side-menu__item {{ $menuUserSetting ? 'active is-expanded' : '' }}"
+                            data-bs-toggle="slide" href="javascript:void(0);">
+                            <i class="side-menu__icon fe fe-grid"></i>
+                            <span class="side-menu__label">Tahfidz</span>
+                            <i class="angle fa fa-angle-right"></i>
+                        </a>
+                        <ul class="slide-menu">
+                            <li>
+                                <a href="{{ route('tahfidz.setoran.index') }}"
+                                    class="slide-item {{ request()->is('tahfidz/setoran*') ? 'active' : '' }}">
+                                    Setoran
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('tahfidz.data.index') }}"
+                                    class="slide-item {{ request()->is('tahfidz/data*') ? 'active' : '' }}">
+                                    Data Tahfidz
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endrole
+
+                @role('admin')
+                    @php
+                        $menuUserSetting = request()->is('administrator/roles*', 'administrator/user-role*');
+                    @endphp
+                    <li
+                        class="slide {{ $menuUserSetting ? 'is-expanded' : '' }}">
+                        <a class="side-menu__item {{ $menuUserSetting ? 'active is-expanded' : '' }}"
+                            data-bs-toggle="slide" href="javascript:void(0);">
+                            <i class="side-menu__icon fe fe-grid"></i>
+                            <span class="side-menu__label">Pengaturan User</span>
+                            <i class="angle fa fa-angle-right"></i>
+                        </a>
+                        <ul class="slide-menu">
+                            <li>
+                                <a href="{{ route('administrator.roles.index') }}"
+                                    class="slide-item {{ request()->is('administrator/roles*') ? 'active' : '' }}">
+                                    Role
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('administrator.user-role.index') }}"
+                                    class="slide-item {{ request()->is('administrator/user-role*') ? 'active' : '' }}">
+                                    User Role
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endrole
             </ul>
             <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"
                     width="24" height="24" viewBox="0 0 24 24">

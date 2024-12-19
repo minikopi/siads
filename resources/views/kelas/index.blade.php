@@ -68,6 +68,60 @@
         <!-- SweetAlert2 JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         <script>
+            function deleteRow(url) {
+                let token = $("meta[name='csrf-token']").attr("content");
+
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: `Anda akan menghapus data ini`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Hapus',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true,
+                    buttonsStyling: false,
+                    customClass: {
+                        cancelButton: 'btn btn-light waves-effect',
+                        confirmButton: 'btn btn-primary waves-effect waves-light'
+                    },
+                    preConfirm: (e) => {
+                        return new Promise((resolve) => {
+                            setTimeout(() => {
+                                resolve();
+                            }, 50);
+                        });
+                    }
+                }).then((result) => {
+                    if (result.value) {
+                        $.ajax({
+                            type: 'POST',
+                            data: {
+                                "_method": "DELETE",
+                                "_token": token
+                            },
+                            url: url,
+                            success: function(response) {
+                                Swal.fire({
+                                    title: "Sukses",
+                                    text: response.msg,
+                                    icon: "success"
+                                });
+                                setTimeout(function() {
+                                    window.location.reload();
+                                }, 1000)
+                            },
+                            error: function(response) {
+                                var err = JSON.parse(response.responseText);
+                                Swal.fire({
+                                    title: "Error",
+                                    text: err.msg,
+                                    icon: "error"
+                                });
+                            }
+                        })
+                    }
+                })
+            }
             $(document).ready(function() {
                 $('#datatables').DataTable({
                     "processing": true,
@@ -104,11 +158,10 @@
                             data: null,
                             render: function(data, type, row) {
                                 var route = '{{ route('kelas.detail', ['id' => ':id']) }}'
+                                var routeDelete = '{{ route('kelas.delete', ['id' => ':id']) }}'
                                 route = route.replace(':id', data.id);
-                                return '<a href="' + route + '" class="btn btn-warning">Detail</a> ' +
-                                    '<button class="btn btn-danger" onclick="deleteRow(' +
-                                    row.id +
-                                    ')">Delete</button>';
+                                routeDelete = routeDelete.replace(':id', data.id);
+                                return `<a href="${route}" class="btn btn-warning">Detail</a> <button class="btn btn-danger" onclick="deleteRow('${routeDelete}')">Delete</button>`;
                             },
                             name: 'action'
                         }

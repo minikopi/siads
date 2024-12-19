@@ -121,6 +121,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/kelas', [ClassController::class, 'store'])->name('kelas.store');
                 Route::post('/kelas/smester/update', [ClassController::class, 'updateCurrentSmester'])->name('kelas.updateSmester');
                 Route::get('/kelas/{id}', [ClassController::class, 'detail'])->name('kelas.detail');
+                Route::delete('/kelas/{id}', [ClassController::class, 'destroy'])->name('kelas.delete');
                 Route::get('/kelas/create/matkul/{id}', [ClassController::class, 'createSchedule'])->name('kelas.matkulPerKelas.detail');
                 Route::get('/kelas/edit/matkul/{id}', [ClassController::class, 'editSchedule'])->name('kelas.matkulPerKelas.edit');
                 Route::post('/kelas/update/matkul/{id}', [ClassController::class, 'updateSchedule'])->name('kelas.matkulPerKelas.update');
@@ -195,6 +196,14 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix('bendahara')->as('bendahara.')->middleware(['auth:sanctum'])->group(
             base_path('routes/modules/bendahara.php'),
+        );
+
+        Route::prefix('dosen')->as('dosen.')->middleware(['auth:sanctum'])->group(
+            base_path('routes/modules/dosen.php'),
+        );
+
+        Route::prefix('tahfidz')->as('tahfidz.')->middleware(['auth:sanctum'])->group(
+            base_path('routes/modules/tahfidz.php'),
         );
     }
 );
