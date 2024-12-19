@@ -210,6 +210,19 @@ class SetoranController extends Controller
                 throw new \Exception("{$msg} (003 - sudah tuntas).");
             }
 
+
+            // cek untuk sahnya halaman sebelumnya. jika ada yg belum, maka kembalikan lagi
+            $cek = QuranMemorization::query()
+                ->where('mahasantri_id', $mahasantri_id)
+                ->where('juz_number', $juz_number)
+                ->where('page_number', '<', $page_number)
+                ->where('status', QuranMemorization::TIDAK_SAH)
+                ->orderBy('page_number')
+                ->first();
+            if ($cek) {
+                throw new \Exception("{$msg} (006 - halaman {$cek->page_number} yang belum tuntas).");
+            }
+
             // simpan data hafalan
             $data->dosen_id = $dosen->id;
             $data->updated_by = $request->user()->name;
