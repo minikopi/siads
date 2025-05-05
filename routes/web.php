@@ -39,10 +39,12 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(
+    function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-        Route::prefix('master')->group(function () {
+        Route::prefix('master')->group(
+            function () {
                 Route::get('/dosen', [DosenController::class, 'index'])->name('dosen.index');
                 Route::get('/data_dosen', [DosenController::class, 'dataGet'])->name('dosen.dataGet');
                 Route::get('/data_dosen2', [DosenController::class, 'dataGet2'])->name('dosen.dataGet2');
@@ -185,6 +187,10 @@ Route::middleware(['auth'])->group(function () {
             // Route for updating status to "Ditolak" with a reason
             Route::post('/prestasi/reject/{id}', [PrestasiController::class, 'reject'])->name('prestasi.reject');
         });
+
+        Route::prefix('user')->as('user.')->middleware(['auth:sanctum'])->group(
+            base_path('routes/modules/user.php'),
+        );
 
         Route::prefix('administrator')->as('administrator.')->middleware(['auth:sanctum'])->group(
             base_path('routes/modules/administrator.php'),

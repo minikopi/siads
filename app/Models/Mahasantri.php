@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Mahasantri extends Model
 {
     use HasFactory;
+    use LogsActivity;
+
     public $fillable = [
         'user_id',
         'nim',
@@ -66,6 +70,14 @@ class Mahasantri extends Model
     protected $attributes = [
         'status' => 'aktif'
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('Mahasantri');
+    }
 
     public function class()
     {
