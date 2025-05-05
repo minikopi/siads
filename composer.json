@@ -18,9 +18,11 @@
         "laravel/ui": "^4.3",
         "midtrans/midtrans-php": "^2.5",
         "santigarcor/laratrust": "^8.3",
+        "spatie/laravel-activitylog": "^4.10",
         "yajra/laravel-datatables-oracle": "^11.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.15",
         "barryvdh/laravel-ide-helper": "^3.1",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",

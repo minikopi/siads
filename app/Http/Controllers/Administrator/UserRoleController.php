@@ -29,7 +29,7 @@ class UserRoleController extends Controller
                 return view('admin-section.user-role.button', compact('data'));
             })
             ->addColumn('role', function ($data) {
-                return $data->roles()->pluck('display_name');
+                return $data->roles->pluck('display_name')->join(', ');
             })
             ->rawColumns(['action', 'role'])
             ->addIndexColumn()

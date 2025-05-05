@@ -4,16 +4,20 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laratrust\Contracts\LaratrustUser;
 use Laratrust\Traits\HasRolesAndPermissions;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable implements LaratrustUser
 {
     use HasApiTokens, HasFactory, Notifiable;
     use HasRolesAndPermissions;
+    use LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -46,8 +50,21 @@ class User extends Authenticatable implements LaratrustUser
         'password' => 'hashed',
     ];
 
-    public function mahasantri()
+    public function getActivitylogOptions(): LogOptions
     {
-        return $this->belongsTo(Mahasantri::class, 'id', 'user_id');
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('User');
+    }
+
+    public function mahasantri(): HasOne
+    {
+        return $this->hasOne(Mahasantri::class, 'user_id', 'id');
+    }
+
+    public function dosen(): HasOne
+    {
+        return $this->hasOne(Dosen::class, 'user_id', 'id');
     }
 }
