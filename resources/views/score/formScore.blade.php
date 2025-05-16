@@ -55,7 +55,7 @@
 
                                     <div class="row">
                                         <div class="col-3">
-                                            <button class="btn btn-success">Submit</button>
+                                            <button class="btn btn-sm btn-success">Submit</button>
                                         </div>
                                     </div>
                                 </div>

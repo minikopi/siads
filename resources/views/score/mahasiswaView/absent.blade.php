@@ -33,7 +33,7 @@
                                         </div>
                                         <div class="col-3 text-end">
                                             <div class="control-group form-group">
-                                                <a class="btn btn-success"
+                                                <a class="btn btn-sm btn-success"
                                                     href="{{ route('score.mahasantri.cetak', ['id' => Auth::user()->mahasantri->kelas_id]) }}">Cetak
                                                     KHS</a>
                                             </div>

@@ -53,7 +53,7 @@
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary offset-md-2">
+                                    <button type="submit" class="btn btn-sm btn-primary offset-md-2">
                                         Mulai
                                     </button>
 

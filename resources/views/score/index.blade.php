@@ -78,7 +78,7 @@
                                 var route = '{{ route('score.detail', ['id' => ':id']) }}'
                                 route = route.replace(':id', data.id);
                                 return '<a href="' + route +
-                                    '" class="btn btn-warning">Mata Kuliah</a> '
+                                    '" class="btn btn-sm btn-warning">Mata Kuliah</a> '
                             },
                             name: 'action'
                         }

@@ -37,8 +37,8 @@
                                                 <td>Sahih al-Bukhary</td>
 
                                                 <td>
-                                                    <a href="" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                                                    <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                                    <a href="" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
+                                                    <a href="" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -108,8 +108,8 @@
                                 route = route.replace(':id', data.id);
                                 var routeDelete = '{{ route("kelas.matkulPerKelas.delete", ["id" =>":id" ])}}'
                                 routeDelete = routeDelete.replace(':id', data.id);
-                                return '<a href="'+route+'" class="btn btn-primary">Edit</a> ' +
-                                    '<button class="btn btn-danger" onclick="deleteRow(`' +
+                                return '<a href="'+route+'" class="btn btn-sm btn-primary">Edit</a> ' +
+                                    '<button class="btn btn-sm btn-danger" onclick="deleteRow(`' +
                                     routeDelete +
                                     '`)">Delete</button>';
                             },

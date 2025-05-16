@@ -67,11 +67,11 @@
                             name: 'nama'
                         },
                         {
-                            data: 'class.current_semaster',
-                            name: 'type'
+                            data: 'semester',
+                            name: 'semester'
                         },
                         {
-                            data: 'class.nama',
+                            data: 'kelas',
                             name: 'Kelas'
                         },
                         {

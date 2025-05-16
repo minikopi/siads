@@ -625,7 +625,7 @@
 
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                                                    <button type="submit" class="btn btn-sm btn-primary btn-sm">Simpan</button>
                                                 </div>
                                             </div>
 

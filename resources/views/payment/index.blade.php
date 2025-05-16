@@ -141,7 +141,7 @@
                                         {{ $token['invoice'] != null ? 'Bayar Sekarang' : 'Tidak Ada Tagihan' }}
                                     </a>
                                     @if ($token['invoice'] != null)
-                                        <a class="btn btn-warning text-white rounded-0"
+                                        <a class="btn btn-sm btn-warning text-white rounded-0"
                                             href="{{ route('bendahara.pembayaran.cancel', $token['invoice']) }}"
                                             onclick="return confirm('Apakah yakin ingin membatalkan transaksi ini?')">
                                             Batalkan
@@ -246,7 +246,7 @@
                                                 </tr>
                                             </tfoot>
                                         </table>
-                                        <button type="submit" class="btn btn-success btn-block"
+                                        <button type="submit" class="btn btn-sm btn-success btn-block"
                                             form="pembayaran">Bayar</button>
                                     </div>
                                     @if ($token['invoice'] != null)
@@ -282,7 +282,7 @@
                                                 </tfoot>
                                             </table>
                                             <a href="{{ $token['invoice']->payment_url }}"
-                                                class="btn btn-warning btn-block fw-bold" form="pembayaran">Bayar
+                                                class="btn btn-sm btn-warning btn-block fw-bold" form="pembayaran">Bayar
                                                 Sekarang</a>
                                         </div>
                                     @endif

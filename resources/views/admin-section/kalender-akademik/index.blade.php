@@ -13,7 +13,7 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h3 class="card-title">Kalander Akademik</h3>
-                                <a href="{{ route('administrator.akademik.create') }}" class="btn btn-primary">Tambah</a>
+                                <a href="{{ route('administrator.akademik.create') }}" class="btn btn-sm btn-primary">Tambah</a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -38,7 +38,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Surat Edaran</h3>
                                 <p class="ms-auto"><a href="{{ route('administrator.edaran.create') }}"
-                                        class="btn btn-primary">Tambah</a></p>
+                                        class="btn btn-sm btn-primary">Tambah</a></p>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -214,8 +214,8 @@
                     reverseButtons: true,
                     buttonsStyling: false,
                     customClass: {
-                        cancelButton: 'btn btn-light waves-effect',
-                        confirmButton: 'btn btn-primary waves-effect waves-light'
+                        cancelButton: 'btn btn-sm btn-light waves-effect',
+                        confirmButton: 'btn btn-sm btn-primary waves-effect waves-light'
                     },
                     preConfirm: (e) => {
                         return new Promise((resolve) => {
@@ -268,8 +268,8 @@
                     reverseButtons: true,
                     buttonsStyling: false,
                     customClass: {
-                        cancelButton: 'btn btn-light waves-effect',
-                        confirmButton: 'btn btn-primary waves-effect waves-light'
+                        cancelButton: 'btn btn-sm btn-light waves-effect',
+                        confirmButton: 'btn btn-sm btn-primary waves-effect waves-light'
                     },
                     preConfirm: (e) => {
                         return new Promise((resolve) => {

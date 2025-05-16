@@ -15,10 +15,14 @@
                                 <div class="card overflow-hidden">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col">
+                                            <div class="col-md-12">
                                                 <h6 class="text-center">Buat Akun?</h6>
-                                                <h3 class="mb-2"><a href="{{ route('mahasantri.create') }}"
-                                                        class="btn btn-primary w-100">Daftar</a></h3>
+                                                <div class="d-grid d-md-flex">
+                                                    <a class="btn btn-sm btn-primary"
+                                                        href="{{ route('mahasantri.create') }}">Daftar</a>
+                                                    <a class="btn btn-sm btn-primary"
+                                                        href="{{ route('mahasantri.import') }}">Import</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -85,6 +89,7 @@
                                                 <th class="wd-15p border-bottom-0">Nama</th>
                                                 <th class="wd-20p border-bottom-0">Email</th>
                                                 <th class="wd-15p border-bottom-0">NIM</th>
+                                                <th class="wd-15p border-bottom-0">Angkatan</th>
                                                 <th class="wd-10p border-bottom-0">Action</th>
                                             </tr>
                                         </thead>
@@ -121,8 +126,8 @@
                     reverseButtons: true,
                     buttonsStyling: false,
                     customClass: {
-                        cancelButton: 'btn btn-light waves-effect',
-                        confirmButton: 'btn btn-primary waves-effect waves-light'
+                        cancelButton: 'btn btn-sm btn-light waves-effect',
+                        confirmButton: 'btn btn-sm btn-primary waves-effect waves-light'
                     },
                     preConfirm: (e) => {
                         return new Promise((resolve) => {
@@ -167,8 +172,12 @@
                     "processing": true,
                     "serverSide": true,
                     "ajax": "{{ route('mahasantri.dataGet') }}", // Sesuaikan dengan route yang Anda buat
-                    "columns": [
-                        { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                    "columns": [{
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex',
+                            orderable: false,
+                            searchable: false
+                        },
                         {
                             data: 'nama',
                             name: 'nama'
@@ -176,9 +185,14 @@
                         {
                             data: 'email',
                             name: 'email'
-                        }, {
+                        },
+                        {
                             data: 'nim',
                             name: 'nim'
+                        },
+                        {
+                            data: 'angkatan',
+                            name: 'class.nama'
                         },
                         {
                             data: null,
@@ -189,7 +203,7 @@
                                 routeDelete = routeDelete.replace(':id', data.id);
                                 let nama = String(data.nama_lengkap);
                                 let params = `'${routeDelete}','${nama}'`;
-                                return `<a href="${route}" class="btn btn-warning">Edit</a>  <button class="btn btn-danger" onclick="deleteRow(${params})">Delete</button>`;
+                                return `<a href="${route}" class="btn btn-sm btn-warning">Edit</a>  <button class="btn btn-sm btn-danger" onclick="deleteRow(${params})">Delete</button>`;
                             },
                             name: 'action'
                         }

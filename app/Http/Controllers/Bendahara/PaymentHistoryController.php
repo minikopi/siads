@@ -56,11 +56,11 @@ class PaymentHistoryController extends Controller
                 return $data->created_at->translatedFormat('d F Y - H:i');
             })
             ->addColumn('nama_angkatan', function ($data) {
-                return sprintf('%s - %s', $data->mahasantri->class->nama, $data->mahasantri->class->tahun_ajaran);
+                return sprintf('%s - %s', $data?->mahasantri?->class?->nama ?? 'N/A', $data?->mahasantri?->class?->tahun_ajaran ?? 'N/A');
             })
             ->addColumn('via', function ($data) {
-                $metode = $data->payment_type ?  $data->payment_type : '';
-                $oleh = $data->merchant_name ? $data->merchant_name : '';
+                $metode = $data->payment_type ?  $data->payment_type : 'N/A';
+                $oleh = $data->merchant_name ? $data->merchant_name : 'Unknown';
                 return $metode . ' ' . strtoupper($oleh);
             })
             ->addColumn('action', function ($data) {

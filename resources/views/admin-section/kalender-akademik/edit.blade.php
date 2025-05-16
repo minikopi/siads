@@ -118,9 +118,9 @@
 
                                             <div class="mb-0 mt-4 row justify-content-end">
                                                 <div class="col-md-9">
-                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
                                                     <a href="{{ route('administrator.akademik.index') }}"
-                                                        class="btn btn-secondary">Cancel</a>
+                                                        class="btn btn-sm btn-secondary">Cancel</a>
                                                 </div>
                                             </div>
                                         </form>

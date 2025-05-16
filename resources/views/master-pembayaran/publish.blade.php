@@ -87,12 +87,12 @@
                                         </div>
                                     @endif
                                     <div class="d-inline-flex gap-2 mt-3">
-                                        <a href="{{ route('paymentType.index') }}" class="btn btn-primary">Batal</a>
+                                        <a href="{{ route('paymentType.index') }}" class="btn btn-sm btn-primary">Batal</a>
 
                                         <form action="{{ route('paymentType.publishing', $data->id) }}"
                                             onsubmit="return confirm('Apakah Anda yakin?')" class="d-inline" method="POST" id="publishing">
                                             @csrf @method('PUT')
-                                            <button type="submit" class="btn btn-default">Yakin</button>
+                                            <button type="submit" class="btn btn-sm btn-default">Yakin</button>
                                         </form>
                                     </div>
                             </div>
