@@ -15,10 +15,13 @@
                                 <div class="card overflow-hidden">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col">
+                                            <div class="col-md-12">
                                                 <h6 class="text-center">Buat Akun?</h6>
-                                                <h3 class="mb-2"><a href="{{ route('mahasantri.create') }}"
-                                                        class="btn btn-primary w-100">Daftar</a></h3>
+                                                <div class="d-grid d-md-flex">
+                                                    <a class="btn btn-primary"
+                                                        href="{{ route('mahasantri.create') }}">Daftar</a>
+                                                    <a class="btn btn-primary" href="{{ route('mahasantri.import') }}">Import</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -167,8 +170,12 @@
                     "processing": true,
                     "serverSide": true,
                     "ajax": "{{ route('mahasantri.dataGet') }}", // Sesuaikan dengan route yang Anda buat
-                    "columns": [
-                        { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                    "columns": [{
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex',
+                            orderable: false,
+                            searchable: false
+                        },
                         {
                             data: 'nama',
                             name: 'nama'

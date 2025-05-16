@@ -16,6 +16,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.3",
+        "maatwebsite/excel": "^3.1",
         "midtrans/midtrans-php": "^2.5",
         "santigarcor/laratrust": "^8.3",
         "spatie/laravel-activitylog": "^4.10",

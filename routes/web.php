@@ -60,8 +60,9 @@ Route::middleware(['auth'])->group(
                 Route::get('/data_mahasantri', [MahasantriController::class, 'dataGet'])->name('mahasantri.dataGet');
                 Route::get('/mahasantri/create', [MahasantriController::class, 'create'])->name('mahasantri.create');
                 Route::post('/mahasantri', [MahasantriController::class, 'store'])->name('mahasantri.store');
+                Route::get('/mahasantri/import', [MahasantriController::class, 'import'])->name('mahasantri.import');
                 Route::get('/mahasantri/edit/{id}', [MahasantriController::class, 'edit'])->name('mahasantri.edit');
-                Route::put('/mahasantri{id}', [MahasantriController::class, 'update'])->name('mahasantri.update');
+                Route::put('/mahasantri/{id}', [MahasantriController::class, 'update'])->name('mahasantri.update');
                 Route::delete('/mahasantri/delete/{id}', [MahasantriController::class, 'delete'])->name('mahasantri.delete');
 
                 //Mata Kuliah

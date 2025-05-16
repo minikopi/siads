@@ -169,8 +169,16 @@ class PaymentController extends Controller
 
         return DataTables::of($data)
             ->addColumn('nama', function ($data) {
-                $types = $data->nama_depan . ' ' . $data->nama_belakang;
-                return $types;
+                $result = $data->nama_depan . ' ' . $data->nama_belakang;
+                return $result;
+            })
+            ->addColumn('kelas', function ($data) {
+                $result = $data?->class?->nama ?? '-';
+                return $result;
+            })
+            ->addColumn('semester', function ($data) {
+                $result = $data?->class?->current_semaster ?? '-';
+                return $result;
             })
             ->addColumn('action', function ($data) {
                 return view('ViewDefault.siswa.button', compact('data'));

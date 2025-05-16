@@ -6,6 +6,7 @@ use App\Http\Requests\Master\MahasantriStore;
 use App\Http\Requests\Master\MahasantriUpdate;
 use App\Models\AcademicYear;
 use App\Models\Mahasantri;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +31,7 @@ class MahasantriController extends Controller
             ->addColumn('action', function ($data) {
                 //
             })
-            ->editColumn('nama', function ($data) {
+            ->addColumn('nama', function ($data) {
                 return $data->nama_depan . ' ' . $data->nama_belakang;
             })
             ->rawColumns(['action'])
@@ -66,6 +67,8 @@ class MahasantriController extends Controller
             ]);
 
             $user->mahasantri()->create($data);
+
+            $user->addRole(Role::Mahasantri);
         } catch (\Exception $e) {
             DB::rollback();
             Log::warning($e->getMessage(), [
@@ -73,11 +76,17 @@ class MahasantriController extends Controller
                 'data' => $request->validated(),
                 'user' => $request->user(),
             ]);
-            return back()->withInput()->with('error', 'Data Mata Kuliah Gagal Dibuat!');
+            return back()->withInput()->with('error', 'Data Mahasantri Gagal Dibuat!');
         }
         DB::commit();
 
         return redirect()->route('mahasantri.index')->with('success', 'Data Mahasantri berhasil ditambahkan.');
+    }
+
+    public function import()
+    {
+        $academic_years = AcademicYear::visible()->urut()->get();
+        return view('mahasantri.create', compact('academic_years'));
     }
 
     public function edit($id)
