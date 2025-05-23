@@ -15,27 +15,27 @@ class RoleSeeder extends Seeder
     {
         $roles = [
             [
-                'name' => 'admin',
+                'name' => Role::Admin,
                 'display_name' => 'Administrator',
                 'description' => 'The system administrator',
             ],
             [
-                'name' => 'mahasantri',
+                'name' => Role::Mahasantri,
                 'display_name' => 'Mahasantri',
                 'description' => 'Mahasantri of Darus-Sunnah',
             ],
             [
-                'name' => 'dosen',
+                'name' => Role::Dosen,
                 'display_name' => 'Dosen',
                 'description' => 'Lecturer of Darus-Sunnah',
             ],
             [
-                'name' => 'musyrif',
+                'name' => Role::Musyrif,
                 'display_name' => 'Musyrif',
                 'description' => 'Lecturer of Darus-Sunnah',
             ],
             [
-                'name' => 'panitia_takhrij',
+                'name' => Role::PanitiaTakhrij,
                 'display_name' => 'Panitia Takhrij',
                 'description' => 'Takhrij Committee of Darus-Sunnah',
             ],
