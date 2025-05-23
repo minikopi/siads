@@ -15,7 +15,7 @@ use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ScoreController;
-use App\Models\PaymentType;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
