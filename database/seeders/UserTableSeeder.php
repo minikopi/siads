@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,12 +14,13 @@ class UserTableSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $user = User::create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' =>
             password_hash('password', PASSWORD_DEFAULT),
-            'role' => 'Admin',
+            'role' => Role::Admin,
         ]);
+        $user->addRole(Role::Admin);
     }
 }

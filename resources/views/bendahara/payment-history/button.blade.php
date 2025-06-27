@@ -98,7 +98,7 @@
                                             <textarea class="form-control" name="alasan_pembatalan" id="alasan_pembatalan" rows="3"
                                                 placeholder="Alasan pembatalan dan keterangan lainnya"></textarea>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Konfirmasi Pembatalan</button>
+                                        <button type="submit" class="btn btn-sm btn-primary">Konfirmasi Pembatalan</button>
                                     </form>
                                 </div>
                             @endif
@@ -108,7 +108,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

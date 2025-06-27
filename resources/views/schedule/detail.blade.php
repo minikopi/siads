@@ -37,7 +37,7 @@
                                         <div class="col-3 text-end">
                                             <div class="control-group form-group">
                                                 @if (Auth::user()->role == 'Mahasantri')
-                                                    <a class="btn btn-success"
+                                                    <a class="btn btn-sm btn-success"
                                                         href="{{ route('schedule.cetak', ['id' => Auth::user()->mahasantri->kelas_id]) }}">Cetak
                                                         KRS</a>
                                                 @endif
@@ -126,8 +126,8 @@
                         //     render: function(data, type, row) {
                         //         var route = '{{ route('kelas.detail', ['id' => ':id']) }}'
                         //         route = route.replace(':id', data.id);
-                        //         return '<a href="'+route+'" class="btn btn-warning">Detail</a> ' +
-                        //             '<button class="btn btn-danger" onclick="deleteRow(' +
+                        //         return '<a href="'+route+'" class="btn btn-sm btn-warning">Detail</a> ' +
+                        //             '<button class="btn btn-sm btn-danger" onclick="deleteRow(' +
                         //             row.id +
                         //             ')">Delete</button>';
                         //     },

@@ -1,10 +1,10 @@
-<button class="btn btn-info toggle-pdf" data-pdf="{{ asset('storage/' . $data->file) }}">
+<button class="btn btn-sm btn-info toggle-pdf" data-pdf="{{ asset('storage/' . $data->file) }}">
     PDF
 </button>
-<a class="btn btn-warning" href="{{ route('administrator.edaran.edit', $data) }}">
+<a class="btn btn-sm btn-warning" href="{{ route('administrator.edaran.edit', $data) }}">
     Edit
 </a>
-<button class="btn btn-danger"
+<button class="btn btn-sm btn-danger"
     onclick="deleteEdaranRow('{{ route('administrator.edaran.destroy', $data) }}', '{{ $data->nama }}')">
     Delete
 </button>

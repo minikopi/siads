@@ -18,7 +18,7 @@
                                             <div class="col">
                                                 <h6 class="text-center">Buat Akun?</h6>
                                                 <h3 class="mb-2"><a href="{{ route('dosen.create') }}"
-                                                        class="btn btn-primary w-100">Daftar</a></h3>
+                                                        class="btn btn-sm btn-primary w-100">Daftar</a></h3>
                                             </div>
                                         </div>
                                     </div>
@@ -160,8 +160,8 @@
                                 var routeDelete = '{{ route("dosen.delete", ["id" =>":id" ])}}'
                                 route = route.replace(':id', data.id);
                                 routeDelete = routeDelete.replace(':id', data.id);
-                                return '<a href="'+route+'" class="btn btn-warning">Edit</a> ' +
-                                    '<button class="btn btn-danger" onclick="deleteRow(`' +
+                                return '<a href="'+route+'" class="btn btn-sm btn-warning">Edit</a> ' +
+                                    '<button class="btn btn-sm btn-danger" onclick="deleteRow(`' +
                                     routeDelete +
                                     '`)">Delete</button>';
                             },
@@ -223,8 +223,8 @@
                                 var routeDelete = '{{ route("dosen.delete", ["id" =>":id" ])}}'
                                 route = route.replace(':id', data.id);
                                 routeDelete = routeDelete.replace(':id', data.id);
-                                return '<a href="'+route+'" class="btn btn-warning">Edit</a> ' +
-                                    '<button class="btn btn-danger" onclick="deleteRow(`' +
+                                return '<a href="'+route+'" class="btn btn-sm btn-warning">Edit</a> ' +
+                                    '<button class="btn btn-sm btn-danger" onclick="deleteRow(`' +
                                     routeDelete +
                                     '`)">Delete</button>';
                             },

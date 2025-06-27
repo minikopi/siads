@@ -13,7 +13,7 @@ class Classes extends Model
     use HasFactory;
     use SoftDeletes;
 
-    public $fillable = ['nama', 'tahun_ajaran', "current_semaster", "gender", "dosen_id"];
+    public $fillable = ['nama', 'tahun_ajaran', "current_semaster", "gender", "dosen_id", 'musyrif_id', 'academic_year_id'];
 
     public function dosen(): BelongsTo
     {

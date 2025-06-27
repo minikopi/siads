@@ -66,8 +66,8 @@
                     reverseButtons: true,
                     buttonsStyling: false,
                     customClass: {
-                        cancelButton: 'btn btn-light waves-effect',
-                        confirmButton: 'btn btn-primary waves-effect waves-light'
+                        cancelButton: 'btn btn-sm btn-light waves-effect',
+                        confirmButton: 'btn btn-sm btn-primary waves-effect waves-light'
                     },
                     preConfirm: (e) => {
                         return new Promise((resolve) => {

@@ -52,8 +52,8 @@
                                                 <td>Sahih al-Bukhary</td>
 
                                                 <td>
-                                                    <a href="" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                                                    <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                                    <a href="" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
+                                                    <a href="" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -120,8 +120,8 @@
                             render: function(data, type, row) {
                                 var route = '{{ route('absent.AbsentAdmin', ['id' => ':id']) }}'
                                 route = route.replace(':id', data.id);
-                                return '<a href="' + route + '" class="btn btn-warning">Absent</a> ' +
-                                    '<button class="btn btn-danger" onclick="deleteRow(' +
+                                return '<a href="' + route + '" class="btn btn-sm btn-warning">Absent</a> ' +
+                                    '<button class="btn btn-sm btn-danger" onclick="deleteRow(' +
                                     row.id +
                                     ')">Delete</button>';
                             },

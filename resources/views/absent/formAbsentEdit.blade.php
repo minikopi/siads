@@ -28,7 +28,7 @@
                                         </div>
                                     </div>
                                     <div class="col-3">
-                                        <button class="btn btn-success">Update Absen</button>
+                                        <button class="btn btn-sm btn-success">Update Absen</button>
                                     </div>
                                 </div>
                                 <div class="table-responsive">

@@ -29,7 +29,7 @@
                                         </div>
                                     </div>
                                     <div class="col-3">
-                                        <button class="btn btn-success">Submit Absen</button>
+                                        <button class="btn btn-sm btn-success">Submit Absen</button>
                                     </div>
                                 </div>
                                 <div class="table-responsive">

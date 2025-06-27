@@ -34,8 +34,8 @@
                                                 <td>Sahih al-Bukhary</td>
 
                                                 <td>
-                                                    <a href="" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                                                    <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                                    <a href="" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
+                                                    <a href="" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -88,7 +88,7 @@
                             render: function(data, type, row) {
                                 var route = '{{ route('schedule.detail', ['id' => ':id']) }}'
                                 route = route.replace(':id', data.id);
-                                return '<a href="' + route + '" class="btn btn-warning">Jadwal</a> '
+                                return '<a href="' + route + '" class="btn btn-sm btn-warning">Jadwal</a> '
                             },
                             name: 'action'
                         }

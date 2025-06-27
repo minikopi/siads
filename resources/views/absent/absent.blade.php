@@ -51,14 +51,14 @@
                                                     <td>{{ $item->jumlah_terlambat }}</td>
                                                     <td>{{ $item->persen }}</td>
                                                     <td>
-                                                        <a href="{{route('absent.AbsentFormEdit',['id'=>$data['schedule']->id, 'date'=>$item->tanggal])}}" class="btn btn-primary">Edit Persensi</a>
+                                                        <a href="{{route('absent.AbsentFormEdit',['id'=>$data['schedule']->id, 'date'=>$item->tanggal])}}" class="btn btn-sm btn-primary">Edit Persensi</a>
                                                         <form action="{{route('absent.delete', ['id'=>$data['schedule']->id, 'date'=>$item->tanggal])}}"
                                                                 onsubmit="return confirm('Are you sure?')" class="d-inline"
                                                                 method="POST">
                                                                 @csrf
                                                                 <input type="hidden" name="_method" value="DELETE">
 
-                                                            <button type="submit" class="btn btn-danger" >Delete</button>
+                                                            <button type="submit" class="btn btn-sm btn-danger" >Delete</button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -68,8 +68,8 @@
                                                 <td>Sahih al-Bukhary</td>
 
                                                 <td>
-                                                    <a href="" class="btn btn-warning"><i class="fa fa-edit"></i></a>
-                                                    <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                                    <a href="" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
+                                                    <a href="" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr> --}}
                                         </tbody>

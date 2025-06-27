@@ -78,8 +78,8 @@ class AcademicYearController extends Controller
             $check = AcademicYear::firstWhere('start_year', $request->start_year);
             if ($check) throw new \Exception('Data sudah ada.');
 
-            $selisih = $request->end_year - $request->start_year;
-            if ($selisih > 1) throw new \Exception('Data tidak valid.');
+            // $selisih = $request->end_year - $request->start_year;
+            // if ($selisih > 1) throw new \Exception('Data tidak valid.');
 
             if ($request->has('active')) {
                 $hasActive =  AcademicYear::firstWhere('active', true);
@@ -91,7 +91,9 @@ class AcademicYearController extends Controller
                 if ($hasRegistration) $hasRegistration->update(['registration' => false]);
             }
 
-            AcademicYear::create($request->validated());
+            $data = array_merge($request->validated(), ['end_year' => $request->start_year + 1]);
+
+            AcademicYear::create($data);
 
             DB::commit();
         } catch (\Throwable $th) {
@@ -137,8 +139,8 @@ class AcademicYearController extends Controller
             ])->first();
             if ($check) throw new \Exception('Data sudah ada.');
 
-            $selisih = $request->end_year - $request->start_year;
-            if ($selisih > 1) throw new \Exception('Data tidak valid.');
+            // $selisih = $request->end_year - $request->start_year;
+            // if ($selisih > 1) throw new \Exception('Data tidak valid.');
 
             if ($request->has('active')) {
                 $hasActive =  AcademicYear::firstWhere([
@@ -156,7 +158,9 @@ class AcademicYearController extends Controller
                 if ($hasRegistration) $hasRegistration->update(['registration' => false]);
             }
 
-            $academicYear->update($request->validated());
+            $data = array_merge($request->validated(), ['end_year' => $request->start_year + 1]);
+
+            $academicYear->update($data);
         } catch (\Throwable $th) {
             Log::warning($th->getMessage(), [
                 'action' => 'update academic year',
@@ -175,7 +179,7 @@ class AcademicYearController extends Controller
     public function destroy(AcademicYear $academicYear)
     {
         return response()->json(
-            ['msg' => 'Maaf, Anda tidak dapat melakukan ini. Hubungi web administrator.'],
+            ['msg' => 'Data Tahun Ajaran tidak dapat dihapus'],
             400
         );
     }

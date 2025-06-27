@@ -13,7 +13,7 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h3 class="card-title">Tahun Ajaran</h3>
-                                <a href="{{ route('academic-year.create') }}" class="btn btn-primary">Tambah</a>
+                                <a href="{{ route('academic-year.create') }}" class="btn btn-sm btn-primary">Tambah</a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -61,8 +61,8 @@
                     reverseButtons: true,
                     buttonsStyling: false,
                     customClass: {
-                        cancelButton: 'btn btn-light waves-effect',
-                        confirmButton: 'btn btn-primary waves-effect waves-light'
+                        cancelButton: 'btn btn-sm btn-light waves-effect',
+                        confirmButton: 'btn btn-sm btn-primary waves-effect waves-light'
                     },
                     preConfirm: (e) => {
                         return new Promise((resolve) => {
@@ -141,7 +141,7 @@
                                 routeDelete = routeDelete.replace(':id', data.id);
                                 let tahun = String(data.full_year);
                                 let params = `'${routeDelete}','${tahun}'`;
-                                return `<a href="${route}" class="btn btn-warning">Edit</a> <button class="btn btn-danger" onclick="deleteRow(${params})">Delete</button>`;
+                                return `<a href="${route}" class="btn btn-sm btn-warning">Edit</a> <button class="btn btn-sm btn-danger" onclick="deleteRow(${params})">Delete</button>`;
                             },
                             name: 'action'
                         }

@@ -35,7 +35,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row mb-4">
+                                            {{-- <div class="row mb-4">
                                                 <label class="col-md-3 form-label" for="end_year">Tahun Akhir</label>
                                                 <div class="col-md-9">
                                                     <input class="form-control @error('end_year') is-invalid @enderror"
@@ -46,7 +46,7 @@
                                                         </div>
                                                     @enderror
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
                                             <div class="row mb-4">
                                                 <label class="col-md-3 form-label" for="visible">&nbsp;</label>
@@ -110,9 +110,9 @@
 
                                             <div class="mb-0 mt-4 row justify-content-end">
                                                 <div class="col-md-9">
-                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
                                                     <a href="{{ route('academic-year.index') }}"
-                                                        class="btn btn-secondary">Cancel</a>
+                                                        class="btn btn-sm btn-secondary">Cancel</a>
                                                 </div>
                                             </div>
                                         </form>

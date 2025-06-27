@@ -1,0 +1,24 @@
+name: Continuous Deployment - Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH and deploy app
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_PROD }}
+          username: ${{ secrets.SSH_USERNAME_PROD }}
+          key: ${{ secrets.SSH_KEY_PROD }}
+          port: ${{ secrets.SSH_PORT_PROD }}
+          script: |
+            cd ${{ secrets.DIR_REPOSITORY_TEST }}
+            sudo git pull https://x-access-token:${{ secrets.PAT_TOKEN_AAEZHA }}@github.com/minikopi/siads.git main --force
+            sudo php artisan optimize
+            sudo git --no-pager log -n 5

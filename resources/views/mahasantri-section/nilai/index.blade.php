@@ -33,7 +33,7 @@
                                         </div>
                                         <div class="col-3 text-end">
                                             <div class="control-group form-group">
-                                                <a class="btn btn-success" id="cetakKHS"
+                                                <a class="btn btn-sm btn-success" id="cetakKHS"
                                                     href="javascript:void(0);">Cetak
                                                     KHS</a>
                                             </div>

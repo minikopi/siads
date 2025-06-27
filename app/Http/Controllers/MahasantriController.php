@@ -2,35 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Master\MahasantriImportRequest;
 use App\Http\Requests\Master\MahasantriStore;
 use App\Http\Requests\Master\MahasantriUpdate;
+use App\Imports\MahasantriImport;
 use App\Models\AcademicYear;
+use App\Models\Dosen;
 use App\Models\Mahasantri;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class MahasantriController extends Controller
 {
     public function index()
     {
+        $academic_years = AcademicYear::select('full_year')->visible()->urut()->get();
         $lakilakiCount = Mahasantri::where('jenis_kelamin', 'laki-laki')->count();
         $perempuanCount = Mahasantri::where('jenis_kelamin', 'perempuan')->count();
-        return view('mahasantri.index', compact('lakilakiCount', 'perempuanCount'));
+        return view('mahasantri.index', compact('lakilakiCount', 'perempuanCount', 'academic_years'));
     }
 
-    public function dataGet()
+    public function dataGet(Request $request)
     {
-        $data = Mahasantri::select(['nama_depan', 'nama_belakang', 'nama_lengkap', 'nim', 'email', 'id'])->latest();
+        $data = Mahasantri::with('class')->select(['nama_depan', 'nama_belakang', 'nama_lengkap', 'nim', 'email', 'id', 'kelas_id'])->latest();
+
+        if ($request->has('angkatan')) {
+            $data->where('academic_year_id', $request->angkatan);
+        }
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
                 //
             })
-            ->editColumn('nama', function ($data) {
+            ->addColumn('angkatan', function ($data) {
+                return $data?->class?->nama ?? '-';
+            })
+            ->addColumn('nama', function ($data) {
                 return $data->nama_depan . ' ' . $data->nama_belakang;
             })
             ->rawColumns(['action'])
@@ -66,6 +79,8 @@ class MahasantriController extends Controller
             ]);
 
             $user->mahasantri()->create($data);
+
+            $user->addRole(Role::Mahasantri);
         } catch (\Exception $e) {
             DB::rollback();
             Log::warning($e->getMessage(), [
@@ -73,11 +88,75 @@ class MahasantriController extends Controller
                 'data' => $request->validated(),
                 'user' => $request->user(),
             ]);
-            return back()->withInput()->with('error', 'Data Mata Kuliah Gagal Dibuat!');
+            return back()->withInput()->with('error', 'Data Mahasantri Gagal Dibuat!');
         }
         DB::commit();
 
         return redirect()->route('mahasantri.index')->with('success', 'Data Mahasantri berhasil ditambahkan.');
+    }
+
+    public function import()
+    {
+        $musyrif = Dosen::firstWhere('tipe', 'Musyrif');
+        if (!$musyrif) return back()->with('error', 'Sebelum melakukan import data mahasantri, Anda harus menambahkan data Musyrif terlebih dahulu.');
+
+        $title = 'Import Mahasantri';
+        $academic_years = AcademicYear::visible()->urut()->get();
+        return view('mahasantri.import', compact('academic_years', 'title'));
+    }
+
+    public function importUpload(MahasantriImportRequest $request)
+    {
+        $academic_year = AcademicYear::firstOrCreate([
+            'start_year' => $request->tahun_ajaran,
+            'end_year' => $request->tahun_ajaran + 1,
+        ]);
+
+        $error = false;
+        $errors = [];
+
+        try {
+            $import = new MahasantriImport($academic_year);
+            $import->import($request->file('excel'));
+
+            foreach ($import->failures() as $failure) {
+                $error = true;
+                $barisnya = $failure->row(); // row that went wrong
+                $kolomnya = $failure->attribute(); // either heading key (if using heading row concern) or column index
+                $errornya = $failure->errors(); // Actual error messages from Laravel validator
+                $datanya = $failure->values(); // The values of the row that has failed.
+
+                $errors[] = sprintf("Ada error pada baris %s, kolom %s, errornya %s, nilainya %s\n", $barisnya, $kolomnya, $errornya, $datanya);
+            }
+            // Excel::queueImport(new MahasantriImport($academic_year), $request->file('excel'));
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+
+            foreach ($failures as $failure) {
+                Log::error($e->getMessage(), [
+                    'action' => 'import mahasantri',
+                    'row' => $failure->row(),               // row that went wrong
+                    'attribute' => $failure->attribute(),   // either heading key (if using heading row concern) or column index
+                    'errors' => $failure->errors(),         // Actual error messages from Laravel validator
+                    'values' => $failure->values(),         // The values of the row that has failed.
+                    'user' => $request->user(),
+                ]);
+
+                $barisnya = $failure->row(); // row that went wrong
+                $kolomnya = $failure->attribute(); // either heading key (if using heading row concern) or column index
+                $errornya = $failure->errors(); // Actual error messages from Laravel validator
+                $datanya = $failure->values(); // The values of the row that has failed.
+
+                $errors[] = sprintf("Ada error pada baris %s, kolom %s, errornya %s, nilainya %s\n", $barisnya, $kolomnya, $errornya, $datanya);
+            }
+
+            return back()->withInput()->with('error', 'Data Mahasantri Gagal Di-import!')->with('errors', $errors);
+        }
+
+        if ($error) return redirect()->route('mahasantri.index')->with('error', 'Data Mahasantri gagal di-import.')
+        ->with('errors', $errors);
+
+        return redirect()->route('mahasantri.index')->with('success', 'Data Mahasantri berhasil di-import.');
     }
 
     public function edit($id)

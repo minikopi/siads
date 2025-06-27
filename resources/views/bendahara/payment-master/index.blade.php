@@ -14,7 +14,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Poin Pembayaran Mahasantri - {{ $mahasantri->nama_lengkap }}</h3>
                                 <p class="ms-auto">
-                                    <a href="{{ route('bendahara.master-payment.payment.create', $mahasantri->id) }}" class="btn btn-primary">
+                                    <a href="{{ route('bendahara.master-payment.payment.create', $mahasantri->id) }}" class="btn btn-sm btn-primary">
                                         Tambah
                                     </a>
                                 </p>
@@ -68,8 +68,8 @@
                     reverseButtons: true,
                     buttonsStyling: false,
                     customClass: {
-                        cancelButton: 'btn btn-light waves-effect',
-                        confirmButton: 'btn btn-primary waves-effect waves-light'
+                        cancelButton: 'btn btn-sm btn-light waves-effect',
+                        confirmButton: 'btn btn-sm btn-primary waves-effect waves-light'
                     },
                     preConfirm: (e) => {
                         return new Promise((resolve) => {

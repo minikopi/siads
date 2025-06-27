@@ -14,7 +14,7 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h3 class="card-title">Data Prestasi Akademik</h3>
                                 @if (Auth::user()->role == 'Mahasantri')
-                                    <a class="btn btn-primary" href="{{ route('prestasi.create') }}">Tambah</a>
+                                    <a class="btn btn-sm btn-primary" href="{{ route('prestasi.create') }}">Tambah</a>
                                 @endif
                             </div>
                             <div class="card-body">
@@ -88,10 +88,10 @@
                             visible: @json(Auth::user()->role == 'Admin'),
                             render: function(data, type, row) {
                                 var acceptButton =
-                                    '<button class="btn btn-success accept-button" data-id="' + row.id +
+                                    '<button class="btn btn-sm btn-success accept-button" data-id="' + row.id +
                                     '">Terima</button>';
                                 var rejectButton =
-                                    '<button class="btn btn-danger reject-button" data-id="' + row.id +
+                                    '<button class="btn btn-sm btn-danger reject-button" data-id="' + row.id +
                                     '">Tolak</button>';
 
                                 if (row.status === 'Diterima' || row.status === 'Ditolak') {

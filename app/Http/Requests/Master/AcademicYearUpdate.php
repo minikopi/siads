@@ -25,7 +25,7 @@ class AcademicYearUpdate extends FormRequest
     {
         return [
             'start_year' => ['required', 'numeric'],
-            'end_year' => ['required', 'numeric', 'gt:start_year'],
+            // 'end_year' => ['required', 'numeric', 'gt:start_year'],
             'visible' => ['nullable', 'boolean'],
             'active' => ['nullable', 'boolean'],
             'registration' => ['nullable', 'boolean'],

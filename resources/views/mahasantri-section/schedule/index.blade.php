@@ -35,7 +35,7 @@
                                         <div class="col-3 text-end">
                                             <div class="control-group form-group">
                                                 @if (Auth::user()->role == 'Mahasantri')
-                                                    <a class="btn btn-success" id="cetakKRS"
+                                                    <a class="btn btn-sm btn-success" id="cetakKRS"
                                                         href="javascript:void(0);">
                                                         Cetak KRS
                                                     </a>

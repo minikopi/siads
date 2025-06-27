@@ -84,8 +84,8 @@
                                 var routeDelete = '{{ route("mata-kuliah.delete", ["id" =>":id" ])}}'
                                 route = route.replace(':id', data.id);
                                 routeDelete = routeDelete.replace(':id', data.id);
-                                return '<a href="'+route+'" class="btn btn-warning">Edit</a> ' +
-                                    '<button class="btn btn-danger" onclick="deleteRow(`' +
+                                return '<a href="'+route+'" class="btn btn-sm btn-warning">Edit</a> ' +
+                                    '<button class="btn btn-sm btn-danger" onclick="deleteRow(`' +
                                     routeDelete +
                                     '`)">Delete</button>';
                             },

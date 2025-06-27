@@ -13,7 +13,7 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h3 class="card-title">Kalander Akademik</h3>
-                                <a href="{{ route('akademik.createKalender') }}" class="btn btn-primary">Tambah</a>
+                                <a href="{{ route('akademik.createKalender') }}" class="btn btn-sm btn-primary">Tambah</a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -38,7 +38,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">Surat Edaran</h3>
                                 <p class="ms-auto"><a href="{{ route('akademik.createEdaran') }}"
-                                        class="btn btn-primary">Tambah</a></p>
+                                        class="btn btn-sm btn-primary">Tambah</a></p>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -160,10 +160,10 @@
                         {
                             data: null,
                             render: function(data, type, row) {
-                                return '<button class="btn btn-info toggle-pdf" data-pdf="' + row.file +
-                                    '">PDF</button> <button class="btn btn-warning" onclick="deleteRow(' +
+                                return '<button class="btn btn-sm btn-info toggle-pdf" data-pdf="' + row.file +
+                                    '">PDF</button> <button class="btn btn-sm btn-warning" onclick="deleteRow(' +
                                     row.id +
-                                    ')">Edit</button> <button class="btn btn-danger" onclick="deleteRow(' +
+                                    ')">Edit</button> <button class="btn btn-sm btn-danger" onclick="deleteRow(' +
                                     row.id +
                                     ')">Delete</button>';;
                             },
@@ -223,8 +223,8 @@
                     reverseButtons: true,
                     buttonsStyling: false,
                     customClass: {
-                        cancelButton: 'btn btn-light waves-effect',
-                        confirmButton: 'btn btn-primary waves-effect waves-light'
+                        cancelButton: 'btn btn-sm btn-light waves-effect',
+                        confirmButton: 'btn btn-sm btn-primary waves-effect waves-light'
                     },
                     preConfirm: (e) => {
                         return new Promise((resolve) => {
