@@ -26,7 +26,7 @@
                                                 <div class="col-md-9">
                                                     <input class="form-control @error('nama') is-invalid @enderror"
                                                         type="input" name="nama" id="nama" autocomplete="off"
-                                                        value="{{ isset($data['dosen']) ? $data['dosen']->user->name : ''}}">
+                                                        value="{{ isset($data['dosen']) ? $data['dosen']->user->name : old('nama')}}">
                                                     @error('nama')
                                                         <div class="invalid-feedback" style="color: red;">{{ $message }}
                                                         </div>
@@ -39,7 +39,7 @@
                                                 <div class="col-md-9">
                                                     <input class="form-control @error('email') is-invalid @enderror"
                                                         type="email" name="email" id="email" autocomplete="off"
-                                                        value="{{ isset($data['dosen']) ? $data['dosen']->user->email : ''}}">
+                                                        value="{{ isset($data['dosen']) ? $data['dosen']->user->email : old('email')}}">
                                                     @error('email')
                                                         <div class="invalid-feedback" style="color: red;">{{ $message }}
                                                         </div>
@@ -52,7 +52,7 @@
                                                 <div class="col-md-9">
                                                     <input class="form-control @error('nomor_induk') is-invalid @enderror"
                                                         type="input" name="nomor_induk" id="nomor_induk"
-                                                        value="{{ isset($data['dosen']) ? $data['dosen']->nomor_induk : ''}}">
+                                                        value="{{ isset($data['dosen']) ? $data['dosen']->nomor_induk : old('nomor_induk')}}">
                                                     @error('nomor_induk')
                                                         <div class="invalid-feedback" style="color: red;">{{ $message }}
                                                         </div>
@@ -65,7 +65,7 @@
                                                 <div class="col-md-9">
                                                     <input class="form-control @error('jabatan') is-invalid @enderror"
                                                         type="input" name="jabatan" id="jabatan"
-                                                        value="{{ isset($data['dosen']) ? $data['dosen']->jabatan : ''}}">
+                                                        value="{{ isset($data['dosen']) ? $data['dosen']->jabatan : old('jabatan')}}">
                                                     @error('jabatan')
                                                         <div class="invalid-feedback" style="color: red;">{{ $message }}
                                                         </div>

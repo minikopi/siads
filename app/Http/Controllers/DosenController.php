@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Dosen;
 use App\Models\MataKuliah;
 use App\Models\MatkulDosen;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -92,17 +93,33 @@ class DosenController extends Controller
             'role'      => 'Dosen',
         ]);
 
+        switch (strtolower($request->tipe)) {
+            case Role::Dosen:
+                $user->addRole(Role::Dosen);
+                break;
+
+            case Role::Musyrif:
+                $user->addRole(Role::Musyrif);
+                break;
+
+            default:
+                //
+                break;
+        }
+
         $dosen = Dosen::create([
             'user_id'       => $user->id,
             'nomor_induk'   => $request->nomor_induk,
             'jabatan'       => $request->jabatan,
             'tipe'          => $request->tipe,
         ]);
-        foreach ($request->matkul as $v) {
-            MatkulDosen::create([
-                'dosen_id' => $dosen->id,
-                'matkul_id' => $v
-            ]);
+        if ($request->has('matkul')) {
+            foreach ($request->matkul as $v) {
+                MatkulDosen::create([
+                    'dosen_id' => $dosen->id,
+                    'matkul_id' => $v
+                ]);
+            }
         }
         return redirect()->route('dosen.index')->with('success', 'Data Dosen Berhasil Dibuat!');
     }

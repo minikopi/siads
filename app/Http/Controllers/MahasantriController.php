@@ -7,6 +7,7 @@ use App\Http\Requests\Master\MahasantriStore;
 use App\Http\Requests\Master\MahasantriUpdate;
 use App\Imports\MahasantriImport;
 use App\Models\AcademicYear;
+use App\Models\Dosen;
 use App\Models\Mahasantri;
 use App\Models\Role;
 use App\Models\User;
@@ -96,6 +97,9 @@ class MahasantriController extends Controller
 
     public function import()
     {
+        $musyrif = Dosen::firstWhere('tipe', 'Musyrif');
+        if (!$musyrif) return back()->with('error', 'Sebelum melakukan import data mahasantri, Anda harus menambahkan data Musyrif terlebih dahulu.');
+
         $title = 'Import Mahasantri';
         $academic_years = AcademicYear::visible()->urut()->get();
         return view('mahasantri.import', compact('academic_years', 'title'));
@@ -108,13 +112,28 @@ class MahasantriController extends Controller
             'end_year' => $request->tahun_ajaran + 1,
         ]);
 
+        $error = false;
+        $errors = [];
+
         try {
-            Excel::queueImport(new MahasantriImport($academic_year), $request->file('excel'));
+            $import = new MahasantriImport($academic_year);
+            $import->import($request->file('excel'));
+
+            foreach ($import->failures() as $failure) {
+                $error = true;
+                $barisnya = $failure->row(); // row that went wrong
+                $kolomnya = $failure->attribute(); // either heading key (if using heading row concern) or column index
+                $errornya = $failure->errors(); // Actual error messages from Laravel validator
+                $datanya = $failure->values(); // The values of the row that has failed.
+
+                $errors[] = sprintf("Ada error pada baris %s, kolom %s, errornya %s, nilainya %s\n", $barisnya, $kolomnya, $errornya, $datanya);
+            }
+            // Excel::queueImport(new MahasantriImport($academic_year), $request->file('excel'));
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $failures = $e->failures();
 
             foreach ($failures as $failure) {
-                Log::warning($e->getMessage(), [
+                Log::error($e->getMessage(), [
                     'action' => 'import mahasantri',
                     'row' => $failure->row(),               // row that went wrong
                     'attribute' => $failure->attribute(),   // either heading key (if using heading row concern) or column index
@@ -122,10 +141,20 @@ class MahasantriController extends Controller
                     'values' => $failure->values(),         // The values of the row that has failed.
                     'user' => $request->user(),
                 ]);
+
+                $barisnya = $failure->row(); // row that went wrong
+                $kolomnya = $failure->attribute(); // either heading key (if using heading row concern) or column index
+                $errornya = $failure->errors(); // Actual error messages from Laravel validator
+                $datanya = $failure->values(); // The values of the row that has failed.
+
+                $errors[] = sprintf("Ada error pada baris %s, kolom %s, errornya %s, nilainya %s\n", $barisnya, $kolomnya, $errornya, $datanya);
             }
 
-            return back()->withInput()->with('error', 'Data Mahasantri Gagal Di-import!');
+            return back()->withInput()->with('error', 'Data Mahasantri Gagal Di-import!')->with('errors', $errors);
         }
+
+        if ($error) return redirect()->route('mahasantri.index')->with('error', 'Data Mahasantri gagal di-import.')
+        ->with('errors', $errors);
 
         return redirect()->route('mahasantri.index')->with('success', 'Data Mahasantri berhasil di-import.');
     }

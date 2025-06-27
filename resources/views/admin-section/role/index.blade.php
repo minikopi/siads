@@ -13,7 +13,7 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h3 class="card-title">Role</h3>
-                                <a href="{{ route('administrator.roles.create') }}" class="btn btn-sm btn-primary">Tambah</a>
+                                {{-- <a href="{{ route('administrator.roles.create') }}" class="btn btn-sm btn-primary">Tambah</a> --}}
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">

@@ -26,11 +26,11 @@ use Maatwebsite\Excel\Concerns\{
 };
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class MahasantriImport implements ToCollection, WithHeadingRow, WithValidation, SkipsOnFailure, SkipsEmptyRows, ShouldQueue, WithChunkReading, WithSkipDuplicates, WithColumnFormatting
+class MahasantriImport implements ToCollection, WithHeadingRow, WithValidation, SkipsOnFailure, SkipsEmptyRows,  WithSkipDuplicates, WithColumnFormatting
 {
     use Importable, SkipsFailures;
 
-    public $academic_year;
+    public $academic_year, $error = [];
 
     public function __construct(AcademicYear $academic_year)
     {
@@ -60,8 +60,8 @@ class MahasantriImport implements ToCollection, WithHeadingRow, WithValidation, 
             $userCheck = User::firstWhere('email', $row['email']);
             $mahasantriCheck = Mahasantri::firstWhere('email', $row['email']);
             if ($userCheck || $mahasantriCheck) {
-                Log::warning('Skip duplikat email mahasantri saat import', [
-                    'action' => 'store mahasantri',
+                Log::error(sprintf('Skip duplikat email mahasantri saat import: %s', $row['email']), [
+                    'action' => 'import mahasantri',
                     'data' => collect($row)->toArray(),
                 ]);
                 continue;
@@ -91,20 +91,23 @@ class MahasantriImport implements ToCollection, WithHeadingRow, WithValidation, 
                     'nik' => trim($row['nik']),
                     'alamat' => trim($row['alamat']),
                     'kode_pos' => trim($row['kode_pos']),
-                    'tanggal_lahir' => Carbon::parse(trim($row['tanggal_lahir']))->format('Y-m-d'),
+                    'tanggal_lahir' => $this->parseDateExplode($row['tanggal_lahir']),
+                    // 'tanggal_lahir' => Carbon::parse(trim($row['tanggal_lahir']))->format('Y-m-d'),
                     'tempat_lahir' => trim($row['tempat_lahir']),
                     'suku' => trim($row['suku']),
                     'saudara' => trim($row['saudara']),
                     'anak_ke' => trim($row['anak_ke']),
                     'nama_ayah' => trim($row['nama_ayah']),
                     'tempat_ayah' => trim($row['tempat_lahir_ayah']),
-                    'lahir_ayah' => Carbon::parse(trim($row['tanggal_lahir_ayah']))->format('Y-m-d'),
+                    'lahir_ayah' => $this->parseDateExplode($row['tanggal_lahir_ayah']),
+                    // 'lahir_ayah' => Carbon::parse(trim($row['tanggal_lahir_ayah']))->format('Y-m-d'),
                     'pendidikan_ayah' => trim($row['pendidikan_terakhir_ayah']),
                     'pekerjaan_ayah' => trim($row['pekerjaan_ayah']),
                     'penghasilan_ayah' => trim($row['penghasilan_ayah']),
                     'nama_ibu' => trim($row['nama_ibu']),
                     'tempat_ibu' => trim($row['tempat_lahir_ibu']),
-                    'lahir_ibu' => Carbon::parse(trim($row['tanggal_lahir_ibu']))->format('Y-m-d'),
+                    'lahir_ibu' => $this->parseDateExplode($row['tanggal_lahir_ibu']),
+                    // 'lahir_ibu' => Carbon::parse(trim($row['tanggal_lahir_ibu']))->format('Y-m-d'),
                     'pendidikan_ibu' => trim($row['pendidikan_terakhir_ibu']),
                     'pekerjaan_ibu' => trim($row['pekerjaan_ibu']),
                     'penghasilan_ibu' => trim($row['penghasilan_ibu']),
@@ -117,7 +120,8 @@ class MahasantriImport implements ToCollection, WithHeadingRow, WithValidation, 
                     'asal_pesantren' => trim($row['asal_pesantren']),
                     'alamat_pesantren' => trim($row['alamat_pesantren']),
                     'nomor_ijazah' => trim($row['nomor_ijazah']),
-                    'tanggal_ijazah' => Carbon::parse(trim($row['tanggal_ijazah']))->format('Y-m-d'),
+                    'tanggal_ijazah' => $this->parseDateExplode($row['tanggal_ijazah']),
+                    // 'tanggal_ijazah' => Carbon::parse(trim($row['tanggal_ijazah']))->format('Y-m-d'),
                     'hobi' => trim($row['hobi']),
                     'golongan_darah' => trim($row['golongan_darah']),
                     'berat_badan' => trim($row['berat_badan']),
@@ -129,13 +133,21 @@ class MahasantriImport implements ToCollection, WithHeadingRow, WithValidation, 
 
 
                 DB::commit();
-            } catch (\Throwable $th) {
+            } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
                 DB::rollBack();
+                $failures = $e->failures();
 
-                Log::warning($th->getMessage(), [
-                    'action' => 'import mahasantri',
-                    'data' => collect($row)->toArray(),
-                ]);
+                foreach ($failures as $failure) {
+                    Log::error($e->getMessage(), [
+                        'action' => 'import mahasantri',
+                        'row' => $failure->row(),               // row that went wrong
+                        'attribute' => $failure->attribute(),   // either heading key (if using heading row concern) or column index
+                        'errors' => $failure->errors(),         // Actual error messages from Laravel validator
+                        'values' => $failure->values(),         // The values of the row that has failed.
+                    ]);
+                }
+
+                return back()->withInput()->with('error', 'Data Mahasantri Gagal Di-import!');
             }
         }
     }
@@ -155,19 +167,35 @@ class MahasantriImport implements ToCollection, WithHeadingRow, WithValidation, 
         ];
     }
 
+    protected function parseDateExplode($data)
+    {
+        $data = trim($data);
+        $data = explode('#', $data);
+
+        return sprintf("%u-%u-%u", $data[0], $data[1], $data[2]);
+    }
+
     // public function prepareForValidation($data, $index)
     // {
-    //     info('data', collect($data)->toArray());
-    //     //Fix that Excel's numeric date (counting in days since 1900-01-01)
-    //     $data['tanggal_lahir'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['tanggal_lahir'])->format('Y-m-d');
-    //     $data['tanggal_lahir_ayah'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['tanggal_lahir_ayah'])->format('Y-m-d');
-    //     $data['tanggal_lahir_ibu'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['tanggal_lahir_ibu'])->format('Y-m-d');
-    //     $data['tanggal_ijazah'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['tanggal_ijazah'])->format('Y-m-d');
+    //     $data['tanggal_lahir'] = $this->parseDateExplode($data['tanggal_lahir']);
+    //     $data['tanggal_lahir_ayah'] = $this->parseDateExplode($data['tanggal_lahir_ayah']);
+    //     $data['tanggal_lahir_ibu'] = $this->parseDateExplode($data['tanggal_lahir_ibu']);
+    //     $data['tanggal_ijazah'] = $this->parseDateExplode($data['tanggal_ijazah']);
+
+    //     info('data tanggal lahir =================');
+    //     info($data['tanggal_lahir']);
+    //     info('index================');
+    //     info($index);
+    //     // Fix that Excel's numeric date (counting in days since 1900-01-01)
+    //     $data['tanggal_lahir'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(intval($data['tanggal_lahir']))->format('Y-m-d');
+    //     $data['tanggal_lahir_ayah'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(intval($data['tanggal_lahir_ayah']))->format('Y-m-d');
+    //     $data['tanggal_lahir_ibu'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(intval($data['tanggal_lahir_ibu']))->format('Y-m-d');
+    //     $data['tanggal_ijazah'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(intval($data['tanggal_ijazah']))->format('Y-m-d');
     //     //...
     // }
 
-    public function chunkSize(): int
-    {
-        return 100;
-    }
+    // public function chunkSize(): int
+    // {
+    //     return 100;
+    // }
 }

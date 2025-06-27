@@ -35,7 +35,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row mb-4">
+                                            {{-- <div class="row mb-4">
                                                 <label class="col-md-3 form-label" for="end_year">Tahun Akhir</label>
                                                 <div class="col-md-9">
                                                     <input class="form-control @error('end_year') is-invalid @enderror"
@@ -46,7 +46,7 @@
                                                         </div>
                                                     @enderror
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
                                             {{-- <div class="row mb-4">
                                                 <label class="col-md-3 form-label" for="visible">&nbsp;</label>

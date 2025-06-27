@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Models\AcademicYear;
 use App\Models\Classes;
+use App\Models\Dosen;
 use App\Models\Mahasantri;
 use Illuminate\Support\Str;
 
@@ -21,6 +22,8 @@ class MahasantriService
 
     public static function createClass(AcademicYear $academic_year, string $jenis_kelamin): Classes
     {
+        $musyrif = Dosen::where('tipe', 'Musyrif')->inRandomOrder()->first();
+
         $class = Classes::firstOrCreate(
             [
                 'academic_year_id' => $academic_year->getKey(),
@@ -28,7 +31,8 @@ class MahasantriService
             ],
             [
                 'tahun_ajaran' => $academic_year->start_year,
-                'nama' => sprintf("%u %s", $academic_year->start_year, $jenis_kelamin === 'Laki-laki' ? 'Banin' : 'Banat')
+                'nama' => sprintf("%u %s", $academic_year->start_year, $jenis_kelamin === 'Laki-laki' ? 'Banin' : 'Banat'),
+                'dosen_id' => $musyrif->getKey(),
             ]
         );
 

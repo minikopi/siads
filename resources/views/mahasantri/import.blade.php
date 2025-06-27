@@ -10,6 +10,12 @@
 
                 <div class="row mt-5">
                     <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
+                        
+                    </div>
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title">{{ $title }}</h4>
@@ -27,6 +33,9 @@
                                                     <input type="input"
                                                         class="form-control @error('tahun_ajaran') is-invalid @enderror" name="tahun_ajaran"
                                                         id="tahun_ajaran">
+                                                        <div class="text-sm" style="color: grey">
+                                                            Misal tahun pelajaran 2025-2026, maka cukup tulis 2025 saja.
+                                                        </div>
                                                         @error('tahun_ajaran')
                                                         <div class="invalid-feedback" style="color: red;">
                                                             {{ $message }}
