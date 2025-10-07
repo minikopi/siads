@@ -90,7 +90,7 @@ class DosenController extends Controller
             'name'      => $request->nama,
             'email'     => $request->email,
             'password'  => password_hash('password', PASSWORD_DEFAULT),
-            'role'      => 'Dosen',
+            'role'      => Role::Dosen,
         ]);
 
         switch (strtolower($request->tipe)) {

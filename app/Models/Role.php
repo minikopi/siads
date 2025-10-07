@@ -11,6 +11,7 @@ class Role extends RoleModel
     const Dosen = 'dosen';
     const Musyrif = 'musyrif';
     const PanitiaTakhrij = 'panitia_takhrij';
+    const Tahfidz = 'tahfidz';
 
     public $guarded = [];
 }

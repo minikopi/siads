@@ -67,7 +67,7 @@
                                             <div class="row mb-4">
                                                 <label class="col-md-3 form-label">Nominal</label>
                                                 <div class="col-md-9">
-                                                    <input type="text" class="form-control @error('nominal') is-invalid @enderror numericInput" name="nominal" value="{{ old('nominal') }}"
+                                                    <input type="number" class="form-control @error('nominal') is-invalid @enderror numericInput" name="nominal" value="{{ old('nominal') }}"
                                                         id="nominal">
                                                     @error('nominal')
                                                         <div class="invalid-feedback" style="color: red;">{{ $message }}
@@ -90,9 +90,9 @@
 
                                             <div class="mb-0 mt-4 row justify-content-end">
                                                 <div class="col-md-9">
-                                                    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                                                    <button type="submit" class="btn btn-primary">Simpan</button>
                                                     <a href="{{ route('paymentType.index') }}"
-                                                        class="btn btn-sm btn-secondary">Cancel</a>
+                                                        class="btn btn-secondary">Batal</a>
                                                 </div>
                                             </div>
                                         </form>

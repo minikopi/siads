@@ -55,7 +55,7 @@ class MataKuliahController extends Controller
             'sks.integer' => 'Total SKS harus berupa angka',
             'kode.unqique'    => 'Kode Mata Kuliah sudah diterdaftar',
             'kode.required' => 'Kode Mata Kuliah diperlukan',
-            'smester.required' => 'smester Mata Kuliah diperlukan',
+            'smester.required' => 'Semester Mata Kuliah diperlukan',
         ]);
 
         MataKuliah::create([

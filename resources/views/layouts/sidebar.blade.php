@@ -38,30 +38,30 @@
                             <li class="side-menu-label1"><a href="javascript:void(0)">Data Master</a></li>
                             @if (Auth::user()->role != 'Mahasantri')
                                 <li>
-                                    <a href="{{ route('mahasantri.index') }}"
-                                        class="slide-item {{ request()->is('master/mahasantri/*', 'master/mahasantri') ? 'active' : '' }}">
-                                        Mahasantri</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('dosen.index') }}"
-                                        class="slide-item {{ request()->is('master/dosen') ? 'active' : '' }}">
-                                        Dosen
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('mata-kuliah.index') }}"
-                                        class="slide-item {{ request()->is('master/mata-kuliah') ? 'active' : '' }}">
-                                        Mata Kuliah
-                                    </a>
-                                </li>
-                                <li>
                                     <a href="{{ route('academic-year.index') }}"
                                         class="slide-item {{ request()->is('master/academic-year*') ? 'active' : '' }}">
                                         Tahun Ajaran
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{{ route('mahasantri.index') }}"
+                                        class="slide-item {{ request()->is('master/mahasantri*') ? 'active' : '' }}">
+                                        Mahasantri</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('dosen.index') }}"
+                                        class="slide-item {{ request()->is('master/dosen*') ? 'active' : '' }}">
+                                        Dosen
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('mata-kuliah.index') }}"
+                                        class="slide-item {{ request()->is('master/mata-kuliah*') ? 'active' : '' }}">
+                                        Mata Kuliah
+                                    </a>
+                                </li>
                                 <li><a href="{{ route('kelas.index') }}"
-                                        class="slide-item {{ request()->is('master/kelas') ? 'active' : '' }}"> Kelas</a>
+                                        class="slide-item {{ request()->is('master/kelas*') ? 'active' : '' }}"> Kelas</a>
                                 </li>
                                 {{-- <li><a href="#" class="slide-item"> Transkrip Akademik</a></li> --}}
                             @endif
@@ -245,12 +245,12 @@
                             <li>
                                 <a href="{{ route('paymentType.index') }}"
                                     class="slide-item {{ request()->is('pembayaran/master/type*') ? 'active' : '' }}">
-                                    Master Pembayaran
+                                    Tipe Pembayaran
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ route('pembayaran.ListSiswa') }}"
-                                    class="slide-item {{ request()->is('pembayaran', 'pembayaran/*', 'bendahara/master-payment*') ? 'active' : '' }}">
+                                    class="slide-item {{ request()->is('pembayaran', 'bendahara/master-payment*') ? 'active' : '' }}">
                                     Pembayaran Mahasantri
                                 </a>
                             </li>

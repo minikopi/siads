@@ -100,7 +100,7 @@ class PaymentTypeController extends Controller
     public function delete($id)
     {
         return response()->json(
-            ['msg' => 'Maaf, Anda tidak dapat melakukan ini. Hubungi web administrator.'],
+            ['msg' => 'Data Tipe Pembayaran tidak dapat dihapus'],
             400
         );
     }

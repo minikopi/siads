@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Master\MahasantriImportRequest;
 use App\Http\Requests\Master\MahasantriStore;
 use App\Http\Requests\Master\MahasantriUpdate;
+use App\Imports\ImportMahasantri;
 use App\Imports\MahasantriImport;
 use App\Models\AcademicYear;
 use App\Models\Dosen;
 use App\Models\Mahasantri;
 use App\Models\Role;
 use App\Models\User;
+use App\Service\MahasantriService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -63,8 +65,12 @@ class MahasantriController extends Controller
         try {
             // check keunikan email
             $userCheck = User::firstWhere('email', $request->email);
+            if ($userCheck) throw new \Exception('Email User sudah terdaftar');
+
             $mahasantriCheck = Mahasantri::firstWhere('email', $request->email);
-            if ($userCheck || $mahasantriCheck) throw new \Exception('Email sudah terdaftar');
+            if ($mahasantriCheck) throw new \Exception('Email Mahasantri sudah terdaftar');
+
+            $academic_year = AcademicYear::find($request->academic_year_id);
 
             $user = User::create([
                 'name'      => $request->nama_depan . " " . $request->nama_belakang,
@@ -75,6 +81,8 @@ class MahasantriController extends Controller
 
             $data = array_merge($request->except(['foto']), [
                 'whatsapp_wali' => $request->handphone_wali,
+                'nim' => MahasantriService::createNim($academic_year),
+                'kelas_id' => MahasantriService::createClass($academic_year, trim($request->jenis_kelamin))->getKey(),
                 'foto' => $request->file('foto')->store('mahasantri/foto')
             ]);
 
@@ -116,18 +124,19 @@ class MahasantriController extends Controller
         $errors = [];
 
         try {
-            $import = new MahasantriImport($academic_year);
-            $import->import($request->file('excel'));
+            // $import = new MahasantriImport($academic_year);
+            // $import->import($request->file('excel'));
+            Excel::import(new ImportMahasantri($academic_year), $request->file('excel'));
 
-            foreach ($import->failures() as $failure) {
-                $error = true;
-                $barisnya = $failure->row(); // row that went wrong
-                $kolomnya = $failure->attribute(); // either heading key (if using heading row concern) or column index
-                $errornya = $failure->errors(); // Actual error messages from Laravel validator
-                $datanya = $failure->values(); // The values of the row that has failed.
+            // foreach ($import->failures() as $failure) {
+            //     $error = true;
+            //     $barisnya = $failure->row(); // row that went wrong
+            //     $kolomnya = $failure->attribute(); // either heading key (if using heading row concern) or column index
+            //     $errornya = $failure->errors(); // Actual error messages from Laravel validator
+            //     $datanya = $failure->values(); // The values of the row that has failed.
 
-                $errors[] = sprintf("Ada error pada baris %s, kolom %s, errornya %s, nilainya %s\n", $barisnya, $kolomnya, $errornya, $datanya);
-            }
+            //     $errors[] = sprintf("Ada error pada baris %s, kolom %s, errornya %s, nilainya %s\n", $barisnya, $kolomnya, $errornya, $datanya);
+            // }
             // Excel::queueImport(new MahasantriImport($academic_year), $request->file('excel'));
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $failures = $e->failures();

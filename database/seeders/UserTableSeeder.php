@@ -21,6 +21,13 @@ class UserTableSeeder extends Seeder
             password_hash('password', PASSWORD_DEFAULT),
             'role' => Role::Admin,
         ]);
-        $user->addRole(Role::Admin);
+        $roles = Role::select('name')->get();
+        foreach($roles as $role) {
+            if ($role->name == Role::Mahasantri) {
+                continue;
+            }
+
+            $user->addRole($role->name);
+        }
     }
 }

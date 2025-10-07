@@ -39,6 +39,11 @@ class RoleSeeder extends Seeder
                 'display_name' => 'Panitia Takhrij',
                 'description' => 'Takhrij Committee of Darus-Sunnah',
             ],
+            [
+                'name' => Role::Tahfidz,
+                'display_name' => 'Tahfidz',
+                'description' => 'Tahfidz Asatidz',
+            ],
         ];
 
         foreach ($roles as $role) {

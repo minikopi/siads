@@ -90,9 +90,9 @@
 
                                             <div class="mb-0 mt-4 row justify-content-end">
                                                 <div class="col-md-9">
-                                                    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                                                    <button type="submit" class="btn btn-primary">Simpan</button>
                                                     <a href="{{ route('paymentType.index') }}"
-                                                        class="btn btn-sm btn-secondary">Cancel</a>
+                                                        class="btn btn-secondary">Batal</a>
                                                 </div>
                                             </div>
                                         </form>
