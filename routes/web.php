@@ -213,5 +213,9 @@ Route::middleware(['auth'])->group(
         Route::prefix('tahfidz')->as('tahfidz.')->middleware(['auth:sanctum'])->group(
             base_path('routes/modules/tahfidz.php'),
         );
+
+        Route::prefix('takhrij')->as('takhrij.')->middleware(['auth:sanctum'])->group(
+            base_path('routes/modules/takhrij.php'),
+        );
     }
 );

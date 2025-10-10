@@ -78,7 +78,7 @@
                                                         </td>
                                                         <td>
                                                             @if ($item->status === 'sah')
-                                                                {{ $item->dosen->user->name }}
+                                                                {{ $item?->dosen->user->name ?? $item->created_by }}
                                                             @endif
                                                         </td>
                                                     </tr>

@@ -287,12 +287,18 @@
                     </li>
                 @endrole
 
-                <li class="slide {{ request()->is('wisuda*') ? 'is-expanded' : '' }}">
+                <li class="slide {{ request()->is('wisuda*', 'takhrij/points*') ? 'is-expanded' : '' }}">
                     <a class="side-menu__item {{ request()->is('wisuda*') ? 'active is-expanded' : '' }}"
                         data-bs-toggle="slide" href="javascript:void(0);"><i
                             class="side-menu__icon fe fe-grid"></i><span class="side-menu__label">Wisuda</span><i
                             class="angle fa fa-angle-right"></i></a>
                     <ul class="slide-menu">
+                        <li>
+                            <a href="{{ route('takhrij.points.index') }}"
+                                class="slide-item {{ request()->is('takhrij/points*') ? 'active' : '' }}">
+                                Poin Syarat Sidang
+                            </a>
+                        </li>
                         <li><a href="{{ route('sidang.index') }}"
                                 class="slide-item {{ request()->is('wisuda/sidang') ? 'active' : '' }}">
                                 Daftar Sidang</a>
@@ -311,8 +317,7 @@
                     @php
                         $menuUserSetting = request()->is('tahfidz/setoran*', 'tahfidz/data*');
                     @endphp
-                    <li
-                        class="slide {{ $menuUserSetting ? 'is-expanded' : '' }}">
+                    <li class="slide {{ $menuUserSetting ? 'is-expanded' : '' }}">
                         <a class="side-menu__item {{ $menuUserSetting ? 'active is-expanded' : '' }}"
                             data-bs-toggle="slide" href="javascript:void(0);">
                             <i class="side-menu__icon fe fe-grid"></i>
@@ -341,8 +346,7 @@
                     @php
                         $menuUserSetting = request()->is('administrator/roles*', 'administrator/user-role*');
                     @endphp
-                    <li
-                        class="slide {{ $menuUserSetting ? 'is-expanded' : '' }}">
+                    <li class="slide {{ $menuUserSetting ? 'is-expanded' : '' }}">
                         <a class="side-menu__item {{ $menuUserSetting ? 'active is-expanded' : '' }}"
                             data-bs-toggle="slide" href="javascript:void(0);">
                             <i class="side-menu__icon fe fe-grid"></i>

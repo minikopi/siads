@@ -75,8 +75,13 @@ class MahasantriController extends Controller
 
             $data = array_merge($request->except(['foto']), [
                 'whatsapp_wali' => $request->handphone_wali,
-                'foto' => $request->file('foto')->store('mahasantri/foto')
             ]);
+
+            if ($request->hasFile('foto')) {
+                $data = array_merge($request->except(['foto']), [
+                    'foto' => $request->file('foto')->store('mahasantri/foto')
+                ]);
+            }
 
             $user->mahasantri()->create($data);
 

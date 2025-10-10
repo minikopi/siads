@@ -47,7 +47,7 @@ class MataKuliahController extends Controller
         $request->validate([
             'nama'          => 'required',
             'sks'           => 'required|integer',
-            'kode'          => 'required|unique:mata_kuliahs',
+            'kode'          => 'required',
             'smester'          => 'required',
         ], [
             'nama.required'     => 'Nama Mata Kuliah diperlukan',

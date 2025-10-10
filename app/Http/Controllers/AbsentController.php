@@ -98,8 +98,19 @@ class AbsentController extends Controller
     public function store($schedule_id, Request $request)
     {
         $schedule = Schedule::with("mata_kuliah", "dosen.user", 'class')->findOrFail($schedule_id);
+        
         DB::beginTransaction();
-        // dd($request->all());
+
+        if (!isset($request->tanggal_pelajaran)) {
+            DB::rollBack();
+            return back()->with('error', 'Tanggal pelajaran belum dipilih');
+        }
+
+        if (!isset($request->siswa)) {
+            DB::rollBack();
+            return back()->with('error', 'Mahasantri belum dipilih');
+        }
+
         foreach ($request->siswa as $key => $s) {
             try {
                 Absent::create([

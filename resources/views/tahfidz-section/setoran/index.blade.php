@@ -41,7 +41,7 @@
                                         <label for="juz_number" class="col-md-2 col-form-label">Juz</label>
                                         <div class="col-md-10">
                                             <select class="form-control select2 @error('juz_number') is-invalid @enderror" name="juz_number" id="juz_number">
-                                                @for ($i = 1; $i <= 35; $i++)
+                                                @for ($i = 1; $i <= 30; $i++)
                                                     <option @selected(old('juz_number') == $i)>{{ $i }}</option>
                                                 @endfor
                                             </select>

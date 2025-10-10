@@ -178,7 +178,9 @@ class SetoranController extends Controller
                 'user_id' => $request->user()->id
             ])->first();
 
-            if (!$dosen) {
+            $admin = $request->user()->hasRole('tahfidz');
+
+            if (!$dosen && !$admin) {
                 throw new \Exception("{$msg}: (004 - Hanya dosen tahfidz yang dapat melakukan ini).");
             }
 
@@ -224,7 +226,7 @@ class SetoranController extends Controller
             }
 
             // simpan data hafalan
-            $data->dosen_id = $dosen->id;
+            $data->dosen_id = $dosen->id ?? null;
             $data->updated_by = $request->user()->name;
             $data->status = QuranMemorization::SAH;
             $data->save();
